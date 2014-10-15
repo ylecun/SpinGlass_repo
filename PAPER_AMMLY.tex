@@ -49,7 +49,7 @@
 
 \twocolumn[
 
-\aistatstitle{Connecting deep networks with the spin-glass model}
+\aistatstitle{Connecting large neural networks with the spin-glass model}
 
 \aistatsauthor{ Anonymous Author 1 \And Anonymous Author 2 \And Anonymous Author 3 }
 %\aistatsauthor{
@@ -78,12 +78,33 @@
 %}]
 
 \begin{abstract}
-We explore the approximate equivalence of the highly non-convex loss function of a simple model of the fully-connected feed-forward neural network with the Hamiltonian of the spherical spin glass model under a certain assumptions. Using the results from the random matrix theory, we demonstrate that for large-size near-symmetric networks the lowest critical values above the global minimum of the loss function are located in a well-defined band and furthermore they form a layered structure. We show that the expected number of local minima of the loss function in this band grows exponentially with the size of the network, and at the same time the probability of finding a saddle point in this band diminishes exponentially. We empirically demonstrate that both simulated annealing and SGD converges to the band of the lowest critical values, and furthermore all critical points found there correspond to the same learning quality measured by the test error.
+We explore the approximate equivalence of the highly non-convex loss function of a simple model of the fully-connected feed-forward neural network and the Hamiltonian of the spherical spin-glass model under certain assumptions. Using the results from the random matrix theory, we demonstrate that for large-size networks the lowest critical values of the loss function are located in a well-defined narrow band lower-bounded by the global minimum and furthermore they form a layered structure. Moreover, finding them outside the band diminishes exponentially with the size of the network. We empirically demonstrate that both simulated annealing and SGD converges to the band of the lowest critical values, and furthermore all critical points found there correspond to the same learning quality measured by the test error.
 \end{abstract}
 
 \section{Introduction}
 
+Neural networks are machine learning models used for learning complex and highly non-linear mathematical functions in the context of regression, classification, pattern recognition, clustering, reinforcement learning etc. Modern neural networks historically originate from simple early models such as threshold logic~\cite{mcculloch43a}, Hebbian network~\cite{Hebb:1949} and perceptron~\cite{rosenblatt58a} that were followed by more sophisticated models including Hopfield network~\cite{Hopfield:1988:NNP:65669.104422}, Kohonen network~\cite{Kohonen1982}, and Boltzman machines~\cite{Hinton:1986:LRB:104279.104291} (and many others). Despite their modeling power, the interest in learning with early neural network significantly weakened when it was shown that they have several limitations including: i) learning limitations such as the inability of single-layer networks to solve the XOR problem~\cite{minsky69perceptrons}, ii) long training time of large networks and proness to overfitting~\cite{JMLR:v15:srivastava14a}, and iii) getting stuck in poor-quality local optima or saddle points while training~\cite{Larochelle:2009:EST:1577069.1577070}. Today many of these limitations can be solved with the development of new efficient training strategies (among them backpropagation algorithm~\cite{Werbos:74} which enables to solve the XOR problem), fast GPU-based implementations significantly reducing the training time, and techniques preventing the overfitting such as dropout (e.g.~\cite{JMLR:v15:srivastava14a}). Therefore, after a long period of scepticism, the paradigm of learning with neural networks gained significant attention in recent years resulting in many new architectures, such as convolutional networks~\cite{lecun-gradientbased-learning-applied-1998}, recurrent neural networks~\cite{Graves:2009:NCS:1525650.1525782}, deep feedforward neural networks (e.g.~\cite{DBLP:journals/corr/Schmidhuber14} or wide networks~\cite{Huang14}, which basic difference from their early predecessors lies in a much larger parameter space (throughout the paper we refer to the number of network parameters as network size). In effect, the optimization problem arising when training these models is highly non-convex with exponentially many critical points. Despite the apparent difficulty of this optimization, modern neural network approaches often beat state-of-the-art results on a plethora of learning tasks (pattern recognition~\cite{journals/nn/CiresanMMS12}, brain image segmentation~\cite{NIPS2012_4741}, human pose estimation~\cite{DBLP:journals/corr/TompsonJLB14}, large-scale visual recognition~\cite{sermanet-iclr-14}, transfer learning~\cite{conf/icml/GoodfellowCB12} and many more) which is highly suggestive of their ability to recover high-quality solution to the optimization problem. The fundamental question arises: 'Why?' 
+
+The paradigm of optimizing a highly non-convex loss function characteristic of modern neural newtorks remains largely ununderstood with a lot of empirical evidence and almost no theoretical justification (the overview of prior work is done in Section~\ref{sec:PriorWork}). That results in often perceiving these models as 'black box' tools and rejecting them in favor of significantly simpler models which training is based on solving convex optimization problem. Convex optimization is well-understood and nearly-exactly (or exactly) solvable by many standard optimizers with known theoretical convergence guarantees in this setting (some standard results can be found in~\cite{opac-b1104789, ben-tal_nemirovski:2001}). The goal of this paper is to provide insights to the paradigm of large-size neural network optimization. We establish the connection between the loss function (we focus on hinge loss and absolute loss) of the fully-connected one-output feed-forward neural network of depth $H$ with the Hamiltonian of the $H$-spin spherical spin-glass model. We show that the latter can be thought of us an approximator of the loss function of the network. This is done in Section~\ref{sec:NNSG}. \textcolor{red}{Through the argument of symmetricity and over-parametrization we argue that the approximation factor is small leading to good-quality approximation.} Through the prism of recent findings in random matrix theory~\cite{AAC2010} in Section~\ref{sec:theory} we prove that for large-size networks the local minima and low-index saddle points of the loss function lie within a narrow band lower-bounded by the global minimum and finding them outside the band diminishes exponentially with the size of the network. Furthermore, within the band, the lowest critical points form a very well-defined layered structure that we also describe in the paper. Finally, recovering the global minimum of the loss function diminishes with network size. In the experimental section (Section~\ref{sec:Experiments}) we empirically verify several hypotheses regarding learning with large-size networks:
+\begin{itemize}
+\item For large-size networks local minima are equivalent and correspond to the same quality solution measured by the test error.
+\item Probability of finding a poor quality local minima is non-zero for small-size networks and it exponentially diminishes with the network size.
+\item Finding the global minimum on the training set is not useful in practice as it often leads to overfitting.
+\item The local minima are mostly flat and are characterised by Hessian with mostly zero eigenvalues. This is an indication that large-size networks can be simplified\cite{}.
+\item The number of positive eigenvalues of the Hessian at local minima is invariant to network size.
+\end{itemize}
+The first three hypotheses can be directly justified by our theoretical findings and the last two are provided as corollaries without proof but with strong empirical evidence.
+
+What is new in this paper? To the best of our knowledge, this paper is the first work providing a theoretical description of the optimization paradigm with neural networks in the presence of large number of parameters. It is also an attempt to make the modern neural network approach more a provable machine learning method and move it away from the 'black-box' shadow. We provide new insights explaining why this approach achieve high practical performance supported by the theoretical analysis and empirical verification.
+
+\section{Prior work}
+\label{sec:PriorWork}
+
+
+
+
 \section{Deep network and spin-glass model}
+\label{sec:NNSG}
 
 \subsection{Preliminaries}
 
@@ -250,11 +271,12 @@ where the last inequality was obtained by substituting $q = \sqrt{\frac{\Lambda}
   \center
 \includegraphics[width = 2.5in]{Theta_cp.pdf} 
 \includegraphics[width = 2.5in]{Theta_lm_sp.pdf}
-\caption{Functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = \{0,1,\dots,5\}$. Parameter $H$ was set to $H = 3$. Black line: $u = -E_0(H)$, magenda line: $u = -E_{\infty}(H)$.}
+\caption{Functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = \{0,1,\dots,5\}$. Parameter $H$ was set to $H = 3$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$.}
 \label{fig:Thetas}
 \end{figure*}
 
 \section{Theoretical results}
+\label{sec:theory}
 Our theoretical findings are direct consequence of the theoretical analysis of the complexity of spherical spin-glass models of~\cite{AAC2010}. We will first introduce the notation and definitions. 
 \begin{definition}
 Let $B \subset \mathbb{R}$ be any Borel set and $k$ be an integer such that $0 \leq k < \Lambda$. A random number of critical values of $\mathcal{L}_{\Lambda,H}({\bm w})$ in the set $\Lambda B = \{\Lambda X:x\in B\}$ with index equal to $k$ is
@@ -304,9 +326,9 @@ For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is st
 
 \begin{figure*}[htp!]
   \center
-\includegraphics[width = 2.5in]{Distr_cp.pdf} 
-\includegraphics[width = 2.5in]{Distr_lm.pdf}
-\caption{Distribution of the mean number of critical points and local minima. Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, magenda line: $u = -E_{\infty}(H)$, blue line: $u = 0$.}
+\includegraphics[width = 3in]{Distr_cp.pdf} 
+\includegraphics[width = 3in]{Distr_lm.pdf}
+\caption{Distribution of the mean number of critical points and local minima. Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$, blue line: $u = 0$.}
 \label{fig:Distr_cp_lm}
 \end{figure*}
 
@@ -352,7 +374,7 @@ Next we will show the logarithmic asymptotics of the mean number of critical poi
 \includegraphics[width = 2.2in]{Distr_lm_sp_li.pdf} 
 \includegraphics[width = 2.2in]{Distr_lm_sp_li_zoomed_left.pdf} 
 \includegraphics[width = 2.2in]{Distr_lm_sp_li_zoomed_right.pdf} 
-\caption{Distribution of the mean number of local minima and low-index saddle points (oryginal and zoomed). Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, magenda line: $u = -E_{\infty}(H)$.}
+\caption{Distribution of the mean number of local minima and low-index saddle points (oryginal and zoomed). Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$.}
 \label{fig:Distr_lm_sp}
 \end{figure*}
 
@@ -371,6 +393,9 @@ For all $H \geq 2$
 Figure~\ref{fig:Distr_cp_lm} captures exemplary plots of the distributions of the mean number of critical points and local minima and Figure~\ref{fig:Distr_lm_sp} captures exemplary plots of the distributions of the mean number of local minima and low-index saddle points. Both figures clearly show that the local minima and low-index saddle points are located in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ whereas high-index saddle points can only be found above the energy barrier $-\Lambda E_{\infty}(H)$. Figure~\ref{fig:Distr_lm_sp} also clearly reveals the layered structure for the lowest critical values of the loss function as predicted by the theory. 
 
 Note that from Theorem~\ref{thm:lmsp} and Corollary~\ref{cor:Theta} it follows that the number of critical points in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ increases exponentially as $\Psi$ grows and that local minima dominate over saddle points and this domination also grows exponentially as $\Psi$ grows. Thus for large-size networks (large $\Psi$) the probability of recovering a saddle point in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$, rather than a local minima, goes to $0$.
+
+\section{Experiments}
+\label{sec:Experiments}
 
 \bibliographystyle{apalike}
 \bibliography{PAPER_AMMLY}
