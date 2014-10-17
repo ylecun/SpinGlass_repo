@@ -83,16 +83,22 @@ We explore the approximate equivalence of the highly non-convex loss function of
 
 \section{Introduction}
 
-Neural networks are machine learning models used for learning complex and highly non-linear mathematical functions in the context of regression, classification, pattern recognition, clustering, reinforcement learning etc. Modern neural networks historically originate from simple early models such as threshold logic~\cite{mcculloch43a}, Hebbian network~\cite{Hebb:1949} and perceptron~\cite{rosenblatt58a} that were followed by more sophisticated models including Hopfield network~\cite{Hopfield:1988:NNP:65669.104422}, Kohonen network~\cite{Kohonen1982}, and Boltzman machines~\cite{Hinton:1986:LRB:104279.104291} (and many others). Despite their modeling power, the interest in learning with early neural network significantly weakened when it was shown that they have several limitations including: i) learning limitations such as the inability of single-layer networks to solve the XOR problem~\cite{minsky69perceptrons}, ii) long training time of large networks and proness to overfitting~\cite{JMLR:v15:srivastava14a}, and iii) getting stuck in poor-quality local optima or saddle points while training~\cite{Larochelle:2009:EST:1577069.1577070}. Today many of these limitations can be solved with the development of new efficient training strategies (among them backpropagation algorithm~\cite{Werbos:74} which enables to solve the XOR problem), fast GPU-based implementations significantly reducing the training time, and techniques preventing the overfitting such as dropout (e.g.~\cite{JMLR:v15:srivastava14a}). Therefore, after a long period of scepticism, the paradigm of learning with neural networks gained significant attention in recent years resulting in many new architectures, such as convolutional networks~\cite{lecun-gradientbased-learning-applied-1998}, recurrent neural networks~\cite{Graves:2009:NCS:1525650.1525782}, deep feedforward neural networks (e.g.~\cite{DBLP:journals/corr/Schmidhuber14} or wide networks~\cite{Huang14}, which basic difference from their early predecessors lies in a much larger parameter space (throughout the paper we refer to the number of network parameters as network size). In effect, the optimization problem arising when training these models is highly non-convex with exponentially many critical points. Despite the apparent difficulty of this optimization, modern neural network approaches often beat state-of-the-art results on a plethora of learning tasks (pattern recognition~\cite{journals/nn/CiresanMMS12}, brain image segmentation~\cite{NIPS2012_4741}, human pose estimation~\cite{DBLP:journals/corr/TompsonJLB14}, large-scale visual recognition~\cite{sermanet-iclr-14}, transfer learning~\cite{conf/icml/GoodfellowCB12} and many more) which is highly suggestive of their ability to recover high-quality solution to the optimization problem. The fundamental question arises: 'Why?' 
+Neural networks are machine learning models used for learning complex and highly non-linear mathematical functions in the context of regression, classification, pattern recognition, clustering, reinforcement learning etc. Modern neural networks historically originate from simple early models such as threshold logic~\cite{mcculloch43a}, Hebbian network~\cite{Hebb:1949} and perceptron~\cite{rosenblatt58a} that were followed by more sophisticated models including Hopfield network~\cite{Hopfield:1988:NNP:65669.104422}, Kohonen network~\cite{Kohonen1982}, and Boltzman machines~\cite{Hinton:1986:LRB:104279.104291} (and many others). Despite their modeling power, the interest in learning with early neural network significantly weakened when it was shown that they have several limitations including: i) learning limitations such as the inability of single-layer networks to solve the XOR problem~\cite{minsky69perceptrons}, ii) long training time of large networks and proness to overfitting~\cite{JMLR:v15:srivastava14a}, and iii) getting stuck in poor-quality local optima or saddle points while training~\cite{Larochelle:2009:EST:1577069.1577070}. Today many of these limitations can be solved with the development of new efficient training strategies (among them backpropagation algorithm~\cite{Werbos:74} which enables to solve the XOR problem), fast GPU-based implementations significantly reducing the training time, and techniques preventing the overfitting such as dropout (e.g.~\cite{JMLR:v15:srivastava14a}). Therefore, after a long period of scepticism, the paradigm of learning with neural networks gained significant attention in recent years resulting in many new architectures, such as convolutional networks~\cite{lecun-gradientbased-learning-applied-1998}, recurrent neural networks~\cite{Graves:2009:NCS:1525650.1525782}, deep feedforward neural networks (e.g.~\cite{DBLP:journals/corr/Schmidhuber14} or wide networks~\cite{Huang14}, where the most fundamental difference between them and their early predecessors lies in a much larger parameter space (throughout the paper we refer to the number of network parameters as network size). In effect, the optimization problem arising when training these models is highly non-convex with exponentially many critical points. Despite the apparent difficulty of this optimization, modern neural network approaches often beat state-of-the-art results on a plethora of learning tasks (pattern recognition~\cite{journals/nn/CiresanMMS12}, brain image segmentation~\cite{NIPS2012_4741}, human pose estimation~\cite{DBLP:journals/corr/TompsonJLB14}, large-scale visual recognition~\cite{sermanet-iclr-14}, transfer learning~\cite{conf/icml/GoodfellowCB12} and many more) which is highly suggestive of their ability to recover high-quality solution to the optimization problem. The fundamental question arises: 'Why?' 
 
-The paradigm of optimizing a highly non-convex loss function characteristic of modern neural newtorks remains largely ununderstood with a lot of empirical evidence and almost no theoretical justification (the overview of prior work is done in Section~\ref{sec:PriorWork}). That results in often perceiving these models as 'black box' tools and rejecting them in favor of significantly simpler models which training is based on solving convex optimization problem. Convex optimization is well-understood and nearly-exactly (or exactly) solvable by many standard optimizers with known theoretical convergence guarantees in this setting (some standard results can be found in~\cite{opac-b1104789, ben-tal_nemirovski:2001}). The goal of this paper is to provide insights to the paradigm of large-size neural network optimization. We establish the connection between the loss function (we focus on hinge loss and absolute loss) of the fully-connected one-output feed-forward neural network of depth $H$ with the Hamiltonian of the $H$-spin spherical spin-glass model. We show that the latter can be thought of us an approximator of the loss function of the network. This is done in Section~\ref{sec:NNSG}. \textcolor{red}{Through the argument of symmetricity and over-parametrization we argue that the approximation factor is small leading to good-quality approximation.} Through the prism of recent findings in random matrix theory~\cite{AAC2010} in Section~\ref{sec:theory} we prove that for large-size networks the local minima and low-index saddle points of the loss function lie within a narrow band lower-bounded by the global minimum and finding them outside the band diminishes exponentially with the size of the network. Furthermore, within the band, the lowest critical points form a very well-defined layered structure that we also describe in the paper. Finally, recovering the global minimum of the loss function diminishes with network size. In the experimental section (Section~\ref{sec:Experiments}) we empirically verify several hypotheses regarding learning with large-size networks:
+The paradigm of optimizing a highly non-convex loss function characteristic of modern neural newtorks remains largely ununderstood with a lot of empirical evidence and almost no theoretical justification (the overview of prior work is done in Section~\ref{sec:PriorWork}). That results in often perceiving these models as 'black box' tools and rejecting them in favor of significantly simpler models which training is based on solving convex optimization problem. Convex optimization is well-understood and nearly-exactly (or exactly) solvable by many standard optimizers with known theoretical convergence guarantees in this setting (some standard results can be found in~\cite{opac-b1104789, ben-tal_nemirovski:2001}). The goal of this paper is to provide insights to the paradigm of large-size neural network optimization. We establish the connection between the loss function (we focus on hinge loss and absolute loss) of the fully-connected one-output feed-forward neural network of depth $H$ with the Hamiltonian of the $H$-spin spherical spin-glass model. We show that the latter can be thought of us an approximator of the loss function of the network under certain assumptions which we also discuss, and furthermore we provide the theoretical guarantee of the quality of this approximation. Through the prism of recent findings in random matrix theory~\cite{AAC2010} in Section~\ref{sec:theory} we prove that for large-size networks the local minima and low-index saddle points of the loss function lie within a narrow band lower-bounded by the global minimum and finding them outside the band diminishes exponentially with the size of the network. Furthermore, within the band, the lowest critical points form a very well-defined layered structure that we also describe in the paper. Finally, recovering the global minimum of the loss function diminishes with network size. In the experimental section (Section~\ref{sec:Experiments}) we empirically verify several hypotheses regarding learning with large-size networks:
+\vspace{-0.05in}
 \begin{itemize}
 \item For large-size networks local minima are equivalent and correspond to the same quality solution measured by the test error.
+\vspace{-0.05in}
 \item Probability of finding a poor quality local minima is non-zero for small-size networks and it exponentially diminishes with the network size.
+\vspace{-0.05in}
 \item Finding the global minimum on the training set is not useful in practice as it often leads to overfitting.
-\item The local minima are mostly flat and are characterised by Hessian with mostly zero eigenvalues. This is an indication that large-size networks can be simplified\cite{}.
+\vspace{-0.05in}
+\item The local minima are mostly flat and are characterised by Hessian with mostly zero eigenvalues. This is an indication that large-size networks can be simplified.
+\vspace{-0.05in}
 \item The number of positive eigenvalues of the Hessian at local minima is invariant to network size.
 \end{itemize}
+\vspace{-0.05in}
 The first three hypotheses can be directly justified by our theoretical findings and the last two are provided as corollaries without proof but with strong empirical evidence.
 
 What is new in this paper? To the best of our knowledge, this paper is the first work providing a theoretical description of the optimization paradigm with neural networks in the presence of large number of parameters. It is also an attempt to make the modern neural network approach more a provable machine learning method and move it away from the 'black-box' shadow. We provide new insights explaining why this approach achieve high practical performance supported by the theoretical analysis and empirical verification.
@@ -116,7 +122,7 @@ where $q = \sqrt{\frac{n_0n_1 + n_1n_2 + ... + n_{H-1}n_H}{n_0n_1...n_H}}$ is si
 Y = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i,j}A_{i,j}\prod_{k = 1}^{H}w_{i,j}^{(k)},
 \label{eq:befrein}
 \end{equation}
-where the first summation is over the network inputs and the second one is over all paths from a given network input to its output, where $\gamma$ is the total number of such paths (note that $\gamma = n_1n_2\dots n_H$). Furthermore, $w_{i,j}^{(k)}$ is the weight of the $k^{\text{th}}$ segment of path indexed with $(i,j)$ which connects layer $(k-1)^{st}$ with layer $k^{\text{th}}$ of the network. Note that each path corresponds to a certain set of $H$ weights, which we refer to as a \textit{configuration of weights}. Random variable $A_{i,j}$ denotes whether path $(i,j)$ is active ($A_{i,j} = 1$) or not ($A_{i,j} = 0$).  We assume each path is equally likely to be active thus $A_{i,j}$'s will be modelled as Bernoulli random variables with the same probability of success $\rho$. 
+where the first summation is over the network inputs and the second one is over all paths from a given network input to its output, where $\gamma$ is the total number of such paths (note that $\gamma = n_1n_2\dots n_H$). Furthermore, $w_{i,j}^{(k)}$ is the weight of the $k^{\text{th}}$ segment of path indexed with $(i,j)$ which connects layer $(k-1)^{st}$ with layer $k^{\text{th}}$ of the network. Note that each path corresponds to a certain set of $H$ weights, which we refer to as a \textit{configuration of weights}, which are multiplied by each other. Random variable $A_{i,j}$ denotes whether path $(i,j)$ is active ($A_{i,j} = 1$) or not ($A_{i,j} = 0$).  We assume each path is equally likely to be active thus $A_{i,j}$'s will be modelled as Bernoulli random variables with the same probability of success $\rho$. 
 
 \begin{definition}
 The mass of the network $\Psi$ is the total number of all paths between all network inputs and outputs: $\Psi = \prod_{i=0}^Hn_i$.
@@ -126,25 +132,19 @@ The mass of the network $\Psi$ is the total number of all paths between all netw
 The size of the network $\Lambda$ is the total number of network parameters: $\Lambda = \prod_{i=0}^{H-1}n_in_{i+1}$.
 \end{definition}
 
-There exists a lower- and upper-bound on the size of the network that depends on the mass of the network as captured in Theorem~\ref{thm:arge}.
+There mass and the size of the network depend on each other as captured in Theorem~\ref{thm:arge}.
 \begin{theorem}
-The size of the network is bounded as follows
+Let $\Psi$ be the mass of the network, $d$ be the number of network inputs and $H$ be the depth of the network. The size of the network is bounded as
 \[\Psi^2\frac{1}{d} \geq \Lambda \geq \sqrt[H]{\Psi^2}\frac{H}{\sqrt[H]{d}}.
 \]
 \label{thm:arge}
 \end{theorem}
-\begin{proof}
-First we will prove the lower-bound. By the inequality between arithmetic and geometric mean the mass and the size of the network are connected as follows
-\[\Lambda \geq \sqrt[H]{\Psi^2}\frac{H}{\sqrt[H]{n_0n_H}} = \sqrt[H]{\Psi^2}\frac{H}{\sqrt[H]{d}}
-\]
-The upper-bound can be shown as follows
-\[\Lambda \leq \prod_{i=0}^{H-1}n_in_{i+1} = \frac{\Psi^2}{n_0n_H} = \Psi^2\frac{1}{d}.
-\]
-\end{proof}
+
+In the rest of this section we will be establishing a connection between the loss function of the neural network and the Hamiltonian of the spin-glass model. Under certain assumptions, that will be introduced and discussed, spin-glass model can be though of as a network approximator. We will also provide the measure of quality of this approximation. All proofs are deferred to the Supplementary material.
 
 \subsection{Approximation}
 
-Let $\mathcal{W} = \{w_1,w_2,\dots,w_{\Lambda}\}$ be the set of all weights of the network. Furthermore let $\mathcal{A}_{\Lambda}$ denote the set of all $H$-length configuration of weights chosen from $W$. Note that the size of $\mathcal{A}_{\Lambda}$ is $\Lambda^H$. Also let $\mathcal{B}$ be a set such that each element correspond to the single configuration of weights from Equation~\ref{eq:befrein}, thus $\mathcal{B} = \{(w_{1,1}^1,w_{1,1}^2,\dots,w_{1,1}^H),(w_{1,2}^1,w_{1,2}^2,\dots,w_{1,2}^H),\dots,\\(w_{n_0,\gamma}^1,w_{n_0,\gamma}^2,\dots,w_{n_0,\gamma}^H)\}$, where every single weight comes from set $\mathcal{W}$. Note that in general there might exist elements in $\mathcal{A}_{\Lambda}$ that will never appear in $\mathcal{B}$ and also some elements in $\mathcal{A}_{\Lambda}$ may appear in $\mathcal{B}$ multiple times. Thus Equation~\ref{eq:befrein} can be equivalently restated as 
+Let $\mathcal{W} = \{w_1,w_2,\dots,w_{\Lambda}\}$ be the set of all weights of the network. Furthermore let $\mathcal{A}_{\Lambda}$ denote the set of all $H$-length configuration of weights chosen from $\mathcal{W}$ (order of weights in a configuration does matter). Note that the size of $\mathcal{A}_{\Lambda}$ is therefore $\Lambda^H$. Also let $\mathcal{B}$ be a set such that each element correspond to the single configuration of weights from Equation~\ref{eq:befrein}, thus $\mathcal{B} = \{(w_{1,1}^1,w_{1,1}^2,\dots,w_{1,1}^H),(w_{1,2}^1,w_{1,2}^2,\dots,w_{1,2}^H),\dots,\\(w_{n_0,\gamma}^1,w_{n_0,\gamma}^2,\dots,w_{n_0,\gamma}^H)\}$, where every single weight comes from set $\mathcal{W}$. Note that in general there might exist elements in $\mathcal{A}_{\Lambda}$ that will never appear in $\mathcal{B}$ and also some elements in $\mathcal{A}_{\Lambda}$ may appear in $\mathcal{B}$ multiple times. Thus Equation~\ref{eq:befrein} can be equivalently written as 
 \[Y \!=\! q\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\left(\sum_{c=1}^{r_{i_1,i_2,\dots,i_H}}\!\!\!X_{i_1,i_2,\dots,i_H}^{(c)}A_{i_1,i_2,\dots,i_H}^{(c)}\!\!\right)\!\!\prod_{k = 1}^{H}w_{i_k},
 \]
 where $r_{i_1,i_2,\dots,i_H}$ denotes the number of times configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ appeared in Equation~\ref{eq:befrein}. Note that $r_{i_1,i_2,\dots,i_H} \in \{\mathbb{Z}^{+}\cup{0}\}$ and furthermore $\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}r_{i_1,i_2,\dots,i_H} = \Psi$. Assuming the independence of $X$'s and $A's$ we get
@@ -153,63 +153,49 @@ where $r_{i_1,i_2,\dots,i_H}$ denotes the number of times configuration $(w_{i_1
 Let $Y_{\Lambda} = \mathbb{E}_A[Y]$, where in particular $\Lambda$ in this notation refers to the size of set $\mathcal{A}$ (this notation will be helpful later in this section), and define random variables $Z$'s as
 \[Z_{i_1,i_2,\dots,i_H=1} = \frac{1}{\sqrt{r_{i_1,i_2,\dots,i_H}}}\sum_{c=1}^{r_{i_1,i_2,\dots,i_H}}X_{i_1,i_2,\dots,i_H}^{(c)}.
 \]
-For our theoretical analysis we also assume that $X$'s and also $Z$'s are independent and furthermore that $X$'s are identically distributed such that $X_{i_1,i_2,\dots,i_H}^{(c)}\sim\mathcal{N}(0,1)$. Therefore $Z_{i_1,i_2,\dots,i_H}\sim\mathcal{N}(0,1)$. Thus 
+For our theoretical analysis we assume that $X$'s are independent from each other and so are $Z$'s. This assumption is simplistic, yet pervasively used in machine learning theory (plethora of decoupling strategies are discussed in~\cite{opac-b1095246}). Let $X$'s be identically distributed such that $X_{i_1,i_2,\dots,i_H}^{(c)}\sim\mathcal{N}(0,1)$. Therefore $Z_{i_1,i_2,\dots,i_H}\sim\mathcal{N}(0,1)$. Thus 
 \begin{equation}
 Y_{\Lambda}= q\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\sqrt{r_{i_1,i_2,\dots,i_H}}Z_{i_1,i_2,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k}.
 \label{eq:befapprox}
 \end{equation}
-Let instead the number of uniqe weghts in a network be changed from $\Lambda$ to $s$ where $s \leq \Lambda$. Consider another expression
+Consider a family of networks which have the same graph of connections as network $\mathcal{N}$ but different edge weighting such that they only have $s$ unique weights and $s \leq \Lambda$. It was recently shown~\cite{NIPS2013_5025,DBLP:journals/corr/DentonZBLF14} that for large-size networks large number of network parameters (according to~\cite{NIPS2013_5025} even up to $95\%$) are reduntant and can either be learned from a very small set of unique parameters or even not learned at all with almost no loss in prediction accuracy.  In our experimental section we also demonstrate the empirical evidence of the overparametrization of neural networks. It is therefore well-justified to \textit{assume redunancy in network parametrization} where $s$ is the number of unique (non-redundant) parameters.
+
+\begin{definition}
+A network $\mathcal{M}$ which has the same graph of connections as $\mathcal{N}$ and the number of unique weights $s$ satisfying $s \leq \Lambda$ is called a $(s,\epsilon)$-\textit{reduction image} of $\mathcal{N}$ for some $\epsilon \in [0,1]$ if the prediction accuracy of $\mathcal{N}$ and $\mathcal{M}$ differ by no more than $\epsilon$ (thus they classify at most $\epsilon$ fraction of data points differently).
+\end{definition}
+
+\begin{theorem}
+Let $\mathcal{N}$, whose output is $Y_{\Lambda}$, be the neural network predicting $1$ with probability $p$ and $-1$ otherwise. Let $\mathcal{M}$ be its $(s,\epsilon)$-reduction image for some $s \leq \Lambda$ and $\epsilon \in [0,1]$. Then
+\[corr(sign(Y_s),sign(Y_{\Lambda})) \geq \frac{2p(1 \!-\! p \!+\! \epsilon) \!-\! \epsilon}{2\sqrt{(p \!+\! \epsilon)(1 \!-\! p \!+\! \epsilon)p(1 \!-\! p)}},
+\]
+where $corr$ denotes the correlation defined as $corr(A,B) = \frac{\mathbb{E}[(A - \mathbb{E}[A]])(B - \mathbb{E}[B]])}{std(A)std(B)}$, $std$ is the standard deviation and $sign(\cdot)$ denotes the sign of prediction ($sign(Y_s)$ and $sign(Y_{\Lambda})$ are both random).
+\label{thm:redun}
+\end{theorem}
+
+The assumption of the redundancy of parameters implies that one can preserve $\epsilon$ to be close to $0$ even with $s << \Lambda$.
+
+Finally we assume that unique weights are close to being evenly distributed on the graph of connections of network $\mathcal{M}$. We call this assumption a \textit{uniformity assumption} (note it is analogous to the maximum entropy assumption). This assumption is in general consistent with the approach in~\cite{NIPS2013_5025}. To be more specific, this assumption implies that there exists some bounded non-negative constant $C$ such that for all $(i_1,i_2,\dots,i_H):i_1,i_2,\dots,i_H \in \{1,2,\dots,H\}$ and some $\delta \in [0,1]$ the following holds
+\begin{equation}
+(1-\delta)C\frac{\Psi}{\Lambda^H} \leq r_{i_1,i_2,\dots,i_H} \leq (1+\delta)C\frac{\Psi}{\Lambda^H},
+\label{eq:uniform}
+\end{equation}
+where the factor $\frac{\Psi}{\Lambda^H}$ comes from the fact that for the network where every weight is uniformly distributed on the graph of connections (thus every node has equal probability of being adjacent to an edge with any of the unique weights) it holds that $r_{i_1,i_2,\dots,i_H} = \frac{\Psi}{\Lambda^H}$. Note that this condition can be sattified with small $\delta$ (close to $0$) if $s$ is sufficiently small.
+
+Consider therefore an expression as follows
 \begin{equation}
 \hat{Y}_s = q\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}}Z_{i_1,i_2,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
 \label{eq:approx}
 \end{equation}
-which can be thought of as an output of some network $\hat{\mathcal{N}}$ where the weights are still chosen from $\mathcal{A}$ but there are only $s$ unique weights in $\mathcal{A}$ and the remaining $(\Lambda-s)$ weights are repetitions, and furthermore every $H$ - length configuration of weights chosen from $\mathcal{A}$ is equally likely. We will refer to this expression soon. \textcolor{red}{Draw an example}.
+which can be thought of as an output of some network $\mathcal{M}$ where the weights are still chosen from $\mathcal{A}$ but there are only $s$ unique weights in $\mathcal{A}$ among the total of $\Lambda$ weights, and furthermore every $H$ - length configuration of weights chosen from $\mathcal{A}$ is equally likely. Then the following theorem (Theorem~\ref{thm:unif}) captures the connection between $\hat{Y}_s$ and $Y_{\Lambda}$.
 
-\textcolor{red}{We assume that there exists hidden relations between weights that the architecture is not reflecting and that are strictly data-dependent.}Let us now slowly introduce the notion of $(s,\epsilon)$ - realizability. Consider a family of networks $\{\mathcal{N}^{'}\}_s$ which have the same graph of connections as the network $\mathcal{N}$ but different edge weighting such that they only have $s$ unique weights and $s \leq \Lambda$. Also we require that for any two networks where one of them belongs to set $\{\mathcal{N}^{'}\}_{s_1}$ and produces output $Y_{s_1}$ and the other belongs to set $\{\mathcal{N}^{'}\}_{s_2}$ and produces output $Y_{s_2}$ the following holds
-\begin{equation}
-corr(Y_{s_1},\hat{Y}_{s_1}) \geq corr(Y_{s_2},\hat{Y}_{s_2}),
-\label{eq:condition}
-\end{equation}
-where $corr$ denotes the correlation defined as $corr(A,B) = \frac{\mathbb{E}[(A - \mathbb{E}[A]])(B - \mathbb{E}[B]])}{std(A)std(B)}$, where $std$ is the standard deviation, and $s_1 \leq s_2$. \textcolor{red}{Intuitively condition in Equation~\ref{eq:condition} seems natural to sattisfy as with smaller $s$ more configurations appearing in $\hat{Y}_s$ should also appear in $Y_s$. Draw an example}. 
-
-Furthermore, for a given $s \in \{1,2,\dots,\Lambda\}$ let $\epsilon_s$ be defined
-\[\epsilon_s = \max_{\mathcal{M} \in \{\mathcal{N}^{'}\}_s}[\min(1-corr(Y_s,Y_{\Lambda}),1-corr(Y_s,\hat{Y}_s))],
-\] 
-where $Y_s$ is the output of network $\mathcal{M}$ and $\min(1-corr(Y_s,Y_{\Lambda}),1-corr(Y_s,\hat{Y}_s))$ denotes the smallest of two values: $1-corr(Y_s,Y_{\Lambda})$ and $1-corr(Y_s,\hat{Y}_s)$. We will now define the correlation factor and the symmetry factor of a network $\mathcal{N}$. \textcolor{red}{Typically for large networks small $s$ is sufficient to achieve small $\epsilon_s$.}
-\begin{definition}
-A correlation factor $\kappa$ of a network $\mathcal{N}$ is
-\[\kappa = 1 - \min_{i \in \{1,2,\dots,\Lambda\}} \epsilon_i
-\]
-and a symmetry factor $s$ of a network $\mathcal{N}$ is
-\[s = \arg\min_{i \in \{1,2,\dots,\Lambda\}} \epsilon_i.
-\]
-A network $\mathcal{N}$ with correlation factor $\kappa$ and symmetry factor $s$ will be called $(s,\kappa)$-realizable.
-\end{definition}
-We will now define the approximation of the output of a network $\mathcal{N}$.
-\begin{definition}
-$\hat{Y}$ is a $\delta$-approximation of the output $Y_{\Lambda}$ of network $\mathcal{N}$ if
-\[corr(\hat{Y},Y_\Lambda) \geq 1-\delta.
-\]
-\end{definition}
-The next theorem captures that $\hat{Y}_s$ from Equation~\ref{eq:approx} is a $(2\kappa^2-1)$ - approximation of $Y_{\Lambda}$.
 \begin{theorem}
-Let $\mathcal{N}$ be a $(s,\kappa)$-realizable network producing the output given in Equation~\ref{eq:befapprox}, for some $\kappa \in [-1,1]$ and $s \in \{1,2,\dots,\Delta\}$. Then $Y_s$ given in Equation~\ref{eq:approx} is the $2(1-\kappa^2)$ - approximation of the output of the network $\mathcal{N}$.
-\end{theorem}
-\begin{proof}
-From the fact that $\mathcal{N}$ is $(s,\kappa)$-realizable it follows that 
-\[corr(Y_s,Y_{\Lambda}) \geq \kappa \:\:\:\text{and}\:\:\:corr(Y_s,\hat{Y}_s) \geq \kappa
+Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\hat{Y}_s$ in Equation~\ref{eq:approx} and random variable $Y_{\Lambda}$ in Equation~\ref{eq:befapprox} sattisy the following
+\[corr(\hat{Y}_s,Y_{\Lambda}) \geq \sqrt{\frac{1-\delta}{1+\delta}}.
 \]
-Furthermore, by the property of the correlations
-\begin{eqnarray*}
-corr(Y_{\Lambda},\hat{Y}_s) \!\!\!\!\!&\geq&\!\!\!\!\! corr(Y_{\Lambda},Y_s)corr(Y_{\Lambda},\hat{Y}_s)\\
-&-&\!\!\!\!\! \sqrt{(1 \!-\! corr(Y_{\Lambda},Y_s)^2)(1 \!-\! corr(Y_{\Lambda},\hat{Y}_s)^2)}\\
-&=&2\kappa^2-1
-\end{eqnarray*}
-\end{proof}
+\label{thm:unif}
+\end{theorem}
 
-\textcolor{red}{The property of a symmetry of a network can be thought of as an assumption on the architecture of the network since it imposes the constraint of having many repetitions of the same set of weights in the network evenly distributed in the network graph so that the set of all paths in the network cover all possible configuration of weights evenly. However note that for very large-size networks, the symmetry assumption is easier and more natural to sattisfy leading to smaller values of $\epsilon$. Consider for instance constructing the $\epsilon$-approximation of $Y$ by first dyscretizing the weights of the oryginal network into $b$ bins. The repetitions of weights occur more frequently now without hurting much the network performance. Note also that in particular in case of a very deep and wide architectures, small values of $b$ are sufficient to achieve two goals simultaneously: well-approximate complex functions and guarantee near-symmetry of a network.}
-
-Next we will consider two frequently used loss functions, absolute loss and hinge loss, where we use $\hat{Y}_s$ as an approximator to the ouput $Y_{\Lambda}$ of a network. 
+We will refer to $\hat{Y}_s$ as an $(s,\epsilon,\delta)$-\textit{approximator} of $Y_{\Lambda}$, where the quality of this approximation is captured in Theorems~\ref{thm:redun} and~\ref{thm:unif}. Intuitively, for large-size networks (our analysis in Section~\ref{sec:theory} considers $\Lambda \rightarrow \infty$) one would expect $s$ to be small enough to simultaneously guarantee sufficiently small (close to $0$) $\delta$ and preserve good accuracy (small $\epsilon$). \textcolor{red}{That is because large networks have significantly more modelling power thus small $s$ is a natural form of controlling the overfitting. Besides then the data is mapped to a higher dimensional space.} Next we will consider two frequently used loss functions, absolute loss and hinge loss, where we approximate $Y_{\Lambda}$ with $\hat{Y}_s$. 
 
 \subsection{Loss function as a $H$-spin spherical spin-glass model}
 
@@ -326,8 +312,8 @@ For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is st
 
 \begin{figure*}[htp!]
   \center
-\includegraphics[width = 3in]{Distr_cp.pdf} 
-\includegraphics[width = 3in]{Distr_lm.pdf}
+\includegraphics[width = 2.5in]{Distr_cp.pdf} 
+\includegraphics[width = 2.5in]{Distr_lm.pdf}
 \caption{Distribution of the mean number of critical points and local minima. Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$, blue line: $u = 0$.}
 \label{fig:Distr_cp_lm}
 \end{figure*}
@@ -406,6 +392,66 @@ Note that from Theorem~\ref{thm:lmsp} and Corollary~\ref{cor:Theta} it follows t
 {\Large \bf  \centering{Deep-optimization with large networks\\(Supplementary Material)} \par}
 \bottomtitlebar
 
+\section{Proof of Theorem~\ref{thm:arge}}
+\begin{proof}
+First we will prove the lower-bound. By the inequality between arithmetic and geometric mean the mass and the size of the network are connected as follows
+\[\Lambda \geq \sqrt[H]{\Psi^2}\frac{H}{\sqrt[H]{n_0n_H}} = \sqrt[H]{\Psi^2}\frac{H}{\sqrt[H]{d}}
+\]
+The upper-bound can be shown as follows
+\[\Lambda \leq \prod_{i=0}^{H-1}n_in_{i+1} = \frac{\Psi^2}{n_0n_H} = \Psi^2\frac{1}{d}.
+\]
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:redun}}
+\begin{proof}
+Consider two random variables $Z_s = sign(Y_s)$ and $Z_{\Lambda} = sign(Y_{\Lambda})$, where the first one considers the sign of prediction of network $\mathcal{N}$ and the latter considers the sign of prediction of network $\mathcal{M}$. Let $\mathcal{X}^{+}$ denote the set of data points for which $\mathcal{N}$ predicts $+1$ and let $\mathcal{X}^{-}$ denote the set of data points for which $\mathcal{N}$ predicts $-1$ ($\mathcal{X}^{+} \cup \mathcal{X}^{-} = \mathcal{X}$, where $\mathcal{X}$ is the entire dataset). Also let $p = \frac{|\mathcal{X}^{+}|}{|\mathcal{X}|}$. Furthermore, let $\mathcal{X}_{\epsilon}^{-}$ denote the dataset for which $Z_{\Lambda} = +1$ and $Z_s = -1$ and $\mathcal{X}_{\epsilon}^{+}$ denote the dataset for which $Z_{\Lambda} = -1$ and $Z_s = +1$, where $\frac{|\mathcal{X}_{\epsilon}^{+}| + |\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}} = \epsilon$. Also let $\epsilon^{+} = \frac{|\mathcal{X}_{\epsilon}^{+}|}{\mathcal{X}}$ and $\epsilon^{-} = \frac{|\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}}$. Therefore
+\[Z_{\Lambda} \!=\! \left \{
+  \begin{tabular}{c}
+  $1$ \:\:if $x \in \mathcal{X}^{+}$\\
+  \!\!\!\!$-1$ \:\:if $x \in \mathcal{X}^{-}$
+  \end{tabular}
+\right.
+\]
+and
+\[Z_s \!=\! \left \{
+  \begin{tabular}{c}
+  $1$ \:\:if $x \in \mathcal{X}^{+} \cup \mathcal{X}_{\epsilon}^{+}  \setminus \mathcal{X}_{\epsilon}^{-}$\\
+  \!\!\!$-1$ \:\:if $x \in \mathcal{X}^{-} \cup \mathcal{X}_{\epsilon}^{-} \setminus \mathcal{X}_{\epsilon}^{+}$.
+  \end{tabular}
+\right.
+\]
+One can compute that $\mathbb{E}[Z_{\Lambda}] = 2p-1$, $\mathbb{E}[Z_s] = 2(p + \epsilon^{+} - \epsilon^{-}) - 1$, $\mathbb{E}[Z_sZ_{\Lambda}] = 1$, $std(Z_s) = 2\sqrt{p(p-1)}$, and finally $std(Z_\Lambda) = 2\sqrt{(p + \epsilon^{+} - \epsilon^{-})(p + \epsilon^{+} - \epsilon^{-} - 1)}$.
+Thus we obtain
+\begin{eqnarray*}
+&&corr(sign(Y_s),sign(Y_{\Lambda})) = corr(Z_s,Z_{\Lambda})\\
+&=& \frac{\mathbb{E}[Z_sZ_{\Lambda}] - \mathbb{E}[Z_s]\mathbb{E}[Z_{\Lambda}]}{std(Z_s)std(Z_{\Lambda})}\\
+&=& \frac{1 - (2(p + \epsilon^{+} - \epsilon^{-}) - 1)(2p-1)}{4\sqrt{(p + \epsilon^{+} - \epsilon^{-})(p + \epsilon^{+} - \epsilon^{-} - 1)p(p-1)}}\\
+&=& \frac{2p + 2(1-2p)(p + \epsilon^{+} - \epsilon^{-})}{4\sqrt{(p + \epsilon^{+} - \epsilon^{-})(1 - p - \epsilon^{+} + \epsilon^{-})p(1 - p)}}\\
+&\geq& \frac{p + (1-2p)(p - \epsilon)}{2\sqrt{(p + \epsilon)(1 - p + \epsilon)p(1 - p)}}\\
+&=& \frac{2p(1 - p + \epsilon) - \epsilon}{2\sqrt{(p + \epsilon)(1 - p + \epsilon)p(1 - p)}}\\
+\end{eqnarray*}
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:redun}}
+\begin{proof}
+Note that $\mathbb{E}[\hat{Y}_s] = 0$ and $\mathbb{E}[Y_{\Lambda}] = 0$. Furthermore
+\[\mathbb{E}[\hat{Y}_sY_{\Lambda}] = q^2\rho^2\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}r_{i_1,i_2,\dots,i_H}}\prod_{k = 1}^{H}w_{i_k}^2
+\]
+and
+\[std(\hat{Y}_s) = q\rho\sqrt{\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\frac{\Psi}{\Lambda^H}\prod_{k = 1}^{H}w_{i_k}^2}
+\]
+\[std(Y_{\Lambda}) = q\rho\sqrt{\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}r_{i_1,i_2,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2}.
+\]
+Therefore
+\begin{eqnarray*}
+&&\!\!\!\!\!\!\!\!\!corr(\hat{Y}_s,Y_{\Lambda})\\ 
+&\!\!\!\!\!\!\!\!\!=&\!\!\!\!\!\!\! \frac{\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}r_{i_1,\dots,i_H}}\prod_{k = 1}^{H}w_{i_k}^2}{\sqrt{\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\frac{\Psi}{\Lambda^H}\prod_{k = 1}^{H}w_{i_k}^2\right)\!\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\!\!\!\!\!r_{i_1,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2\right)}}\\
+&\!\!\!\!\!\!\!\!\geq& \sqrt{\frac{1-\delta}{1+\delta}}, 
+\end{eqnarray*}
+where the last inequality is the direct consequence of the uniformity assumption of Equation~\ref{eq:uniform}.
+\end{proof}
+
+\begin{comment}
 \section{Approximation of 2-spin Spin Glasses by 1-layer Neural Networks}
 
 The Hamiltonian of a H-spin glass is given by 
@@ -425,7 +471,6 @@ Note that the number of terms in the sum $S_H(w)$ is equal to $|\mathcal{U}| = N
  Let $P_1(w), P_2(w)$ be random polynomials in $w$, where $w \in \mathbb{R}^N$, and let $m_1,m_2$ be the number of nonzero terms in $P_1,P_2$. Assume that all nonzero terms which appear in $P_1$ also appear in $P_2$. 
  We define a measure of similarity between the polynomials as $\Phi(P_1,P_2) = \frac{m_1}{m_2}$.
 \end{definition}
-
 
 \begin{lemma}
 Consider the following network $\mathcal{N}$ whose output is given by $Y(w) = \sum \sigma Wx$, where $\sigma$ is a rectified linear unit non-linearity.
@@ -447,7 +492,6 @@ Then $\Phi(Y(w),S(w))  = \frac{1}{4k}$.
 
   In the above example, we can combine pairs of terms of the form $w_iw_jx_{ij} + w_jw_ix_{ji}$ into $w_iw_j(x_{ij}+x_{ji})$. 
   The sum $(x_{ij}+x_{ji})$ has higher variance than the other input terms, but if this is a benign assumption for subsequent results then the ratio of terms becomes $\frac{1}{2k}$ rather than $\frac{1}{4k}$.
-
 
 \begin{lemma}
  The class of functions which can be learned by networks of the form $y = v^T \sigma Wx$ and $y = \sum \sigma Wx$ is equivalent. 
@@ -474,6 +518,7 @@ Then $\Phi(Y(w),S(w))  = \frac{1}{4k}$.
 \begin{proof}
  This follows directly from the two above lemmas.
 \end{proof}
+\end{comment}
 
 Below, we provide the asymptotics of the mean number of critical points (Theorem~\ref{thm:cpprecise}) and the mean number of local minima (Theorem~\ref{thm:lmspprecise}), which extend Theorem~\ref{thm:lmsp} and Theorem~\ref{thm:cp}. Those results are the consequences of Theorem 2.17. and Corollary 2.18.~\cite{AAC2010} and the boundeness of $c$ and $H$.
 \begin{theorem}
