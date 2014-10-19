@@ -108,7 +108,7 @@ What is new in this paper? To the best of our knowledge, this paper is the first
 
 Machine learning problems are most often formulated as optimization problems, majority of which are convex. It is often the case however that introducing non-convextiy into the model results in better practical performance~\cite{Do:2012:RBM:2503308.2503355, Bengio+chapter2007}. A typical examples of models giving rise to non-convex problems are neural networks, mixture models, models exploring products of parameters or those with complex non-linearities imposed on parameters. Better expressiveness of those models come with a price: the landscape of their objective functions is not-well understood as it contains several local optima. Thus those models typically are provided with no theoretical description. 
 
-To the best of our knowledge the recent work of~\cite{DBLP:journals/corr/DauphinPGCGB14} is the first one to explore the statistical properties of neural network error surfaces through the prism of statistical physics and random matrix theory. In particular these theoretical works~\cite{Bray2007,Fyodorov2007,Baldi:1989:NNP:70359.70362,wigner_semicircle} suggest the existence of a certain structure of critical points of random Gaussian error functions on high dimensional continuous spaces. They imply that critical points which error is much higher than the global minimum are exponentially likely to be saddle points with many negative and approximate plateau directions whereas all local minima are likely to have an error very close to that of the global minimum (these results are conveniently reviewed in~\cite{DBLP:journals/corr/DauphinPGCGB14}). The work of~\cite{DBLP:journals/corr/DauphinPGCGB14} establishes a strong connection between neural networks and the theory of random Gaussian fields through an empirical evaluation by providing an experimental evidence that the cost function of neural networks exhibits the same properties as the Gaussian error functions on high dimensional continuous spaces. Nevertheless they provide no theortical justification for the existence of this connection which instead we provide in this paper. 
+To the best of our knowledge the recent work of~\cite{DBLP:journals/corr/DauphinPGCGB14} is the first one to explore the statistical properties of neural network error surfaces through the prism of statistical physics and random matrix theory. In particular these theoretical works~\cite{Bray2007,Fyodorov2007,Baldi:1989:NNP:70359.70362,wigner_semicircle} suggest the existence of a certain structure of critical points of random Gaussian error functions on high dimensional continuous spaces. They imply that critical points which error is much higher than the global minimum are exponentially likely to be saddle points with many negative and approximate plateau directions whereas all local minima are likely to have an error very close to that of the global minimum (these results are conveniently reviewed in~\cite{DBLP:journals/corr/DauphinPGCGB14}). The work of~\cite{DBLP:journals/corr/DauphinPGCGB14} establishes a strong connection between neural networks and the theory of random Gaussian fields through an empirical evaluation by providing an experimental evidence that the cost function of neural networks exhibits the same properties as the Gaussian error functions on high dimensional continuous spaces. Nevertheless they provide no theortical justification for the existence of this connection which instead we provide in this paper. \textcolor{red}{We should comment why saddle-point problem in not a problem for us.}
 
 This work is inspired by the recent advances in random matrix theory and the work of~\cite{AAC2010} and~\cite{AAC2013}. The authors of these works provided an asymptotic evaluation of the complexity of the spherical spin-glass model (the spin-glass model originates from the condensed matter physics where it is used to represent a magnet with irregularily aligned spins). They discovered and mathematically proved the existence of a layered structure of the low critical values for the model's Hamiltonian which in fact is a Gaussian process. Their results are not discussed in details here as it will be done in Section~\ref{sec:theory} in the context of neural networks. We build the bridge between their findings and neural networks and show that the objective function used by neural network is analogous to the Hamiltonian of the spin-glass model and thus their landscapes share the same properties. We emphasize that the connection between spin-glass models and neural networks was already explored back in the past (a summary can be found in~\cite{Dotsenko1995}). In example in~\cite{PhysRevA.32.1007} the authors showed that the long-term behavior of certain neural network models are governed by the statistical mechanism of infinite-range Ising spin-glass Hamiltonians. Another work~\cite{0305-4470-30-23-009} examined the nature of the spin-glass transition in the Hopfield neural network model. None of these works however make the attempt to explain the paradigm of optimizing the highly non-convex neural network objective function through the prism of spin-glass theory and thus in this respect our approach is very novel.
 
@@ -262,14 +262,6 @@ To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents
 \end{equation}
 where the last inequality was obtained by substituting $q = \sqrt{\frac{\Lambda}{\Psi}}$. For the analysis $X$'s are assumed to be independent. Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mathcal{S}_{N} = S^{N-1}(\sqrt{N})$ and is equivalent to the Hamiltonian of the $H$-spin spherical spin-glass model. The spherical constraint is captured in Equation~\ref{eq:spherical}. An asymptotic evaluation of the comlexity of spherical $H$-spin spherical spin-glass models via random matrix theory was studied in the literature~\cite{AAC2010} where a precise description of the energy landscape for the Hamiltonians of these models is provided. In this paper we explore a strong connection of the Hamiltonian of these models, originated from physics, and the strongly non-convex loss functions used in deep learning. We use the results of the theoretical analysis of the complexity of spin-glass models~\cite{AAC2010} to gain an understading of the optimization in deep learning. 
 
-\begin{figure*}[htp!]
-  \center
-\includegraphics[width = 2.5in]{Theta_cp.pdf} 
-\includegraphics[width = 2.5in]{Theta_lm_sp.pdf}
-\caption{Functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = \{0,1,\dots,5\}$. Parameter $H$ was set to $H = 3$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$.}
-\label{fig:Thetas}
-\end{figure*}
-
 \section{Theoretical results}
 \label{sec:theory}
 Our theoretical findings are direct consequence of the theoretical analysis of the complexity of spherical spin-glass models of~\cite{AAC2010}. We will first introduce the notation and definitions. 
@@ -310,6 +302,17 @@ where
 \[I(u) = -\frac{u}{E_{\infty}^2}\sqrt{u^2 - E_{\infty}^2} - \log(-u + \sqrt{u^2 - E_{\infty}^2}) + \log E_{\infty}.
 \]
 Note that the maximal values of $\Theta_H(u)$ and $\Theta_{k,H}(u)$ are respectively $\frac{1}{2}\log(H-1)$ and $\frac{1}{2}\log(H-1) - \frac{H-2}{H}$. Figure~\ref{fig:Thetas} captures exemplary plots of the functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = 0$. Also note that the following corollary holds.
+
+\begin{figure}[h]
+  \center
+\includegraphics[width = 1.6in]{Theta_cp.pdf}
+\includegraphics[width = 1.6in]{Theta_lm_sp.pdf}
+\vspace{-0.3in}
+\caption{Functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = \{0,1,\dots,5\}$. Parameter $H$ was set to $H = 3$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$. Figure must be read in color.}
+\label{fig:Thetas}
+%\vspace{-0.05in}
+\end{figure}
+
 \begin{corollary}
 For all $k > 0$ and $u < -E_{\infty}$, $\Theta_{k,H}(u) < \Theta_{0,H}(u)$.
 \label{cor:Theta}
@@ -319,20 +322,25 @@ Finally, for any integer $k \geq 0$, let $E_k = E_k(H) > 0 $ be defined as the u
 \]
 For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is strictly decreasing and converges to $E_{\infty}$ as $k \rightarrow \infty$~\cite{AAC2010}. We will now define the ground state energy.
 
-\begin{figure*}[htp!]
-  \center
-\includegraphics[width = 2.5in]{Distr_cp.pdf} 
-\includegraphics[width = 2.5in]{Distr_lm.pdf}
-\caption{Distribution of the mean number of critical points and local minima. Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$, blue line: $u = 0$.}
-\label{fig:Distr_cp_lm}
-\end{figure*}
-
 \begin{definition}
 The ground state energy is the (normalized) minimum of the loss function $\mathcal{L}_{\Psi,c,H}$
 \[G^\Psi = \frac{1}{\Lambda}\inf_{{\bm w}\in \mathcal{S}_{\Psi,c}}\mathcal{L}_{\Psi,c,H}({\bm w}).
 \]
 \end{definition}
 Next we provide theorems (resp. Theorem~\ref{thm:lb},~\ref{thm:ub},~\ref{thm:layer}, ~\ref{thm:lmsp} and~\ref{thm:cp}) which are direct consequences of the theoretical findings in~\cite{AAC2010} (resp. Theorem 2.12, 2.14, 2.15, 2.5 and 2.8)  and the boundeness of $c$ and $H$.  
+
+\begin{figure*}[htp!]
+  \center
+\includegraphics[width = 1.65in]{Distr_cp.pdf}
+\includegraphics[width = 1.65in]{Distr_lm_sp_li.pdf} 
+\includegraphics[width = 1.65in]{Distr_lm_sp_li_zoomed_left.pdf} 
+\includegraphics[width = 1.65in]{Distr_lm_sp_li_zoomed_right.pdf} 
+\vspace{-0.3in}
+\caption{Distribution of the mean number of critical points, local minima and low-index saddle points (oryginal and zoomed). Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$. Figure must be read in color.}
+\label{fig:Distr_cp_lm_sp}
+\vspace{-0.1in}
+\end{figure*}
+
 \begin{theorem}
 For every $H \geq 3$
 \[\liminf_{\Lambda \rightarrow \infty} G^\Psi \geq -E_0(H),
@@ -360,19 +368,9 @@ Theorem~\ref{thm:layer} implies that for large-size networks finding a critical 
 
 The statements of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} unravel a layered structure for the lowest critical values of the loss function of a large-mass (or large-size) deep network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) with only local minima, there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima (critical points of index $0$) and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. The above-described layered structure of the lowest critical values of the Hamiltonian of the spherical spin glass model was in-detail described in~\cite{AAC2010}, however with no connection to deep learning that instead we explore. 
 
-An interesting implication of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} is that recovering the global minimizer when starting from any (local) minima from one of the energy bands above, e.g. $\left(-\Lambda E_i(H),-\Lambda E_{i+1}(H)\right)$, diverges with $\Psi$ since it is bounded below by $\Lambda (E_0(H) - E_i(H))$. 
+An interesting implication of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} is that recovering the global minimizer when starting from any (local) minima from one of the energy bands above, e.g. $\left(-\Lambda E_i(H),-\Lambda E_{i+1}(H)\right)$, diverges with $\Lambda$ since it is bounded below by $\Lambda (E_0(H) - E_i(H))$. 
 
 Next we will show the logarithmic asymptotics of the mean number of critical points (the asymptotics of the mean number of critical points can be found in the Supplementary material).
-
-\begin{figure*}[htp!]
-  \center
-\includegraphics[width = 2.2in]{Distr_lm_sp_li.pdf} 
-\includegraphics[width = 2.2in]{Distr_lm_sp_li_zoomed_left.pdf} 
-\includegraphics[width = 2.2in]{Distr_lm_sp_li_zoomed_right.pdf} 
-\caption{Distribution of the mean number of local minima and low-index saddle points (oryginal and zoomed). Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$.}
-\label{fig:Distr_lm_sp}
-\end{figure*}
-
 \begin{theorem}
 For all $H \geq 2$ and $k \geq 0$ fixed
 \[\lim_{\Lambda \rightarrow \infty}\frac{1}{\Lambda}\log\mathbb{E}[\mathcal{C}_{\Lambda,k}(u)] = \Theta_{k,H}(u).
@@ -385,20 +383,20 @@ For all $H \geq 2$
 \]
 \label{thm:cp}
 \end{theorem}
-Figure~\ref{fig:Distr_cp_lm} captures exemplary plots of the distributions of the mean number of critical points and local minima and Figure~\ref{fig:Distr_lm_sp} captures exemplary plots of the distributions of the mean number of local minima and low-index saddle points. Both figures clearly show that the local minima and low-index saddle points are located in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ whereas high-index saddle points can only be found above the energy barrier $-\Lambda E_{\infty}(H)$. Figure~\ref{fig:Distr_lm_sp} also clearly reveals the layered structure for the lowest critical values of the loss function as predicted by the theory. 
-
 Note that from Theorem~\ref{thm:lmsp} and Corollary~\ref{cor:Theta} it follows that the number of critical points in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ increases exponentially as $\Psi$ grows and that local minima dominate over saddle points and this domination also grows exponentially as $\Psi$ grows. Thus for large-size networks (large $\Psi$) the probability of recovering a saddle point in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$, rather than a local minima, goes to $0$.
+
+Figure~\ref{fig:Distr_cp_lm_sp} captures exemplary plots of the distributions of the mean number of critical points, local minima and low-index saddle points. Clearly local minima and low-index saddle points are located in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ whereas high-index saddle points can only be found above the energy barrier $-\Lambda E_{\infty}(H)$. Figure~\ref{fig:Distr_cp_lm_sp} also reveals the layered structure for the lowest critical values of the loss function. 
 
 \section{Experiments}
 \label{sec:Experiments}
 
-section{Conclusion and Future Work}
+\section{Conclusion and Future Work}
 \label{sec:ConandFutWork}
 
 \bibliographystyle{apalike}
 \bibliography{PAPER_AMMLY}
 
-\newpage
+\clearpage
 
 \toptitlebar 
 {\Large \bf  \centering{Deep-optimization with large networks\\(Supplementary Material)} \par}
@@ -531,6 +529,8 @@ Then $\Phi(Y(w),S(w))  = \frac{1}{4k}$.
  This follows directly from the two above lemmas.
 \end{proof}
 \end{comment}
+
+\section{Asymptotics of the mean number of critical points and local minima}
 
 Below, we provide the asymptotics of the mean number of critical points (Theorem~\ref{thm:cpprecise}) and the mean number of local minima (Theorem~\ref{thm:lmspprecise}), which extend Theorem~\ref{thm:lmsp} and Theorem~\ref{thm:cp}. Those results are the consequences of Theorem 2.17. and Corollary 2.18.~\cite{AAC2010} and the boundeness of $c$ and $H$.
 \begin{theorem}
