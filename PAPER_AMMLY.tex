@@ -117,7 +117,7 @@ This work is inspired by the recent advances in random matrix theory and the wor
 
 \subsection{Preliminaries}
 
-For the theoretical analysis, we consider a simple model of the fully-connected feed-forward deep network with a single output and rectified linear units. We call the network $\mathcal{N}$. We focus on a binary classification task. Let $X$ be the random input vector of dimensionality $d$. Let $(H-1)$ denote the number of hidden layers in the network and we will refer to the input layer as the $0^{\text{th}}$ layer and to the output layer as the $H^{\text{th}}$ layer. Let $n_i$ denote the number of units in the $i^{\text{th}}$ layer (note that $n_0 = d$ and $n_H = 1$). Let $W_i$ be the matrix of weights between $(i - 1)^{\text{th}}$ and $i^{th}$ layers of the network. Also, let $\sigma$ denotes the activation function that converts a unit's weighted input to its output activation. We consider linear rectifiers thus $\sigma(x) = \max(0,x)$. We can therefore write that for any given random input vector $X$, the network gives the following (random) output $Y$:
+For the theoretical analysis, we consider a simple model of the fully-connected feed-forward deep network with a single output and rectified linear units. We call the network $\mathcal{N}$. We focus on a binary classification task. Let $X$ be the random input vector of dimensionality $d$. Let $(H-1)$ denote the number of hidden layers in the network and we will refer to the input layer as the $0^{\text{th}}$ layer and to the output layer as the $H^{\text{th}}$ layer. Let $n_i$ denote the number of units in the $i^{\text{th}}$ layer (note that $n_0 = d$ and $n_H = 1$). Let $W_i$ be the matrix of weights between $(i - 1)^{\text{th}}$ and $i^{th}$ layers of the network. We assume weights are bounded. Also, let $\sigma$ denotes the activation function that converts a unit's weighted input to its output activation. We consider linear rectifiers thus $\sigma(x) = \max(0,x)$. We can therefore write that for any given random input vector $X$, the network gives the following (random) output $Y$:
 \[Y = q\sigma(W_H^{\top}\sigma(W_{H-1}^{\top}\dots\sigma(W_1^{\top}X)))\dots),
 \]
 where $q = \sqrt{\frac{n_0n_1 + n_1n_2 + ... + n_{H-1}n_H}{n_0n_1...n_H}}$ is simply a normalization factor. The same expression for the output of the network can be re-expressed in the following way:
@@ -218,42 +218,43 @@ Let $\mathcal{L}^a_{\Lambda,H}(w)$ and $\mathcal{L}^h_{\Lambda,H}(w)$ be the (ra
 \[\mathcal{L}^a_{\Lambda,H}({\bm w}) = |Y_t - \hat{Y}_s|
 \]
 and
-\[\mathcal{L}^h_{\Lambda,H}({\bm w}) = \max(0,1-Y_t\hat{Y}_s).
+\[\mathcal{L}^h_{\Lambda,H}({\bm w}) = \max(0,S-Y_t\hat{Y}_s).
 \]
-where $Y_t$ is a random variable corresponding the true data labeling that takes values $-1$ or $1$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
-\[\mathcal{L}^a_{N,H}({\bm w}) = \left \{
+where $Y_t$ is a random variable corresponding the true data labeling that takes values $-S$ or $S$, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
+\[\mathcal{L}^a_{\Lambda,H}({\bm w}) = \left \{
   \begin{tabular}{c}
-  $\!\!\!\!\!\!1 - \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = 1$ \\
-  $\!1 + \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -1$ \\
+  $\!\!\!\!\!\!S - \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
+  $\!S + \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -S$ \\
   \end{tabular}
 \right.
 \]
 and
 \begin{eqnarray*}
-\mathcal{L}^h_{\Lambda,H}({\bm w}) &=& \mathbb{E}_{M,A}[M(1-Y_t\hat{Y}_s)]\\&=& \left \{
+\mathcal{L}^h_{\Lambda,H}({\bm w}) &=& \mathbb{E}_{M,A}[M(
+S-Y_t\hat{Y}_s)]\\&=& \left \{
   \begin{tabular}{c}
-  $\!\!\!\!\!\!\mathbb{E}_{M}[M(1 - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = 1$ \\
-  $\!\mathbb{E}_{M}[M(1 + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -1$ \\
+  $\!\!\!\!\!\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
+  $\!\mathbb{E}_{M}[M(S + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -S$ \\
   \end{tabular}
 \right.
 \end{eqnarray*}
 Note that both cases can be generalized to the following
 \[\mathcal{L}_{\Lambda,H}({\bm w}) = \left \{
   \begin{tabular}{c}
-  $\!\!\!\!\!\!\mathbb{E}_{M}[M(1 - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = 1$ \\
-  $\!\mathbb{E}_{M}[M(1 + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -1$ \\
+  $\!\!\!\!\!\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
+  $\!\mathbb{E}_{M}[M(S + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -S$ \\
   \end{tabular}
 \right.,
 \]
 where in case of absolute loss $\rho^{'} = 1$. Furthermore, since $X$'s are Gaussian random variables, then so are $-X$'s thus we can further generalize that
 \begin{eqnarray*}
-\mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(1 + \hat{Y}_s)]\\
-&=& \!\!\!\!\!\rho^{'} + \rho^{'}\hat{Y}_s\\
-&=& \!\!\!\!\!\rho^{'} + q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!}\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!Z_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}
+\mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(S + \hat{Y}_s)]\\
+&=& \!\!\!\!\!\rho^{'}S + \rho^{'}\hat{Y}_s\\
+&=& \!\!\!\!\!\rho^{'}S + q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!}\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!Z_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}
 \end{eqnarray*}
 Let $\tilde{w}_i = \sqrt[H]{\rho\rho^{'}}w_i$ for all $i = \{1,2,\dots,k\}$.  Thus
 \begin{equation}
-\mathcal{L}_{\Lambda,H}({\bm w}) = \rho + q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!}\sum_{i_1,\dots,i_H=1}^{\Lambda}Z_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
+\mathcal{L}_{\Lambda,H}({\bm w}) = \rho^{'}S + q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!}\sum_{i_1,\dots,i_H=1}^{\Lambda}Z_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
 \label{eq:befloss}
 \end{equation}
 We furthermore make a benign assumption that the weights sattisfy the spherical condition 
@@ -261,16 +262,16 @@ We furthermore make a benign assumption that the weights sattisfy the spherical 
 \frac{1}{\Lambda}\sum_{i=1}^{\Lambda}\tilde{w}_i^2 = 1
 \label{eq:spherical}
 \end{equation}
-To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $\rho$ as it does not matter when minimizing the loss function.
+To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $\rho^{'}S$ as it does not matter when minimizing the loss function.
 \begin{equation}
 \mathcal{L}_{\Lambda,H}({\bm w}) = \frac{1}{\Lambda^{(H-1)/2}}\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!Z_{i_1,i_2,\dots,i_H}w_{i_1}w_{i_2}\dots\!w_{i_H},
 \label{eq:spinglass}
 \end{equation}
-where the last inequality was obtained by substituting $q = \sqrt{\frac{\Lambda}{\Psi}}$. For the analysis $X$'s are assumed to be independent. Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mathcal{S}_{N} = S^{N-1}(\sqrt{N})$ and is equivalent to the Hamiltonian of the $H$-spin spherical spin-glass model. The spherical constraint is captured in Equation~\ref{eq:spherical}. An asymptotic evaluation of the comlexity of spherical $H$-spin spherical spin-glass models via random matrix theory was studied in the literature~\cite{AAC2010} where a precise description of the energy landscape for the Hamiltonians of these models is provided. In this paper we explore a strong connection of the Hamiltonian of these models, originated from physics, and the strongly non-convex loss functions used in deep learning. We use the results of the theoretical analysis of the complexity of spin-glass models~\cite{AAC2010} to gain an understading of the optimization in deep learning. 
+where the last inequality was obtained by substituting $q = \sqrt{\frac{\Lambda}{\Psi}}$. For the analysis $X$'s are assumed to be independent. Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mathcal{S} = S^{\Lambda-1}(\sqrt{\Lambda})$ and is equivalent to the Hamiltonian of the $H$-spin spherical spin-glass model. The spherical constraint is captured in Equation~\ref{eq:spherical}. An asymptotic evaluation of the comlexity of spherical $H$-spin spherical spin-glass models via random matrix theory was studied in the literature~\cite{AAC2010} where a precise description of the energy landscape for the Hamiltonians of these models is provided. In this paper we explore a strong connection of the Hamiltonian of these models, originated from physics, and the strongly non-convex loss functions used in deep learning. We use the results of the theoretical analysis of the complexity of spin-glass models~\cite{AAC2010} to gain an understading of the optimization in deep learning. 
 
 \section{Theoretical results}
 \label{sec:theory}
-Our theoretical findings are direct consequence of the theoretical analysis of the complexity of spherical spin-glass models of~\cite{AAC2010}. We will first introduce the notation and definitions. 
+The theoretical findings of this section are direct consequence of the theoretical analysis of the complexity of spherical spin-glass models of~\cite{AAC2010}. We will first introduce the notation and definitions. 
 \begin{definition}
 Let $B \subset \mathbb{R}$ be any Borel set and $k$ be an integer such that $0 \leq k < \Lambda$. A random number of critical values of $\mathcal{L}_{\Lambda,H}({\bm w})$ in the set $\Lambda B = \{\Lambda X:x\in B\}$ with index equal to $k$ is
 \[\mathcal{C}_{\Lambda,k}(B) = \!\!\!\!\!\!\!\!\!\!\!\!\!\!\sum_{{\bm w}:\nabla \mathcal{L}_{\Lambda,H}({\bm w}) = 0}\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\mathbbm{1}\{\mathcal{L}_{\Lambda\!,H}({\bm w})\!\in\! \Lambda B\}\mathbbm{1}\{i(\nabla^2\mathcal{L}_{\Lambda\!,H}({\bm w})) \!=\! k\},
@@ -342,10 +343,10 @@ For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is st
 
 \begin{definition}
 The ground state energy is the (normalized) minimum of the loss function $\mathcal{L}_{\Psi,c,H}$
-\[G^\Psi = \frac{1}{\Lambda}\inf_{{\bm w}\in \mathcal{S}_{\Psi,c}}\mathcal{L}_{\Psi,c,H}({\bm w}).
+\[G^\Psi = \frac{1}{\Lambda}\inf_{{\bm w}\in \mathcal{S}}\mathcal{L}_{\Lambda,H}({\bm w}).
 \]
 \end{definition}
-Next we provide theorems (resp. Theorem~\ref{thm:lb},~\ref{thm:ub},~\ref{thm:layer}, ~\ref{thm:lmsp} and~\ref{thm:cp}) which are direct consequences of the theoretical findings in~\cite{AAC2010} (resp. Theorem 2.12, 2.14, 2.15, 2.5 and 2.8)  and the boundeness of $c$ and $H$.  
+Next we provide theorems (resp. Theorem~\ref{thm:lb},~\ref{thm:ub},~\ref{thm:layer}, ~\ref{thm:lmsp} and~\ref{thm:cp}) which are direct consequences of the theoretical findings in~\cite{AAC2010} (resp. Theorem 2.12, 2.14, 2.15, 2.5 and 2.8).  
 
 \begin{theorem}
 For every $H \geq 3$
@@ -363,7 +364,7 @@ For an integer $k \geq 0$ and $\epsilon > 0$,
 \]
 \label{thm:ub}
 \end{theorem}
-Theorem~\ref{thm:ub} implies that for large-size networks all critical values of the loss function that are of non-diverging index must lie below the threshold $-\Lambda E_{\infty}(H)$. We will refer to this important threshold as an \textit{energy barrier}. Any critical point that lies above this threshold is a high-index saddle point with overwhelming probablity. Theorem~\ref{thm:lb} and~\ref{thm:ub} both imply that for large-size networks all critical values of the loss function that are of non-diverging index must lie in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$.
+Theorem~\ref{thm:ub} implies that for large-size networks all critical values of the loss function that are of non-diverging index must lie below the threshold $-\Lambda E_{\infty}(H)$. We will refer to this important threshold as an \textit{energy barrier}. Any critical point that lies above the energy barrier is a high-index saddle point with overwhelming probablity. Theorem~\ref{thm:lb} and~\ref{thm:ub} both imply that for large-size networks all critical values of the loss function that are of non-diverging index must lie in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$.
 \begin{theorem}
 For $k \geq 0$ and $\epsilon > 0$,
 \[\limsup_{\Lambda \rightarrow \infty} \frac{1}{\Lambda^2}\log(\mathbb{P}(\sum_{i=k}^{\infty}\!\mathcal{C}_{\Lambda,i}(-E_k(H) - \epsilon,\infty) \!>\! 0)) \!<\! 0
@@ -372,7 +373,7 @@ For $k \geq 0$ and $\epsilon > 0$,
 \end{theorem}
 Theorem~\ref{thm:layer} implies that for large-size networks finding a critical value with index larger or equal to $k$ (for any fixed integer $k$) below energy level $-\Lambda E_k(H)$ is improbable. 
 
-The statements of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} unravel a layered structure for the lowest critical values of the loss function of a large-mass (or large-size) deep network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) with only local minima, there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima (critical points of index $0$) and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. The above-described layered structure of the lowest critical values of the Hamiltonian of the spherical spin glass model was in-detail described in~\cite{AAC2010}, however with no connection to deep learning that instead we explore. 
+The statements of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} unravel a layered structure for the lowest critical values of the loss function of a large-size network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) containing only local minima (critical points of index $0$), there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. The above-described layered structure of the lowest critical values of the Hamiltonian of the spherical spin glass model was in-detail described in~\cite{AAC2010}, however with no connection to neural networks which is what we explore. 
 
 An interesting implication of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} is that recovering the global minimizer when starting from any (local) minima from one of the energy bands above, e.g. $\left(-\Lambda E_i(H),-\Lambda E_{i+1}(H)\right)$, diverges with $\Lambda$ since it is bounded below by $\Lambda (E_0(H) - E_i(H))$. 
 
@@ -389,12 +390,14 @@ For all $H \geq 2$
 \]
 \label{thm:cp}
 \end{theorem}
-Note that from Theorem~\ref{thm:lmsp} and Corollary~\ref{cor:Theta} it follows that the number of critical points in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ increases exponentially as $\Psi$ grows and that local minima dominate over saddle points and this domination also grows exponentially as $\Psi$ grows. Thus for large-size networks (large $\Psi$) the probability of recovering a saddle point in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$, rather than a local minima, goes to $0$.
+Note that from Theorem~\ref{thm:lmsp} and Corollary~\ref{cor:Theta} it follows that the number of critical points in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ increases exponentially as $\Lambda$ grows and that local minima dominate over saddle points and this domination also grows exponentially as $\Lambda$ grows. Thus for large-size networks (large $\Lambda$) the probability of recovering a saddle point in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$, rather than a local minima, goes to $0$.
 
 Figure~\ref{fig:Distr_cp_lm_sp} captures exemplary plots of the distributions of the mean number of critical points, local minima and low-index saddle points. Clearly local minima and low-index saddle points are located in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ whereas high-index saddle points can only be found above the energy barrier $-\Lambda E_{\infty}(H)$. Figure~\ref{fig:Distr_cp_lm_sp} also reveals the layered structure for the lowest critical values of the loss function. 
 
 \section{Experiments}
 \label{sec:Experiments}
+
+\textcolor{red}{We need to prove that we get ot local minima not flat saddle points from Bengio paper.}
 
 \section{Conclusion and Future Work}
 \label{sec:ConandFutWork}
