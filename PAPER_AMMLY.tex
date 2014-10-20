@@ -164,7 +164,7 @@ A network $\mathcal{M}$ which has the same graph of connections as $\mathcal{N}$
 \end{definition}
 
 \begin{theorem}
-Let $\mathcal{N}$, whose output is $Y_{\Lambda}$, be the neural network predicting $1$ with probability $p$ and $-1$ otherwise. Let $\mathcal{M}$ be its $(s,\epsilon)$-reduction image for some $s \leq \Lambda$ and $\epsilon \in [0,1]$. Then
+Let $\mathcal{N}$, whose output is $Y_{\Lambda}$, be the neural network predicting $1$ with probability $p$ and $-1$ otherwise. Let $\mathcal{M}$ be its $(s,\epsilon)$-reduction image for some $s \leq \Lambda$ and $\epsilon \in [0,p]$. Then
 \[corr(sign(Y_s),sign(Y_{\Lambda})) \geq \frac{2p(1 \!-\! p \!+\! \epsilon) \!-\! \epsilon}{2\sqrt{(p \!+\! \epsilon)(1 \!-\! p \!+\! \epsilon)p(1 \!-\! p)}},
 \]
 where $corr$ denotes the correlation defined as $corr(A,B) = \frac{\mathbb{E}[(A - \mathbb{E}[A]])(B - \mathbb{E}[B]])}{std(A)std(B)}$, $std$ is the standard deviation and $sign(\cdot)$ denotes the sign of prediction ($sign(Y_s)$ and $sign(Y_{\Lambda})$ are both random).
@@ -189,7 +189,7 @@ which can be thought of as an output of some network $\mathcal{M}$ where the wei
 
 \begin{theorem}
 Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\hat{Y}_s$ in Equation~\ref{eq:approx} and random variable $Y_{\Lambda}$ in Equation~\ref{eq:befapprox} sattisy the following
-\[corr(\hat{Y}_s,Y_{\Lambda}) \geq \sqrt{\frac{1-\delta}{1+\delta}}.
+\[corr(\hat{Y}_s,Y_{\Lambda}) \geq \frac{1-\delta}{1+\delta}.
 \]
 \label{thm:unif}
 \end{theorem}
@@ -407,7 +407,7 @@ The upper-bound can be shown as follows
 
 \section{Proof of Theorem~\ref{thm:redun}}
 \begin{proof}
-Consider two random variables $Z_s = sign(Y_s)$ and $Z_{\Lambda} = sign(Y_{\Lambda})$, where the first one considers the sign of prediction of network $\mathcal{N}$ and the latter considers the sign of prediction of network $\mathcal{M}$. Let $\mathcal{X}^{+}$ denote the set of data points for which $\mathcal{N}$ predicts $+1$ and let $\mathcal{X}^{-}$ denote the set of data points for which $\mathcal{N}$ predicts $-1$ ($\mathcal{X}^{+} \cup \mathcal{X}^{-} = \mathcal{X}$, where $\mathcal{X}$ is the entire dataset). Also let $p = \frac{|\mathcal{X}^{+}|}{|\mathcal{X}|}$. Furthermore, let $\mathcal{X}_{\epsilon}^{-}$ denote the dataset for which $Z_{\Lambda} = +1$ and $Z_s = -1$ and $\mathcal{X}_{\epsilon}^{+}$ denote the dataset for which $Z_{\Lambda} = -1$ and $Z_s = +1$, where $\frac{|\mathcal{X}_{\epsilon}^{+}| + |\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}} = \epsilon$. Also let $\epsilon^{+} = \frac{|\mathcal{X}_{\epsilon}^{+}|}{\mathcal{X}}$ and $\epsilon^{-} = \frac{|\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}}$. Therefore
+Consider two random variables $Z_s = sign(Y_s)$ and $Z_{\Lambda} = sign(Y_{\Lambda})$, where the first one considers the sign of prediction of network $\mathcal{N}$ and the latter considers the sign of prediction of network $\mathcal{M}$. Let $\mathcal{X}^{+}$ denote the set of data points for which $\mathcal{N}$ predicts $+1$ and let $\mathcal{X}^{-}$ denote the set of data points for which $\mathcal{N}$ predicts $-1$ ($\mathcal{X}^{+} \cup \mathcal{X}^{-} = \mathcal{X}$, where $\mathcal{X}$ is the entire dataset). Also let $p = \frac{|\mathcal{X}^{+}|}{|\mathcal{X}|}$ and without loss of generality assume $p \leq 0.5$. Furthermore, let $\mathcal{X}_{\epsilon}^{-}$ denote the dataset for which $Z_{\Lambda} = +1$ and $Z_s = -1$ and $\mathcal{X}_{\epsilon}^{+}$ denote the dataset for which $Z_{\Lambda} = -1$ and $Z_s = +1$, where $\frac{|\mathcal{X}_{\epsilon}^{+}| + |\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}} = \epsilon$. Also let $\epsilon^{+} = \frac{|\mathcal{X}_{\epsilon}^{+}|}{\mathcal{X}}$ and $\epsilon^{-} = \frac{|\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}}$. Therefore
 \[Z_{\Lambda} \!=\! \left \{
   \begin{tabular}{c}
   $1$ \:\:if $x \in \mathcal{X}^{+}$\\
@@ -449,7 +449,7 @@ Therefore
 \begin{eqnarray*}
 &&\!\!\!\!\!\!\!\!\!corr(\hat{Y}_s,Y_{\Lambda})\\ 
 &\!\!\!\!\!\!\!\!\!=&\!\!\!\!\!\!\! \frac{\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}}r_{i_1,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2}{\sqrt{\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\frac{\Psi}{\Lambda^H}\prod_{k = 1}^{H}w_{i_k}^2\right)\!\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\!\!\!\!\!r_{i_1,\dots,i_H}^2\prod_{k = 1}^{H}w_{i_k}^2\right)}}\\
-&\!\!\!\!\!\!\!\!\geq& \sqrt{\frac{1-\delta}{1+\delta}}, 
+&\!\!\!\!\!\!\!\!\geq& \frac{1-\delta}{1+\delta}, 
 \end{eqnarray*}
 where the last inequality is the direct consequence of the uniformity assumption of Equation~\ref{eq:uniform}.
 \end{proof}
