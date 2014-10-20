@@ -78,7 +78,7 @@
 %}]
 
 \begin{abstract}
-We explore the approximate equivalence of the highly non-convex loss function of a simple model of the fully-connected feed-forward neural network and the Hamiltonian of the spherical spin-glass model under certain assumptions. Using the results from the random matrix theory, we study the complexity of neural networks and prove that for large-size networks the lowest critical values of the loss function are located in a well-defined narrow band lower-bounded by the global minimum and furthermore they form a layered structure. Moreover, finding them outside the band diminishes exponentially with the size of the network. We empirically demonstrate that both simulated annealing and SGD converges to the band of the lowest critical values, and furthermore all critical points found there are local minima and correspond to the same high learning quality measured by the test error. This emphasizes a major difference between large- and small-size networks where for the latter poor quality local minima have non-zero probability of being recovered. Simultaneously we prove that recovering the global minimum diminishes with the network size and that it is in practice irrelevant as global minimum often leads to data overfitting. 
+We explore the approximate relation between the highly non-convex loss function of a simple model of the fully-connected feed-forward neural network and the Hamiltonian of the spherical spin-glass model under certain assumptions. Using the results from the random matrix theory, we study the complexity of neural networks and prove that for large-size networks the lowest critical values of the loss function are located in a well-defined narrow band lower-bounded by the global minimum and furthermore they form a layered structure. Moreover, finding them outside the band diminishes exponentially with the size of the network. We empirically demonstrate that both simulated annealing and SGD converges to the band of the lowest critical values, and furthermore all critical points found there are local minima and correspond to the same high learning quality measured by the test error. This emphasizes a major difference between large- and small-size networks where for the latter poor quality local minima have non-zero probability of being recovered. Simultaneously we prove that recovering the global minimum diminishes with the network size and that it is in practice irrelevant as global minimum often leads to data overfitting. 
 \end{abstract}
 
 \section{Introduction}
@@ -122,7 +122,7 @@ For the theoretical analysis, we consider a simple model of the fully-connected 
 \]
 where $q = \sqrt{\frac{n_0n_1 + n_1n_2 + ... + n_{H-1}n_H}{n_0n_1...n_H}}$ is simply a normalization factor. The same expression for the output of the network can be re-expressed in the following way:
 \begin{equation}
-Y = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i,j}A_{i,j}\prod_{k = 1}^{H}w_{i,j}^{(k)},
+Y = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i}A_{i,j}\prod_{k = 1}^{H}w_{i,j}^{(k)},
 \label{eq:befrein}
 \end{equation}
 where the first summation is over the network inputs and the second one is over all paths from a given network input to its output, where $\gamma$ is the total number of such paths (note that $\gamma = n_1n_2\dots n_H$). Furthermore, $w_{i,j}^{(k)}$ is the weight of the $k^{\text{th}}$ segment of path indexed with $(i,j)$ which connects layer $(k-1)^{st}$ with layer $k^{\text{th}}$ of the network. Note that each path corresponds to a certain set of $H$ weights, which we refer to as a \textit{configuration of weights}, which are multiplied by each other. Random variable $A_{i,j}$ denotes whether path $(i,j)$ is active ($A_{i,j} = 1$) or not ($A_{i,j} = 0$).  We assume each path is equally likely to be active thus $A_{i,j}$'s will be modelled as Bernoulli random variables with the same probability of success $\rho$. 
@@ -179,7 +179,7 @@ Consider $(s,\epsilon)$-reduction image of $\mathcal{N}$ for some $s \leq \Lambd
 where $r_{i_1,\dots,i_H}^{'} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ repeats in Equation~\ref{eq:befapprox} and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{'} = \Psi$. We can further rewrite $Y_s$ as follows
 \[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\underbrace{\left(\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\!\!\!X_{i_1,\dots,i_H} + 0 + \dots + 0\right)}_{r_{i_1,\dots,i_H}^{''} \text{summands}}\!\!\rho\prod_{k = 1}^{H}\!\!w_{i_k},
 \]
-where $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ would repeat in Equation~\ref{eq:befapprox} if all $r_{i_1,\dots,i_H}$ would be equal to $1$ and $\mathcal{W}$ would have $s$ unique weights and the remaining $(\Lambda - s)$ weights were repetitions\footnote{Note that each $r_{i_1,\dots,i_H}^{''}$ is not uniquely defined here as one could consider many different ways of constructing $\mathcal{W}$ by repeating the same weights different times.}. We therefore require that $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$, $r_{i_1,\dots,i_H}^{''} \geq r_{i_1,\dots,i_H}^{'}$ and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{''} = \Lambda^H$. We furthermore define $Z$'s to be independend standard normal random variables satisfying the following (plethora of similar decoupling strategies are discussed in~\cite{opac-b1095246})
+where $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ would repeat in Equation~\ref{eq:befapprox} if all $r_{i_1,\dots,i_H}$ would be equal to $1$ and $\mathcal{W}$ would have $s$ unique weights and the remaining $(\Lambda - s)$ weights were repetitions\footnote{Note that each $r_{i_1,\dots,i_H}^{''}$ is not uniquely defined here as one could consider many different ways of constructing $\mathcal{W}$ by repeating the same weights different times.}. We therefore require that $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$, $r_{i_1,\dots,i_H}^{''} \geq r_{i_1,\dots,i_H}^{'}$ and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{''} = \Lambda^H$. We furthermore define $Z$'s to be independend standard normal random variables satisfying the following equation (plethora of similar decoupling strategies are discussed in~\cite{opac-b1095246})
 \[\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H} = \sum_{j=1}^{r_{i_1,\dots,i_H}^{''}} \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}Z_{i_1,\dots,i_H}^{(j)}. 
 \]
 Let $\hat{r}_{i_1,\dots,i_H}^{(j)} = \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}$. Therefore
@@ -315,7 +315,7 @@ Note that the maximal values of $\Theta_H(u)$ and $\Theta_{k,H}(u)$ are respecti
 \includegraphics[width = 1.6in]{Theta_cp.pdf}
 \includegraphics[width = 1.6in]{Theta_lm_sp.pdf}
 \vspace{-0.3in}
-\caption{Functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = \{0,1,\dots,5\}$. Parameter $H$ was set to $H = 3$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$. Figure must be read in color.}
+\caption{Functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = \{0,1,\dots,5\}$. Parameter $H$ was set to $H = 3$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$. Notice how narrow band $(-E_0(H),-E_{\infty})$ is. Figure must be read in color.}
 \label{fig:Thetas}
 %\vspace{-0.05in}
 \end{figure}
@@ -327,7 +327,6 @@ For all $k > 0$ and $u < -E_{\infty}$, $\Theta_{k,H}(u) < \Theta_{0,H}(u)$.
 Finally, for any integer $k \geq 0$, let $E_k = E_k(H) > 0 $ be defined as the unique solution to 
 \[\Theta_{k,H}(-E_k) = 0.
 \]
-For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is strictly decreasing and converges to $E_{\infty}$ as $k \rightarrow \infty$~\cite{AAC2010}. We will now define the ground state energy.
 
 \begin{figure*}[htp!]
   \center
@@ -340,6 +339,8 @@ For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is st
 \label{fig:Distr_cp_lm_sp}
 \vspace{-0.1in}
 \end{figure*}
+
+For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is strictly decreasing and converges to $E_{\infty}$ as $k \rightarrow \infty$~\cite{AAC2010}. Another important fact is that the band $(-E_0(H),-E_{\infty})$ is very narrow, i.e. it is order of magnitudes narrower than band $(-E_{\infty},0)$. We will now define the ground state energy.
 
 \begin{definition}
 The ground state energy is the (normalized) minimum of the loss function $\mathcal{L}_{\Psi,c,H}$
