@@ -160,7 +160,7 @@ We assume each path in Equation~\ref{eq:befrein} is equally likely to be active 
 Let $\mathcal{W} = \{w_1,w_2,\dots,w_{\Lambda}\}$ be the set of all weights of the network. We make a benign assumption that the weights sattisfy the spherical condition 
 \begin{equation}
 \frac{1}{\Lambda}\sum_{i=1}^{\Lambda}w_i^2 = \mathcal{C},
-\label{eq:spherical}
+\label{eq:befspherical}
 \end{equation}
 where $\mathcal{C}$ is some positive constant. 
 
@@ -179,7 +179,7 @@ A network $\mathcal{M}$ which has the same graph of connections as $\mathcal{N}$
 \end{definition}
 
 \begin{theorem}
-Let $\mathcal{N}$, whose output is $Y_{\Lambda}$, be the neural network predicting $1$ with probability $p$ and $-1$ otherwise. Let $\mathcal{M}$ be its $(s,\epsilon)$-reduction image for some $s \leq \Lambda$ and $\epsilon \in [0,p]$. Then
+Let $\mathcal{N}$, whose output is $Y_{\Lambda}$, be the neural network predicting $1$ with probability $p$ (without loss of generality assume $p \leq 0.5$) and $-1$ otherwise. Let $\mathcal{M}$ be its $(s,\epsilon)$-reduction image for some $s \leq \Lambda$ and $\epsilon \in [0,p)$. Then
 \[corr(sign(Y_s),sign(Y_{\Lambda})) \geq \frac{2p(1 \!-\! p \!+\! \epsilon) \!-\! \epsilon}{2\sqrt{(p \!+\! \epsilon)(1 \!-\! p \!+\! \epsilon)p(1 \!-\! p)}},
 \]
 where $corr$ denotes the correlation defined as $corr(A,B) = \frac{\mathbb{E}[(A - \mathbb{E}[A]])(B - \mathbb{E}[B]])}{std(A)std(B)}$, $std$ is the standard deviation and $sign(\cdot)$ denotes the sign of prediction ($sign(Y_s)$ and $sign(Y_{\Lambda})$ are both random).
@@ -235,9 +235,9 @@ Let $\mathcal{L}^a_{\Lambda,H}(w)$ and $\mathcal{L}^h_{\Lambda,H}(w)$ be the (ra
 \[\mathcal{L}^a_{\Lambda,H}({\bm w}) = |Y_t - \hat{Y}_s|
 \]
 and
-\[\mathcal{L}^h_{\Lambda,H}({\bm w}) = \max(0,S-Y_t\hat{Y}_s).
+\[\mathcal{L}^h_{\Lambda,H}({\bm w}) = \max(0,1-Y_t\hat{Y}_s).
 \]
-where $Y_t$ is a random variable corresponding the true data labeling that takes values $-S$ or $S$, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'} = \frac{1}{\rho\sqrt{\mathcal{C}^H}}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
+where $Y_t$ is a random variable corresponding the true data labeling that takes values $-S$ or $S$ in case of the absolute loss and $-\frac{1}{S}$ or $\frac{1}{S}$ in case of the hinge loss, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'} = \frac{1}{\rho\sqrt{\mathcal{C}^H}}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
 \[\mathcal{L}^a_{\Lambda,H}({\bm w}) = \left \{
   \begin{tabular}{c}
   $\!\!\!\!\!\!S - \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
@@ -248,38 +248,38 @@ where $Y_t$ is a random variable corresponding the true data labeling that takes
 and
 \begin{eqnarray*}
 \mathcal{L}^h_{\Lambda,H}({\bm w}) &=& \mathbb{E}_{M,A}[M(
-S-Y_t\hat{Y}_s)]\\&=& \left \{
+1-Y_t\hat{Y}_s)]\\&=& \left \{
   \begin{tabular}{c}
-  $\!\!\!\!\!\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
-  $\!\mathbb{E}_{M}[M(S + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -S$ \\
+  $\!\!\!\!\!\!\mathbb{E}_{M}[M(1 - \frac{1}{S}\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = \frac{1}{S}$ \\
+  $\!\mathbb{E}_{M}[M(1 + \frac{1}{S}\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -\frac{1}{S}$ \\
   \end{tabular}
 \right.
 \end{eqnarray*}
 Note that both cases can be generalized to the following
 \[\mathcal{L}_{\Lambda,H}({\bm w}) = \left \{
   \begin{tabular}{c}
-  $\!\!\!\!\!\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
-  $\!\mathbb{E}_{M}[M(S + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -S$ \\
+  $\!\mathbb{E}_{M}[M(s_1 - s_2\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t  > 0$ \\
+  $\!\mathbb{E}_{M}[M(s_1 + s_2\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t < 0$ \\
   \end{tabular}
 \right.,
 \]
-where in case of absolute loss $\rho^{'} = 1$. Furthermore, since $X$'s are Gaussian random variables, then so are $-X$'s thus we can further generalize that
+where in case of absolute loss $\rho^{'} = 1$, $s_1 = S$ and $s_2 = 1$, whereas for hinge loss $s_1 = 1$ and $s_2 = \frac{1}{S}$. Furthermore, since $X$'s are Gaussian random variables, then so are $-X$'s thus we can further generalize that
 \begin{eqnarray*}
-\mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(S + \hat{Y}_s)]\\
-&=& \!\!\!\!\!\rho^{'}S + \rho^{'}\hat{Y}_s\\
-&=& \!\!\!\!\!\rho^{'}S + q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!}\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!Z_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}
+\mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(s_1 + s_2\hat{Y}_s)]\\
+&=& \!\!\!\!\!s_1\rho^{'} \!+\! s_2\rho^{'}\hat{Y}_s\\
+&=& \!\!\!\!\!s_1\rho^{'} \!+\! s_2q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!\!\!}\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!Z_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}.
 \end{eqnarray*}
 Let $\tilde{w}_i = \sqrt[H]{\rho\rho^{'}}w_i$ for all $i = \{1,2,\dots,k\}$. Note that $\tilde{w}_i = \frac{1}{\sqrt{C}}$. Thus
 \begin{equation}
-\mathcal{L}_{\Lambda,H}({\bm w}) = \rho^{'}S + q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!}\sum_{i_1,\dots,i_H=1}^{\Lambda}Z_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
+\mathcal{L}_{\Lambda,H}({\bm w}) = s_1\rho^{'} \!+\! s_2q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!\!\!}\sum_{i_1,\dots,i_H=1}^{\Lambda}\!\!\!\!Z_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
 \label{eq:befloss}
 \end{equation}
-Note that the spherical assumption in Equation~\ref{eq:spherical} directly implies that
+Note that the spherical assumption in Equation~\ref{eq:befspherical} directly implies that
 \begin{equation}
 \frac{1}{\Lambda}\sum_{i=1}^{\Lambda}\tilde{w}_i^2 = 1
 \label{eq:spherical}
 \end{equation}
-To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $\rho^{'}S$ as it does not matter when minimizing the loss function.
+To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $s_1\rho^{'}$ and $s_2$ (remaining constants are preserved for the purpose that will become evident shortly) as it does not matter when minimizing the loss function.
 \begin{equation}
 \mathcal{L}_{\Lambda,H}({\bm w}) = \frac{1}{\Lambda^{(H-1)/2}}\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!Z_{i_1,i_2,\dots,i_H}w_{i_1}w_{i_2}\dots\!w_{i_H},
 \label{eq:spinglass}
@@ -472,7 +472,7 @@ Thus we obtain
 \end{eqnarray*}
 \end{proof}
 
-\section{Proof of Theorem~\ref{thm:redun}}
+\section{Proof of Theorem~\ref{thm:unif}}
 \begin{proof}
 Note that $\mathbb{E}[\hat{Y}_s] = 0$ and $\mathbb{E}[Y_{\Lambda}] = 0$. Furthermore
 \[\mathbb{E}[\hat{Y}_sY_{\Lambda}] = q^2\rho^2\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}}\hat{r}_{i_1,i_2,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2
