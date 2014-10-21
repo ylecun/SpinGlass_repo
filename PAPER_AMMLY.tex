@@ -147,7 +147,10 @@ In the rest of this section we will be establishing a connection between the los
 
 \subsection{Approximation}
 
-In this section we introduce randomness to the model and assume $X$s and $A$s are random. We make certain assumptions regarding the neural network model. These assumptions consider random variables $X$s and $A$s (their distributions and mutual dependencies) as well as they introduce spherical constraint on the model weights. We also introduce two other assumptions regarding redundancy of network parameters and their uniformity (details in the text below), both of them are justified by empirical evidence in the literature. The aim of this section is to obtain an approximator to the expectation $\mathbb{E}_A[Y]$ (note it is still a random variable) which, as will be seen in Section~\ref{subsec:LFSG}, is used in the definition of the loss function of neural network. Theorems~\ref{thm:redun} and~\ref{thm:unif} provide some guarantees regarding the quality of this approximation.  
+In this section we introduce randomness to the model and assume $X$s and $A$s are random. We make certain assumptions regarding the neural network model. These assumptions consider random variables $X$s and $A$s (their distributions and mutual dependencies and we emphasize that all independence assumptions we make are standard in the literature~\cite{opac-b1095246}) as well as they introduce spherical constraint on the model weights. We also introduce two other assumptions regarding redundancy of network parameters and their uniformity (details in the text below), both of them are justified by empirical evidence in the literature. The aim of this section is to obtain an approximator to the expectation $\mathbb{E}_A[Y]$ (note it is still a random variable) which, as will be seen in Section~\ref{subsec:LFSG}, is used in the definition of the loss function of neural network. Theorems~\ref{thm:redun} and~\ref{thm:unif} provide some guarantees regarding the quality of this approximation.  
+
+\paragraph{Input}
+We assume each input $X_i$ is a normal random variable such that $X_i\sim N(0,1)$. 
 
 \paragraph{Equally likely paths}
 We assume each path in Equation~\ref{eq:befrein} is equally likely to be active thus $A_{i,j}$'s will be modelled as Bernoulli random variables with the same probability of success $\rho$. By assuming the independence of $X$'s and $A's$ we get the following
@@ -155,12 +158,6 @@ We assume each path in Equation~\ref{eq:befrein} is equally likely to be active 
 \mathbb{E}_A[Y] = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i}\rho\prod_{k = 1}^{H}w_{i,j}^{(k)}.
 \label{eq:befrein2}
 \end{equation}
-
-\paragraph{Input decomposability}
-We assume each input $X_i$ is a normal random variable such that $X_i\sim\mathcal{N}(0,1)$ and it can be decomposed as follows: 
-\[X_i = \frac{1}{\sqrt{v_i}}\sum_{j=1}^{v_i}Z_i^{(j)}
-\]
-for some positive $v_i$ and $Z$'s being independend identically distributed standard normal random variables. Furthermore we assume there exists more than one such decomposition. We will denote the set of all values of $v_i$, each taken from different decomposition, as a \textit{decomposition set of $X_i$}. 
 
 \paragraph{Spherical constraint}
 Let $\mathcal{W} = \{w_1,w_2,\dots,w_{\Lambda}\}$ be the set of all weights of the network. We make a benign assumption that the weights sattisfy the spherical condition 
@@ -201,7 +198,10 @@ Consider $(s,\epsilon)$-reduction image of $\mathcal{N}$ for some $s \leq \Lambd
 where $r_{i_1,\dots,i_H}^{'} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ repeats in Equation~\ref{eq:befapprox} and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{'} = \Psi$. We can further rewrite $Y_s$ as follows
 \[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\underbrace{\left(\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\!\!\!X_{i_1,\dots,i_H}^{(j)} + 0 + \dots + 0\right)}_{r_{i_1,\dots,i_H}^{''} \text{summands}}\!\!\rho\prod_{k = 1}^{H}\!\!w_{i_k},
 \]
-where $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ would repeat in Equation~\ref{eq:befapprox} if all $r_{i_1,\dots,i_H}$ would be equal to $1$ and $\mathcal{W}$ would have $s$ unique weights and the remaining $(\Lambda - s)$ weights were repetitions\footnote{Note that each $r_{i_1,\dots,i_H}^{''}$ is not uniquely defined here as one could consider many different ways of constructing $\mathcal{W}$ by repeating the same weights different times.}. We therefore require that $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$, $r_{i_1,\dots,i_H}^{''} \geq r_{i_1,\dots,i_H}^{'}$ and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{''} = \Lambda^H$. Let $\hat{r}_{i_1,\dots,i_H} = \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}$. We assume that $\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}$ belongs to the decomposition set of $X_{i_1,\dots,i_H}^{(j)}$. This enables us to prove (proof is in the Supplementary material) the following result that we give as a lemma
+where $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ would repeat in Equation~\ref{eq:befapprox} if all $r_{i_1,\dots,i_H}$ would be equal to $1$ and $\mathcal{W}$ would have $s$ unique weights and the remaining $(\Lambda - s)$ weights were repetitions\footnote{Note that each $r_{i_1,\dots,i_H}^{''}$ is not uniquely defined here as one could consider many different ways of constructing $\mathcal{W}$ by repeating the same weights different times.}. We therefore require that $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$, $r_{i_1,\dots,i_H}^{''} \geq r_{i_1,\dots,i_H}^{'}$ and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{''} = \Lambda^H$. Let $\hat{r}_{i_1,\dots,i_H} = \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}$ and for convinience assume that $\frac{1}{\hat{r}_{i_1,\dots,i_H}^2} \in \mathbb{Z}^{+}$. By the infinite divisibility property of normal distribution we can decompose each $X_{i_1,\dots,i_H}^{(j)}$ as the sum of $\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}$ independent normal random variables (we call them $Z$'s). Thus
+\[X_{i_1,\dots,i_H}^{(j)} = \hat{r}_{i_1,\dots,i_H}\sum_{k=1}^{\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}}Z_{i_1,\dots,i_H}^{(j,k)}.
+\]
+Furthemore, this decomposition is not unique. This enables us to prove (proof is in the Supplementary material) the following result that we give as a lemma.
 \begin{lemma}
 The decomposability of the input $X_{i_1,\dots,i_H}^{(j)}$ implies that
 \[Y_s = q\sum_{i_1,\dots,i_H=1}^{\Lambda}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
@@ -489,7 +489,7 @@ Note that when the first classifier is network $\mathcal{N}$ considered in this 
 
 The decomposability of $X_{i_1,\dots,i_H}^{(j)}$ implies that for independend standard normal random variables $Z$'s the following holds:
 \begin{eqnarray*}
-\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H}^{(j)} &\!\!\!\!\!=& \!\!\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\hat{r}_{i_1,\dots,i_H}\sum_{k=1}^{\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}}Z_{i_1,\dots,i_H}^{(k,j)}\\
+\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H}^{(j)} &\!\!\!\!\!=& \!\!\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\hat{r}_{i_1,\dots,i_H}\sum_{k=1}^{\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}}Z_{i_1,\dots,i_H}^{(j,k)}\\
 &\!\!\!\!\!=& \!\!\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{''}}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}^{(j)},
 \end{eqnarray*}
 where the last step comes from combining both summations and re-indexing the summands. Therefore
