@@ -125,7 +125,7 @@ where $q = \sqrt{\frac{n_0n_1 + n_1n_2 + ... + n_{H-1}n_H}{n_0n_1...n_H}}$ is si
 Y = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i}A_{i,j}\prod_{k = 1}^{H}w_{i,j}^{(k)},
 \label{eq:befrein}
 \end{equation}
-where the first summation is over the network inputs and the second one is over all paths from a given network input to its output, where $\gamma$ is the total number of such paths (note that $\gamma = n_1n_2\dots n_H$). Furthermore, $w_{i,j}^{(k)}$ is the weight of the $k^{\text{th}}$ segment of path indexed with $(i,j)$ which connects layer $(k-1)^{st}$ with layer $k^{\text{th}}$ of the network. Note that each path corresponds to a certain set of $H$ weights, which we refer to as a \textit{configuration of weights}, which are multiplied by each other. Random variable $A_{i,j}$ denotes whether path $(i,j)$ is active ($A_{i,j} = 1$) or not ($A_{i,j} = 0$). For our theoretical analysis we assume that $X$'s are identically distributed such that $X_{i_1,i_2,\dots,i_H}\sim\mathcal{N}(0,1)$.  
+where the first summation is over the network inputs and the second one is over all paths from a given network input to its output, where $\gamma$ is the total number of such paths (note that $\gamma = n_1n_2\dots n_H$). Furthermore, $w_{i,j}^{(k)}$ is the weight of the $k^{\text{th}}$ segment of path indexed with $(i,j)$ which connects layer $(k-1)^{st}$ with layer $k^{\text{th}}$ of the network. Note that each path corresponds to a certain set of $H$ weights, which we refer to as a \textit{configuration of weights}, which are multiplied by each other. Finally, $A_{i,j}$ denotes whether a path $(i,j)$ is active ($A_{i,j} = 1$) or not ($A_{i,j} = 0$). 
 
 \begin{definition}
 The mass of the network $\Psi$ is the total number of all paths between all network inputs and outputs: $\Psi = \prod_{i=0}^Hn_i$.
@@ -147,7 +147,7 @@ In the rest of this section we will be establishing a connection between the los
 
 \subsection{Approximation}
 
-In this section we introduce certain assumptions regarding the neural network model. These assumptions consider random variables $X$s and $A$s (their distributions and mutual dependencies) as well as they introduce spherical constraint on the model weights. We also introduce two other assumptions regarding redundancy of network parameters and their uniformity (details in the text below), both of them are justified by empirical evidence in the literature. The aim of this section is to obtain an approximator to the expectation $\mathbb{E}_A[Y]$ (note it is still a random variable) which, as will be seen in Section~\ref{subsec:LFSG}, is used in the definition of the loss function of neural network. Theorems~\ref{thm:redun} and~\ref{thm:unif} provide some guarantees regarding the quality of this approximation.  
+In this section we introduce randomness to the model and assume $X$s and $A$s are random. We make certain assumptions regarding the neural network model. These assumptions consider random variables $X$s and $A$s (their distributions and mutual dependencies) as well as they introduce spherical constraint on the model weights. We also introduce two other assumptions regarding redundancy of network parameters and their uniformity (details in the text below), both of them are justified by empirical evidence in the literature. The aim of this section is to obtain an approximator to the expectation $\mathbb{E}_A[Y]$ (note it is still a random variable) which, as will be seen in Section~\ref{subsec:LFSG}, is used in the definition of the loss function of neural network. Theorems~\ref{thm:redun} and~\ref{thm:unif} provide some guarantees regarding the quality of this approximation.  
 
 \paragraph{Equally likely paths}
 We assume each path in Equation~\ref{eq:befrein} is equally likely to be active thus $A_{i,j}$'s will be modelled as Bernoulli random variables with the same probability of success $\rho$. By assuming the independence of $X$'s and $A's$ we get the following
@@ -155,6 +155,12 @@ We assume each path in Equation~\ref{eq:befrein} is equally likely to be active 
 \mathbb{E}_A[Y] = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i}\rho\prod_{k = 1}^{H}w_{i,j}^{(k)}.
 \label{eq:befrein2}
 \end{equation}
+
+\paragraph{Input decomposability}
+We assume each input $X_i$ is a normal random variable such that $X_i\sim\mathcal{N}(0,1)$ and it can be decomposed as follows: 
+\[X_i = \frac{1}{\sqrt{v_i}}\sum_{j=1}^{v_i}Z_i^{(j)}
+\]
+for some positive $v_i$ and $Z$'s being independend identically distributed standard normal random variables. Furthermore we assume there exists more than one such decomposition. We will denote the set of all values of $v_i$, each taken from different decomposition, as a \textit{decomposition set of $X_i$}. 
 
 \paragraph{Spherical constraint}
 Let $\mathcal{W} = \{w_1,w_2,\dots,w_{\Lambda}\}$ be the set of all weights of the network. We make a benign assumption that the weights sattisfy the spherical condition 
@@ -190,20 +196,19 @@ The assumption of the redundancy of parameters implies that one can preserve $\e
 
 \paragraph{Uniformity}
 Consider $(s,\epsilon)$-reduction image of $\mathcal{N}$ for some $s \leq \Lambda$ and $\epsilon \in [0,1]$. The output $Y_s$ of the image network can in general be expressed as
-\[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}\!\!w_{i_k},
+\[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}\!\!w_{i_k},
 \]
 where $r_{i_1,\dots,i_H}^{'} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ repeats in Equation~\ref{eq:befapprox} and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{'} = \Psi$. We can further rewrite $Y_s$ as follows
-\[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\underbrace{\left(\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\!\!\!X_{i_1,\dots,i_H} + 0 + \dots + 0\right)}_{r_{i_1,\dots,i_H}^{''} \text{summands}}\!\!\rho\prod_{k = 1}^{H}\!\!w_{i_k},
+\[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\underbrace{\left(\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\!\!\!X_{i_1,\dots,i_H}^{(j)} + 0 + \dots + 0\right)}_{r_{i_1,\dots,i_H}^{''} \text{summands}}\!\!\rho\prod_{k = 1}^{H}\!\!w_{i_k},
 \]
-where $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ would repeat in Equation~\ref{eq:befapprox} if all $r_{i_1,\dots,i_H}$ would be equal to $1$ and $\mathcal{W}$ would have $s$ unique weights and the remaining $(\Lambda - s)$ weights were repetitions\footnote{Note that each $r_{i_1,\dots,i_H}^{''}$ is not uniquely defined here as one could consider many different ways of constructing $\mathcal{W}$ by repeating the same weights different times.}. We therefore require that $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$, $r_{i_1,\dots,i_H}^{''} \geq r_{i_1,\dots,i_H}^{'}$ and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{''} = \Lambda^H$. \textcolor{red}{We should provide the decoupling inequality as exact equality does not hold!} We furthermore define $Z$'s to be independend standard normal random variables satisfying the following equation (plethora of similar decoupling strategies are discussed in~\cite{opac-b1095246})
-\[\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H} = \sum_{j=1}^{r_{i_1,\dots,i_H}^{''}} \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}Z_{i_1,\dots,i_H}^{(j)}. 
+where $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ would repeat in Equation~\ref{eq:befapprox} if all $r_{i_1,\dots,i_H}$ would be equal to $1$ and $\mathcal{W}$ would have $s$ unique weights and the remaining $(\Lambda - s)$ weights were repetitions\footnote{Note that each $r_{i_1,\dots,i_H}^{''}$ is not uniquely defined here as one could consider many different ways of constructing $\mathcal{W}$ by repeating the same weights different times.}. We therefore require that $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$, $r_{i_1,\dots,i_H}^{''} \geq r_{i_1,\dots,i_H}^{'}$ and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{''} = \Lambda^H$. Let $\hat{r}_{i_1,\dots,i_H} = \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}$. We assume that $\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}$ belongs to the decomposition set of $X_{i_1,\dots,i_H}^{(j)}$. This enables us to prove (proof is in the Supplementary material) the following result that we give as a lemma
+\begin{lemma}
+The decomposability of the input $X_{i_1,\dots,i_H}^{(j)}$ implies that
+\[Y_s = q\sum_{i_1,\dots,i_H=1}^{\Lambda}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
 \]
-Let $\hat{r}_{i_1,\dots,i_H}^{(j)} = \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}$. Therefore
-\begin{eqnarray*}
-Y_s &=& q\sum_{i_1,\dots,i_H=1}^{s}\sum_{j=1}^{r_{i_1,\dots,i_H}^{''}}\hat{r}_{i_1,\dots,i_H}^{(j)}Z_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k}\\
-&=& \sum_{i_1,\dots,i_H=1}^{\Lambda}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
-\end{eqnarray*}
-where the last step comes from re-indexing terms. 
+where $Z$'s are independend standard normal random variables.
+\label{lem:tmp2}
+\end{lemma}
 
 Finally we assume that unique weights are close to being evenly distributed on the graph of connections of network $\mathcal{M}$. We call this assumption a \textit{uniformity assumption} (note it is analogous to the maximum entropy assumption). This assumption is in general consistent with the approach in~\cite{NIPS2013_5025}. To be more specific, this assumption implies that for all $(i_1,i_2,\dots,i_H):i_1,i_2,\dots,i_H \in \{1,2,\dots,H\}$ there exists non-negative constant $c$ and $\delta \in [0,1]$ such that the following holds
 \begin{equation}
@@ -449,7 +454,6 @@ We will first proof the following more general lemma.
 Let $Y_1$ and $Y_2$ be the outputs of two arbitrary binary classifiers. Assume that the first classifiers predicts $1$ with probability $p$ where, without loss of generality, we assume $p \leq 0.5$ and $-1$ otherwise. Furthemore, let the prediction accuracy of the second classifier differ from the prediction accuracy of the first classifier by no more than $\epsilon \in [0,p]$. Then the following holds
 \[corr(sign(Y_1),sign(Y_2)) \geq \frac{2p(1 \!-\! p \!+\! \epsilon) \!-\! \epsilon}{2\sqrt{(p \!+\! \epsilon)(1 \!-\! p \!+\! \epsilon)p(1 \!-\! p)}}.
 \]
-\label{thm:redun}
 \end{lemma}
 \begin{proof}
 Consider two random variables $Z_1 = sign(Y_1)$ and $Z_2 = sign(Y_2)$. Let $\mathcal{X}^{+}$ denote the set of data points for which the first classifier predicts $+1$ and let $\mathcal{X}^{-}$ denote the set of data points for which the first classifier predicts $-1$ ($\mathcal{X}^{+} \cup \mathcal{X}^{-} = \mathcal{X}$, where $\mathcal{X}$ is the entire dataset). Also let $p = \frac{|\mathcal{X}^{+}|}{|\mathcal{X}|}$. Furthermore, let $\mathcal{X}_{\epsilon}^{-}$ denote the dataset for which $Z_1 = +1$ and $Z_2 = -1$ and $\mathcal{X}_{\epsilon}^{+}$ denote the dataset for which $Z_1 = -1$ and $Z_2 = +1$, where $\frac{|\mathcal{X}_{\epsilon}^{+}| + |\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}} = \epsilon$. Also let $\epsilon^{+} = \frac{|\mathcal{X}_{\epsilon}^{+}|}{\mathcal{X}}$ and $\epsilon^{-} = \frac{|\mathcal{X}_{\epsilon}^{-}|}{\mathcal{X}}$. Therefore
@@ -480,6 +484,20 @@ Thus we obtain
 \end{proof}
 Note that when the first classifier is network $\mathcal{N}$ considered in this paper and $\mathcal{M}$ is its $(s,\epsilon)$-reduction image $\mathbb{E}[Y_1] = 0$ and $\mathbb{E}[Y_2] = 0$ (that follows from the fact that $X$'s in Equation~\ref{eq:befapprox} have zero-mean). That implies $p=0.5$ which, when substituted to Equation~\ref{eq:tmp} gives the theorem statement.
 \end{proof}
+
+\section{Proof of Lemma~\ref{lem:tmp2}}
+
+The decomposability of $X_{i_1,\dots,i_H}^{(j)}$ implies that for independend standard normal random variables $Z$'s the following holds:
+\begin{eqnarray*}
+\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H}^{(j)} &\!\!\!\!\!=& \!\!\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\hat{r}_{i_1,\dots,i_H}\sum_{k=1}^{\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}}Z_{i_1,\dots,i_H}^{(k,j)}\\
+&\!\!\!\!\!=& \!\!\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{''}}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}^{(j)},
+\end{eqnarray*}
+where the last step comes from combining both summations and re-indexing the summands. Therefore
+\begin{eqnarray*}
+Y_s &=& q\sum_{i_1,\dots,i_H=1}^{s}\sum_{j=1}^{r_{i_1,\dots,i_H}^{''}}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k}\\
+&=& \sum_{i_1,\dots,i_H=1}^{\Lambda}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
+\end{eqnarray*}
+where the last step comes again from combining both summations and re-indexing the summands. 
 
 \section{Proof of Theorem~\ref{thm:unif}}
 \begin{proof}
