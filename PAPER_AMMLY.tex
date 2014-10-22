@@ -83,7 +83,7 @@ We explore the approximate relation between the highly non-convex loss function 
 
 \section{Introduction}
 
-Neural networks are machine learning models used for learning complex and highly non-linear mathematical functions in the context of regression, classification, pattern recognition, clustering, reinforcement learning etc. Modern neural networks historically originate from simple early models such as threshold logic~\cite{mcculloch43a}, Hebbian network~\cite{Hebb:1949} and perceptron~\cite{rosenblatt58a} that were followed by more sophisticated models including Hopfield network~\cite{Hopfield:1988:NNP:65669.104422}, Kohonen network~\cite{Kohonen1982}, and Boltzman machines~\cite{Hinton:1986:LRB:104279.104291} (and many others). Despite their modeling power, the interest in learning with early neural network significantly weakened when it was shown that they have several limitations including: i) learning limitations such as the inability of single-layer networks to solve the XOR problem~\cite{minsky69perceptrons}, ii) long training time of large networks and proness to overfitting~\cite{JMLR:v15:srivastava14a}, and iii) getting stuck in poor-quality local optima or saddle points while training~\cite{Larochelle:2009:EST:1577069.1577070}. Today many of these limitations can be solved with the development of new efficient training strategies (among them backpropagation algorithm~\cite{Werbos:74} which enables to solve the XOR problem), fast GPU-based implementations significantly reducing the training time, and techniques preventing the overfitting such as dropout (e.g.~\cite{JMLR:v15:srivastava14a}). Therefore, after a long period of scepticism, the paradigm of learning with neural networks gained significant attention in recent years resulting in many new architectures, such as convolutional networks~\cite{lecun-gradientbased-learning-applied-1998}, recurrent neural networks~\cite{Graves:2009:NCS:1525650.1525782}, deep feedforward neural networks (e.g.~\cite{DBLP:journals/corr/Schmidhuber14} or wide networks~\cite{Huang14}, where the most fundamental difference between them and their early predecessors lies in a much larger parameter space (throughout the paper we refer to the number of network parameters as network size). In effect, the optimization problem arising when training these models is highly non-convex with exponentially many critical points. Despite the apparent difficulty of this optimization, modern neural network approaches often beat state-of-the-art results on a plethora of learning tasks (pattern recognition~\cite{journals/nn/CiresanMMS12}, brain image segmentation~\cite{NIPS2012_4741}, human pose estimation~\cite{DBLP:journals/corr/TompsonJLB14}, large-scale visual recognition~\cite{sermanet-iclr-14}, transfer learning~\cite{conf/icml/GoodfellowCB12} and many more) which is highly suggestive of their ability to recover high-quality solution to the optimization problem. The fundamental question arises: 'Why?' 
+Neural networks are machine learning models used for learning complex and highly non-linear mathematical functions in the context of regression, classification, pattern recognition, clustering, reinforcement learning etc. Modern neural networks historically originate from simple early models such as threshold logic~\cite{mcculloch43a}, Hebbian network~\cite{Hebb:1949} and perceptron~\cite{rosenblatt58a} that were followed by more sophisticated models including Hopfield network~\cite{Hopfield:1988:NNP:65669.104422}, Kohonen network~\cite{Kohonen1982}, and Boltzman machines~\cite{Hinton:1986:LRB:104279.104291} (and many others). Despite their modeling power, the interest in learning with early neural network significantly weakened when it was shown that they have several limitations including: i) learning limitations such as the inability of single-layer networks to solve the XOR problem~\cite{minsky69perceptrons}, ii) long training time of large networks and proness to overfitting~\cite{JMLR:v15:srivastava14a}, and iii) getting stuck in poor-quality local optima or saddle points while training~\cite{Larochelle:2009:EST:1577069.1577070}. Today many of these limitations can be solved with the development of new efficient training strategies (among them backpropagation algorithm~\cite{Werbos:74} which enables to solve the XOR problem), fast GPU-based implementations significantly reducing the training time, and techniques preventing the overfitting such as dropout (e.g.~\cite{journals/corr/abs-1207-0580,JMLR:v15:srivastava14a}). Therefore, after a long period of scepticism, the paradigm of learning with neural networks gained significant attention in recent years resulting in many new architectures, such as convolutional networks~\cite{lecun-gradientbased-learning-applied-1998}, recurrent neural networks~\cite{Graves:2009:NCS:1525650.1525782}, deep feedforward neural networks (e.g.~\cite{DBLP:journals/corr/Schmidhuber14} or wide networks~\cite{Huang14}, where the most fundamental difference between them and their early predecessors lies in a much larger parameter space (throughout the paper we refer to the number of network parameters as network size). In effect, the optimization problem arising when training these models is highly non-convex with exponentially many critical points. Despite the apparent difficulty of this optimization, modern neural network approaches often beat state-of-the-art results on a plethora of learning tasks (pattern recognition~\cite{journals/nn/CiresanMMS12}, brain image segmentation~\cite{NIPS2012_4741}, human pose estimation~\cite{DBLP:journals/corr/TompsonJLB14}, large-scale visual recognition~\cite{sermanet-iclr-14}, transfer learning~\cite{conf/icml/GoodfellowCB12} and many more) which is highly suggestive of their ability to recover high-quality solution to the optimization problem. The fundamental question arises: 'Why?' 
 
 The paradigm of optimizing a highly non-convex loss function characteristic of modern neural newtorks remains largely ununderstood with a lot of empirical evidence and almost no theoretical justification (the overview of prior work is done in Section~\ref{sec:PriorWork}). That results in often perceiving these models as 'black box' tools and rejecting them in favor of significantly simpler models which training is based on solving convex optimization problem. Convex optimization problems due to having no local optima are well-understood and nearly-exactly (or exactly) solvable by many standard efficient optimizers with known theoretical convergence guarantees in this setting (some standard results can be found in~\cite{opac-b1104789, ben-tal_nemirovski:2001}). The goal of this paper is to provide insights to the paradigm of large-size neural network optimization where the problem is highly non-convex. We establish the connection between the loss function (we focus on hinge loss and absolute loss) of the fully-connected one-output feed-forward neural network of depth $H$ with the Hamiltonian of the $H$-spin spherical spin-glass model. We show that the latter can be thought of us an approximator of the loss function of the network under certain assumptions which we also discuss, and furthermore we provide the theoretical guarantee of the quality of this approximation. Through the prism of recent findings in random matrix theory~\cite{AAC2010}, in Section~\ref{sec:theory} we study the complexity, i.e. the exponential behavior of the mean number of critical points (in total and of given index), of neural networks. We prove that for large-size networks the local minima and low-index saddle points of the loss function lie within a narrow band lower-bounded by the global minimum and finding them outside the band diminishes exponentially with the size of the network. Furthermore, within the band, the lowest critical points form a very well-defined layered structure that we also describe in the paper. Finally, recovering the global minimum of the loss function diminishes with network size. In the experimental section (Section~\ref{sec:Experiments}) we empirically verify several hypotheses regarding learning with large-size networks:
 \vspace{-0.05in}
@@ -120,7 +120,7 @@ This work is inspired by the recent advances in random matrix theory and the wor
 For the theoretical analysis, we consider a simple model of the fully-connected feed-forward deep network with a single output and rectified linear units. We call the network $\mathcal{N}$. We focus on a binary classification task. Let $X$ be the random input vector of dimensionality $d$. Let $(H-1)$ denote the number of hidden layers in the network and we will refer to the input layer as the $0^{\text{th}}$ layer and to the output layer as the $H^{\text{th}}$ layer. Let $n_i$ denote the number of units in the $i^{\text{th}}$ layer (note that $n_0 = d$ and $n_H = 1$). Let $W_i$ be the matrix of weights between $(i - 1)^{\text{th}}$ and $i^{th}$ layers of the network. Also, let $\sigma$ denotes the activation function that converts a unit's weighted input to its output activation. We consider linear rectifiers thus $\sigma(x) = \max(0,x)$. We can therefore write that for any given random input vector $X$, the network gives the following (random) output $Y$:
 \[Y = q\sigma(W_H^{\top}\sigma(W_{H-1}^{\top}\dots\sigma(W_1^{\top}X)))\dots),
 \]
-where $q = \sqrt{\frac{n_0n_1 + n_1n_2 + ... + n_{H-1}n_H}{n_0n_1...n_H}}$ is simply a normalization factor. The same expression for the output of the network can be re-expressed in the following way:
+where $q = \sqrt{(n_0n_1...n_H)^{(H-1)/2H}}$ is simply a normalization factor. The same expression for the output of the network can be re-expressed in the following way:
 \begin{equation}
 Y = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i}A_{i,j}\prod_{k = 1}^{H}w_{i,j}^{(k)},
 \label{eq:befrein}
@@ -128,20 +128,23 @@ Y = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i}A_{i,j}\prod_{k = 1}^{H}w_{i,j}^{(
 where the first summation is over the network inputs and the second one is over all paths from a given network input to its output, where $\gamma$ is the total number of such paths (note that $\gamma = n_1n_2\dots n_H$). Furthermore, $w_{i,j}^{(k)}$ is the weight of the $k^{\text{th}}$ segment of path indexed with $(i,j)$ which connects layer $(k-1)^{st}$ with layer $k^{\text{th}}$ of the network. Note that each path corresponds to a certain set of $H$ weights, which we refer to as a \textit{configuration of weights}, which are multiplied by each other. Finally, $A_{i,j}$ denotes whether a path $(i,j)$ is active ($A_{i,j} = 1$) or not ($A_{i,j} = 0$). 
 
 \begin{definition}
-The mass of the network $\Psi$ is the total number of all paths between all network inputs and outputs: $\Psi = \prod_{i=0}^Hn_i$.
+The mass of the network $\Psi$ is the total number of all paths between all network inputs and outputs: $\Psi = \prod_{i=0}^Hn_i$. We will also denote $\Lambda$ to be $\Lambda = \sqrt[H]{\Psi}$.
 \end{definition}
 
 \begin{definition}
-The size of the network $\Lambda$ is the total number of network parameters: $\Lambda = \sum_{i=0}^{H-1}n_in_{i+1}$.
+The size of the network $N$ is the total number of network parameters: $N = \sum_{i=0}^{H-1}n_in_{i+1}$.
 \end{definition}
 
 There mass and the size of the network depend on each other as captured in Theorem~\ref{thm:arge}.
 \begin{theorem}
 Let $\Psi$ be the mass of the network, $d$ be the number of network inputs and $H$ be the depth of the network. The size of the network is bounded as
-\[\Psi^2\frac{1}{d} \geq \Lambda \geq \sqrt[H]{\Psi^2}\frac{H}{\sqrt[H]{d}} \geq \sqrt[H]{\Psi}.
+\[\Psi^2\frac{1}{d} \geq N \geq \sqrt[H]{\Psi^2}\frac{H}{\sqrt[H]{d}} \geq \sqrt[H]{\Psi} = \Lambda.
 \]
 \label{thm:arge}
 \end{theorem}
+\begin{corollary}
+For bounded network depth $H$, $\Lambda \rightarrow \infty$ iff $\Psi \rightarrow \infty$. For bounded network depth $H$, if the mass of the network $\Psi$ goes to $\infty$ ($\Psi \rightarrow \infty$) then the size of the network also goes to $\infty$ ($N \rightarrow \infty$) (equivalently $\Lambda \rightarrow \infty$ implies $N \rightarrow \infty$). 
+\end{corollary}
 
 In the rest of this section we will be establishing a connection between the loss function of the neural network and the Hamiltonian of the spin-glass model. Under certain assumptions, that will be introduced and discussed, spin-glass model can be though of as an approximator of a network output. We will also provide the measure of quality of this approximation. All proofs are deferred to the Supplementary material.
 
@@ -149,34 +152,24 @@ In the rest of this section we will be establishing a connection between the los
 
 In this section we introduce randomness to the model and assume $X$s and $A$s are random. We make certain assumptions regarding the neural network model. These assumptions consider random variables $X$s and $A$s (their distributions and mutual dependencies) as well as they introduce spherical constraint on the model weights. We also introduce two other assumptions regarding redundancy of network parameters and their uniformity (details in the text below), both of them are justified by empirical evidence in the literature. The aim of this section is to obtain an approximator to the expectation $\mathbb{E}_A[Y]$ (note it is still a random variable) which, as will be seen in Section~\ref{subsec:LFSG}, is used in the definition of the loss function of neural network. Theorems~\ref{thm:redun} and~\ref{thm:unif} provide some guarantees regarding the quality of this approximation.  
 
-\paragraph{Equally likely paths}
+\paragraph{Input}
+We assume each input $X_i$ is a normal random variable such that $X_i\sim N(0,1)$. 
+
+\paragraph{Paths}
 We assume each path in Equation~\ref{eq:befrein} is equally likely to be active thus $A_{i,j}$'s will be modelled as Bernoulli random variables with the same probability of success $\rho$. By assuming the independence of $X$'s and $A's$ we get the following
 \begin{equation}
 \mathbb{E}_A[Y] = q\sum_{i=1}^{n_0}\sum_{j = 1}^\gamma X_{i}\rho\prod_{k = 1}^{H}w_{i,j}^{(k)}.
 \label{eq:befrein2}
 \end{equation}
-
-\paragraph{Input decomposability}
-We assume each input $X_i$ is a normal random variable such that $X_i\sim\mathcal{N}(0,1)$ and it can be decomposed as follows: 
-\[X_i = \frac{1}{\sqrt{v_i}}\sum_{j=1}^{v_i}Z_i^{(j)}
-\]
-for some positive $v_i$ and $Z$'s being independend identically distributed standard normal random variables. Furthermore we assume there exists more than one such decomposition. We will denote the set of all values of $v_i$, each taken from different decomposition, as a \textit{decomposition set of $X_i$}. 
-
-\paragraph{Spherical constraint}
-Let $\mathcal{W} = \{w_1,w_2,\dots,w_{\Lambda}\}$ be the set of all weights of the network. We make a benign assumption that the weights sattisfy the spherical condition 
-\begin{equation}
-\frac{1}{\Lambda}\sum_{i=1}^{\Lambda}w_i^2 = \mathcal{C},
-\label{eq:befspherical}
-\end{equation}
-where $\mathcal{C}$ is some positive constant. 
+We furthermore decouple~\cite{opac-b1095246} the paths by assuming their mutual independence. \textcolor{red}{We might wanna write more.}
 
 \paragraph{Redundancy in network parametrization}
-Let $\mathcal{A}$ denote the set of all $H$-length configuration of weights chosen from $\mathcal{W}$ (order of weights in a configuration does matter). Note that the size of $\mathcal{A}$ is therefore $\Lambda^H$. Also let $\mathcal{B}$ be a set such that each element correspond to the single configuration of weights from Equation~\ref{eq:befrein2}, thus $\mathcal{B} = \{(w_{1,1}^1,w_{1,1}^2,\dots,w_{1,1}^H),(w_{1,2}^1,w_{1,2}^2,\dots,w_{1,2}^H),\dots,\\(w_{n_0,\gamma}^1,w_{n_0,\gamma}^2,\dots,w_{n_0,\gamma}^H)\}$, where every single weight comes from set $\mathcal{W}$. Note that in general there exist elements in $\mathcal{A}$ that will never appear in $\mathcal{B}$ (unless we allow repetition of weights in $\mathcal{W}$). Thus Equation~\ref{eq:befrein2} can be equivalently written as 
+Let $\mathcal{W} = \{w_1,w_2,\dots,w_{\Lambda}\}$ be the set of all weights of the network. Let $\mathcal{A}$ denote the set of all $H$-length configuration of weights chosen from $\mathcal{W}$ (order of weights in a configuration does matter). Note that the size of $\mathcal{A}$ is therefore $N^H$. Also let $\mathcal{B}$ be a set such that each element correspond to the single configuration of weights from Equation~\ref{eq:befrein2}, thus $\mathcal{B} = \{(w_{1,1}^1,w_{1,1}^2,\dots,w_{1,1}^H),(w_{1,2}^1,w_{1,2}^2,\dots,w_{1,2}^H),\dots,\\(w_{n_0,\gamma}^1,w_{n_0,\gamma}^2,\dots,w_{n_0,\gamma}^H)\}$, where every single weight comes from set $\mathcal{W}$. Note that in general there exist elements in $\mathcal{A}$ that will never appear in $\mathcal{B}$ (unless we allow repetition of weights in $\mathcal{W}$). Thus Equation~\ref{eq:befrein2} can be equivalently written as 
 \begin{equation}
-Y_{\Lambda} \!:=\! \mathbb{E}_A[Y] \!=\! q\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!\!\!\!\!r_{i_1\!,i_2,\dots,i_H}\!X_{i_1,i_2,\dots,i_H}\rho\!\prod_{k = 1}^{H}\!\!w_{i_k},
+Y_{\Lambda} \!:=\! \mathbb{E}_A[Y] \!=\! q\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{N}\!\!\!\!\!\!\!\sum_{j = 1}^{r_{i_1\!,i_2,\dots,i_H}}\!\!\!\!\!X_{i_1,i_2,\dots,i_H}^{(j)}\rho\!\prod_{k = 1}^{H}\!\!w_{i_k}.
 \label{eq:befapprox}
 \end{equation}
-where $r_{i_1,i_2,\dots,i_H}$ denotes whether the configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ appeared in Equation~\ref{eq:befrein2} or not thus $r_{i_1,i_2,\dots,i_H} \in \{0\cup{1}\}$ and furthermore $\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}r_{i_1,i_2,\dots,i_H} = \Psi$. In the notation $Y_{\Lambda}$, index $\Lambda$ refers to the number of unique weights of a network (this notation will be helpful later in this section).  
+We will now explain the notation. It is overcomplicated for purpose, as this notation will be useful later on. $r_{i_1,i_2,\dots,i_H}$ denotes whether the configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ appeared in Equation~\ref{eq:befrein2} or not, thus $r_{i_1,i_2,\dots,i_H} \in \{0\cup{1}\}$, and $\{X_{i_1,i_2,\dots,i_H}^{(j)}\}_{j=1}^{r_{i_1,i_2,\dots,i_H}}$ denote a set of random variables corresponding to the same weight configuration (since $r_{i_1,i_2,\dots,i_H} \in \{0\cup{1}\}$ this set has at most one element). Also $r_{i_1,i_2,\dots,i_H} = 0$ implies that summand $X_{i_1,i_2,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k}$ is zeroed out). Note that $\sum_{j = 1}^{r_{i_1\!,i_2,\dots,i_H}}X_{i_1,i_2,\dots,i_H}^{(j)}$ could be replaced by $r_{i_1\!,i_2,\dots,i_H}X_{i_1,i_2,\dots,i_H}$ since $r_{i_1,i_2,\dots,i_H}$, but we choose this notation on purpose as it will be helpful later on. Furthermore, the following condition has to be satisfied: $\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}r_{i_1,i_2,\dots,i_H} = \Psi$. In the notation $Y_{\Lambda}$, index $\Lambda$ refers to the number of unique weights of a network (this notation will also be helpful later).  
 
 Consider a family of networks which have the same graph of connections as network $\mathcal{N}$ but different edge weighting such that they only have $s$ unique weights and $s \leq \Lambda$ (through notation analogy expected output of this network will be called $Y_s$). It was recently shown~\cite{NIPS2013_5025,DBLP:journals/corr/DentonZBLF14} that for large-size networks large number of network parameters (according to~\cite{NIPS2013_5025} even up to $95\%$) are reduntant and can either be learned from a very small set of unique parameters or even not learned at all with almost no loss in prediction accuracy.  In our experimental section we also demonstrate the empirical evidence of the overparametrization of neural networks. It is therefore well-justified to \textit{assume redunancy in network parametrization} where $s$ is the number of unique (non-redundant) parameters.
 
@@ -195,43 +188,45 @@ where $corr$ denotes the correlation defined as $corr(A,B) = \frac{\mathbb{E}[(A
 The assumption of the redundancy of parameters implies that one can preserve $\epsilon$ to be close to $0$ even with $s << \Lambda$.
 
 \paragraph{Uniformity}
-Consider $(s,\epsilon)$-reduction image of $\mathcal{N}$ for some $s \leq \Lambda$ and $\epsilon \in [0,1]$. The output $Y_s$ of the image network can in general be expressed as
-\[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}\!\!w_{i_k},
+Consider network $\mathcal{M}$ to be a $(s,\epsilon)$-reduction image of $\mathcal{N}$ for some $s \leq \Lambda$ and $\epsilon \in [0,1]$. The output $Y_s$ of the image network can in general be expressed as
+\[Y_s = q\sum_{i_1,\dots,i_H=1}^{s}\sum_{j=1}^{t_{i_1,\dots,i_H}}X_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k},
 \]
-where $r_{i_1,\dots,i_H}^{'} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ repeats in Equation~\ref{eq:befapprox} and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{'} = \Psi$. We can further rewrite $Y_s$ as follows
-\[Y_s = q\!\!\!\sum_{i_1,\dots,i_H=1}^{s}\!\!\underbrace{\left(\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\!\!\!X_{i_1,\dots,i_H}^{(j)} + 0 + \dots + 0\right)}_{r_{i_1,\dots,i_H}^{''} \text{summands}}\!\!\rho\prod_{k = 1}^{H}\!\!w_{i_k},
-\]
-where $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ would repeat in Equation~\ref{eq:befapprox} if all $r_{i_1,\dots,i_H}$ would be equal to $1$ and $\mathcal{W}$ would have $s$ unique weights and the remaining $(\Lambda - s)$ weights were repetitions\footnote{Note that each $r_{i_1,\dots,i_H}^{''}$ is not uniquely defined here as one could consider many different ways of constructing $\mathcal{W}$ by repeating the same weights different times.}. We therefore require that $r_{i_1,\dots,i_H}^{''} \in \{\mathbb{Z}^{+}\cup{0}\}$, $r_{i_1,\dots,i_H}^{''} \geq r_{i_1,\dots,i_H}^{'}$ and $\sum_{i_1,\dots,i_H=1}^{s}r_{i_1,\dots,i_H}^{''} = \Lambda^H$. Let $\hat{r}_{i_1,\dots,i_H} = \sqrt{\frac{r_{i_1,\dots,i_H}^{'}}{r_{i_1,\dots,i_H}^{''}}}$. We assume that $\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}$ belongs to the decomposition set of $X_{i_1,\dots,i_H}^{(j)}$. This enables us to prove (proof is in the Supplementary material) the following result that we give as a lemma
-\begin{lemma}
-The decomposability of the input $X_{i_1,\dots,i_H}^{(j)}$ implies that
-\[Y_s = q\sum_{i_1,\dots,i_H=1}^{\Lambda}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
-\]
-where $Z$'s are independend standard normal random variables.
-\label{lem:tmp2}
-\end{lemma}
-
-Finally we assume that unique weights are close to being evenly distributed on the graph of connections of network $\mathcal{M}$. We call this assumption a \textit{uniformity assumption} (note it is analogous to the maximum entropy assumption). This assumption is in general consistent with the approach in~\cite{NIPS2013_5025}. To be more specific, this assumption implies that for all $(i_1,i_2,\dots,i_H):i_1,i_2,\dots,i_H \in \{1,2,\dots,H\}$ there exists non-negative constant $c$ and $\delta \in [0,1]$ such that the following holds
+where $t_{i_1,\dots,i_H} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ repeats in Equation~\ref{eq:befapprox} and $\sum_{i_1,\dots,i_H=1}^{s}t_{i_1,\dots,i_H} = \Psi$. We assume that unique weights are close to being evenly distributed on the graph of connections of network $\mathcal{M}$. We call this assumption a \textit{uniformity assumption} (note it is analogous to the maximum entropy assumption). This assumption is in general consistent with the approach in~\cite{NIPS2013_5025}. In particular, this assumption implies that for all $(i_1,i_2,\dots,i_H):i_1,i_2,\dots,i_H \in \{1,2,\dots,s\}$ there exists a positive constant $c \geq 1$ such that the following holds
 \begin{equation}
-c\delta\sqrt{\frac{\Psi}{\Lambda^H}} \leq \hat{r}_{i_1,i_2,\dots,i_H} \leq c\sqrt{\frac{\Psi}{\Lambda^H}},
+\frac{1}{c}\cdot\frac{\Psi}{s^H} \leq t_{i_1,i_2,\dots,i_H} \leq c\cdot\frac{\Psi}{s^H}.
 \label{eq:uniform}
 \end{equation}
-where the factor $\sqrt{\frac{\Psi}{\Lambda^H}}$ comes from the fact that for the network where every weight is uniformly distributed on the graph of connections (thus every node has equal probability of being adjacent to an edge with any of the unique weights) it holds that $\hat{r}_{i_1,i_2,\dots,i_H} = \sqrt{\frac{\Psi}{\Lambda^H}}$. Note that this condition can be sattified with large $\delta$ (close to $0$) if $s$ is sufficiently small.
+The factor $\sqrt{\frac{\Psi}{s^H}}$ comes from the fact that for the network where every weight is uniformly distributed on the graph of connections (thus with high probability every node is adjacent to an edge with any of the unique weights) it holds that $\hat{r}_{i_1,i_2,\dots,i_H} = \sqrt{\frac{\Psi}{s^H}}$. Note that this condition can be sattified with small $c$ (close to $1$) if $s$ is sufficiently small.
 
-Consider therefore an expression as follows
+For simplicity assume $\frac{\Psi}{s^H} \in \mathbb{Z}^{+}$ and $\sqrt[H]{\Psi} \in \mathbb{Z}^{+}$. Consider therefore an expression as follows
 \begin{equation}
-\hat{Y}_s = q\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}}Z_{i_1,i_2,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
+\hat{Y}_s = q\sum_{i_1,\dots,i_H=1}^{s}\sum_{j=1}^{\frac{\Psi}{s^H}}X_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k},
 \label{eq:approx}
 \end{equation}
-which can be thought of as an output of some network $\mathcal{M}$ where the weights are still chosen from $\mathcal{A}$ but there are only $s$ unique weights in $\mathcal{A}$ among the total of $\Lambda$ weights, and furthermore every $H$ - length configuration of weights chosen from $\mathcal{A}$ is equally likely. Then the following theorem (Theorem~\ref{thm:unif}) captures the connection between $\hat{Y}_s$ and $Y_{\Lambda}$.
+which corresponds to a network for which the lower-bound and upper-bound in Equation~\ref{eq:uniform} match. Note that one can combine both summations in Equation~\ref{eq:approx} and re-index this equation to obtain
+\begin{equation}
+\hat{Y}_s = q\sum_{i_1,\dots,i_H=1}^{\Lambda}X_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k}.
+\label{eq:approxfinal}
+\end{equation}
+The following theorem (Theorem~\ref{thm:unif}) captures the connection between $\hat{Y}_s$ and $Y_{s}$.
 
 \begin{theorem}
-Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\hat{Y}_s$ in Equation~\ref{eq:approx} and random variable $Y_{\Lambda}$ in Equation~\ref{eq:befapprox} sattisy the following
-\[corr(\hat{Y}_s,Y_{\Lambda}) \geq \delta
+Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\hat{Y}_s$ in Equation~\ref{eq:approx} and random variable $Y_s$ in Equation~\ref{eq:befapprox} sattisy the following
+\[corr(\hat{Y}_s,Y_s) \geq \frac{1}{c^2}
 \]
 \label{thm:unif}
 \end{theorem}
+We will refer to $\hat{Y}_s$ as an $(s,\epsilon,\delta)$-\textit{approximator} of $Y_{\Lambda}$, where the quality of this approximation is captured in Theorems~\ref{thm:redun} and~\ref{thm:unif}. Intuitively, for large networks (our analysis in Section~\ref{sec:theory} considers $\Lambda \rightarrow \infty$) one would expect $s$ to be small enough to simultaneously guarantee sufficiently small (close to $1$) $c$ and preserve good accuracy (small $\epsilon$). \textcolor{red}{That is because large networks have significantly more modelling power thus small $s$ is a natural form of controlling the overfitting. Besides then the data is mapped to a higher dimensional space.} 
 
-We will refer to $\hat{Y}_s$ as an $(s,\epsilon,\delta)$-\textit{approximator} of $Y_{\Lambda}$, where the quality of this approximation is captured in Theorems~\ref{thm:redun} and~\ref{thm:unif}. Intuitively, for large-size networks (our analysis in Section~\ref{sec:theory} considers $\Lambda \rightarrow \infty$) one would expect $s$ to be small enough to simultaneously guarantee sufficiently large (close to $1$) $\delta$ and preserve good accuracy (small $\epsilon$). \textcolor{red}{That is because large networks have significantly more modelling power thus small $s$ is a natural form of controlling the overfitting. Besides then the data is mapped to a higher dimensional space.} In the next we will consider two frequently used loss functions, absolute loss and hinge loss, where we approximate $Y_{\Lambda}$ with $\hat{Y}_s$. 
+\paragraph{Spherical constraint}
+We finally make a benign assumption that the weights sattisfy the spherical condition 
+\begin{equation}
+\frac{1}{\Lambda}\sum_{i=1}^{\Lambda}w_i^2 = \mathcal{C},
+\label{eq:befspherical}
+\end{equation}
+where $\mathcal{C}$ is some positive constant. 
+
+In the next we will consider two frequently used loss functions, absolute loss and hinge loss, where we approximate $Y_{\Lambda}$ with $\hat{Y}_s$. 
 
 \subsection{Loss function as a $H$-spin spherical spin-glass model}
 \label{subsec:LFSG}
@@ -242,7 +237,7 @@ Let $\mathcal{L}^a_{\Lambda,H}(w)$ and $\mathcal{L}^h_{\Lambda,H}(w)$ be the (ra
 and
 \[\mathcal{L}^h_{\Lambda,H}({\bm w}) = \max(0,1-Y_t\hat{Y}_s).
 \]
-where $Y_t$ is a random variable corresponding the true data labeling that takes values $-S$ or $S$ in case of the absolute loss and $-\frac{1}{S}$ or $\frac{1}{S}$ in case of the hinge loss, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'} = \frac{1}{\rho\sqrt{\mathcal{C}^H}}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
+where $Y_t$ is a random variable corresponding the true data labeling that takes values $-S$ or $S$ in case of the absolute loss and $-1$ or $1$ in case of the hinge loss, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'} = \frac{1}{\rho\sqrt{\mathcal{C}^H}}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
 \[\mathcal{L}^a_{\Lambda,H}({\bm w}) = \left \{
   \begin{tabular}{c}
   $\!\!\!\!\!\!S - \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
@@ -255,28 +250,28 @@ and
 \mathcal{L}^h_{\Lambda,H}({\bm w}) &=& \mathbb{E}_{M,A}[M(
 1-Y_t\hat{Y}_s)]\\&=& \left \{
   \begin{tabular}{c}
-  $\!\!\!\!\!\!\mathbb{E}_{M}[M(1 - \frac{1}{S}\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = \frac{1}{S}$ \\
-  $\!\mathbb{E}_{M}[M(1 + \frac{1}{S}\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -\frac{1}{S}$ \\
+  $\!\!\!\!\!\!\mathbb{E}_{M}[M(1 - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = 1$ \\
+  $\!\mathbb{E}_{M}[M(1 + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -1$ \\
   \end{tabular}
 \right.
 \end{eqnarray*}
 Note that both cases can be generalized to the following
 \[\mathcal{L}_{\Lambda,H}({\bm w}) = \left \{
   \begin{tabular}{c}
-  $\!\mathbb{E}_{M}[M(s_1 - s_2\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t  > 0$ \\
-  $\!\mathbb{E}_{M}[M(s_1 + s_2\hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t < 0$ \\
+  $\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t  > 0$ \\
+  $\!\mathbb{E}_{M}[M(S + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t < 0$ \\
   \end{tabular}
 \right.,
 \]
-where in case of absolute loss $\rho^{'} = 1$, $s_1 = S$ and $s_2 = 1$, whereas for hinge loss $s_1 = 1$ and $s_2 = \frac{1}{S}$. Furthermore, since $X$'s are Gaussian random variables, then so are $-X$'s thus we can further generalize that
+where in case of the absolute loss $\rho^{'} = 1$ and in case of the hinge loss $S = 1$. Furthermore, since $X$'s are Gaussian random variables, then so are $-X$'s thus we can further generalize that
 \begin{eqnarray*}
-\mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(s_1 + s_2\hat{Y}_s)]\\
-&=& \!\!\!\!\!s_1\rho^{'} \!+\! s_2\rho^{'}\hat{Y}_s\\
-&=& \!\!\!\!\!s_1\rho^{'} \!+\! s_2q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!\!\!}\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!Z_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}.
+\mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(S + \hat{Y}_s)]\\
+&=& \!\!\!\!\!S\rho^{'} \!+\! \rho^{'}\hat{Y}_s\\
+&=& \!\!\!\!\!S\rho^{'} \!+\! q\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!X_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}.
 \end{eqnarray*}
 Let $\tilde{w}_i = \sqrt[H]{\rho\rho^{'}}w_i$ for all $i = \{1,2,\dots,k\}$. Note that $\tilde{w}_i = \frac{1}{\sqrt{C}}$. Thus
 \begin{equation}
-\mathcal{L}_{\Lambda,H}({\bm w}) = s_1\rho^{'} \!+\! s_2q\sqrt{\!\!\frac{\Psi}{\Lambda^H}\!\!\!\!}\sum_{i_1,\dots,i_H=1}^{\Lambda}\!\!\!\!Z_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
+\mathcal{L}_{\Lambda,H}({\bm w}) = S\rho^{'} + q\sum_{i_1,\dots,i_H=1}^{\Lambda}X_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
 \label{eq:befloss}
 \end{equation}
 Note that the spherical assumption in Equation~\ref{eq:befspherical} directly implies that
@@ -284,12 +279,12 @@ Note that the spherical assumption in Equation~\ref{eq:befspherical} directly im
 \frac{1}{\Lambda}\sum_{i=1}^{\Lambda}\tilde{w}_i^2 = 1
 \label{eq:spherical}
 \end{equation}
-To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $s_1\rho^{'}$ and $s_2$ (remaining constants are preserved for the purpose that will become evident shortly) as it does not matter when minimizing the loss function.
+To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $S\rho^{'}$ as it does not matter when minimizing the loss function. After substituting $q = \frac{1}{\Psi^{(H-1)/2H}}$ we obtain
 \begin{equation}
-\mathcal{L}_{\Lambda,H}({\bm w}) = \frac{1}{\Lambda^{(H-1)/2}}\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!Z_{i_1,i_2,\dots,i_H}w_{i_1}w_{i_2}\dots\!w_{i_H},
+\mathcal{L}_{\!\Lambda,H}({\bm w}) \!=\! \frac{1}{\Lambda^{\!(H\!-\!1)/2}}\!\!\!\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!\!\!\!\!Z_{i_1,i_2,\dots,i_H}\!w_{i_1}\!w_{i_2}\!\dots\!w_{i_H},
 \label{eq:spinglass}
 \end{equation}
-where the last inequality was obtained by substituting $q = \sqrt{\frac{\Lambda}{\Psi}}$. Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mathcal{S} = S^{\Lambda-1}(\sqrt{\Lambda})$ and is equivalent to the Hamiltonian of the $H$-spin spherical spin-glass model. The spherical constraint is captured in Equation~\ref{eq:spherical}. An asymptotic evaluation of the comlexity of spherical $H$-spin spherical spin-glass models via random matrix theory was studied in the literature~\cite{AAC2010} where a precise description of the energy landscape for the Hamiltonians of these models is provided. In this paper we explore a strong connection of the Hamiltonian of these models, originated from physics, and the strongly non-convex loss functions used in deep learning. We use the results of the theoretical analysis of the complexity of spin-glass models~\cite{AAC2010} to gain an understading of the optimization in deep learning. 
+Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mathcal{S} = S^{\Lambda-1}(\sqrt{\Lambda})$ and is equivalent to the Hamiltonian of the $H$-spin spherical spin-glass model. The spherical constraint is captured in Equation~\ref{eq:spherical}. An asymptotic evaluation of the comlexity of spherical $H$-spin spherical spin-glass models via random matrix theory was studied in the literature~\cite{AAC2010} where a precise description of the energy landscape for the Hamiltonians of these models is provided. In this paper we explore a strong connection of the Hamiltonian of these models, originated from physics, and the strongly non-convex loss functions used in deep learning. We use the results of the theoretical analysis of the complexity of spin-glass models~\cite{AAC2010} to gain an understading of the optimization in deep learning. 
 
 \section{Theoretical results}
 \label{sec:theory}
@@ -485,107 +480,24 @@ Thus we obtain
 Note that when the first classifier is network $\mathcal{N}$ considered in this paper and $\mathcal{M}$ is its $(s,\epsilon)$-reduction image $\mathbb{E}[Y_1] = 0$ and $\mathbb{E}[Y_2] = 0$ (that follows from the fact that $X$'s in Equation~\ref{eq:befapprox} have zero-mean). That implies $p=0.5$ which, when substituted to Equation~\ref{eq:tmp} gives the theorem statement.
 \end{proof}
 
-\section{Proof of Lemma~\ref{lem:tmp2}}
-
-The decomposability of $X_{i_1,\dots,i_H}^{(j)}$ implies that for independend standard normal random variables $Z$'s the following holds:
-\begin{eqnarray*}
-\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}X_{i_1,\dots,i_H}^{(j)} &\!\!\!\!\!=& \!\!\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{'}}\hat{r}_{i_1,\dots,i_H}\sum_{k=1}^{\frac{1}{\hat{r}_{i_1,\dots,i_H}^2}}Z_{i_1,\dots,i_H}^{(k,j)}\\
-&\!\!\!\!\!=& \!\!\!\!\!\sum_{j=1}^{r_{i_1,\dots,i_H}^{''}}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}^{(j)},
-\end{eqnarray*}
-where the last step comes from combining both summations and re-indexing the summands. Therefore
-\begin{eqnarray*}
-Y_s &=& q\sum_{i_1,\dots,i_H=1}^{s}\sum_{j=1}^{r_{i_1,\dots,i_H}^{''}}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k}\\
-&=& \sum_{i_1,\dots,i_H=1}^{\Lambda}\hat{r}_{i_1,\dots,i_H}Z_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k},
-\end{eqnarray*}
-where the last step comes again from combining both summations and re-indexing the summands. 
-
 \section{Proof of Theorem~\ref{thm:unif}}
 \begin{proof}
 Note that $\mathbb{E}[\hat{Y}_s] = 0$ and $\mathbb{E}[Y_{\Lambda}] = 0$. Furthermore
-\[\mathbb{E}[\hat{Y}_sY_{\Lambda}] = q^2\rho^2\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}}\hat{r}_{i_1,i_2,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2
+\[\mathbb{E}[\hat{Y}_sY_{\Lambda}] = q^2\rho^2\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\min\left(\frac{\Psi}{\Lambda^H},t_{i_1,i_2,\dots,i_H}\right)\prod_{k = 1}^{H}w_{i_k}^2
 \]
 and
 \[std(\hat{Y}_s) = q\rho\sqrt{\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\frac{\Psi}{\Lambda^H}\prod_{k = 1}^{H}w_{i_k}^2}
 \]
-\[std(Y_{\Lambda}) = q\rho\sqrt{\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\hat{r}_{i_1,i_2,\dots,i_H}^2\prod_{k = 1}^{H}w_{i_k}^2}.
+\[std(Y_{\Lambda}) = q\rho\sqrt{\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}t_{i_1,i_2,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2}.
 \]
 Therefore
 \begin{eqnarray*}
 &&\!\!\!\!\!\!\!\!\!corr(\hat{Y}_s,Y_{\Lambda})\\ 
-&\!\!\!\!\!\!\!\!\!=&\!\!\!\!\!\!\! \frac{\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\sqrt{\frac{\Psi}{\Lambda^H}}\hat{r}_{i_1,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2}{\sqrt{\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\frac{\Psi}{\Lambda^H}\prod_{k = 1}^{H}w_{i_k}^2\right)\!\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\hat{r}_{i_1,\dots,i_H}^2\prod_{k = 1}^{H}w_{i_k}^2\right)}}\\
-&\!\!\!\!\!\!\!\!\geq& \delta, 
+&\!\!\!\!\!\!\!\!\!=&\!\!\!\!\!\!\! \frac{\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\min\left(\frac{\Psi}{\Lambda^H},t_{i_1,\dots,i_H}\right)\prod_{k = 1}^{H}w_{i_k}^2}{\sqrt{\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\frac{\Psi}{\Lambda^H}\prod_{k = 1}^{H}w_{i_k}^2\right)\!\!\!\!\left(\displaystyle\sum_{i_1,\dots,i_H=1}^{\Lambda}\!\!\!\!\!t_{i_1,\dots,i_H}\prod_{k = 1}^{H}w_{i_k}^2\right)}}\\
+&\!\!\!\!\!\!\!\!\geq& \frac{1}{c^2}, 
 \end{eqnarray*}
 where the last inequality is the direct consequence of the uniformity assumption of Equation~\ref{eq:uniform}.
 \end{proof}
-
-\begin{comment}
-\section{Approximation of 2-spin Spin Glasses by 1-layer Neural Networks}
-
-The Hamiltonian of a H-spin glass is given by 
-
-\begin{equation}
- S_H(w) = \sum_{i_1,...,i_H}^N x_{i_1,...,i_H} w_{i_1} \cdot ... \cdot w_{i_H}
-\end{equation}
-and the output of a deep linear network with $H$ layers by 
-\begin{equation}
- Y_H(w) = \sum_{p = (i_1,...,i_H) \in \mathcal{P}} x_{i_1,...,i_H} w_{i_1} \cdot ... \cdot w_{i_H}
-\end{equation}
-
-Here $\mathcal{P}$ denotes the set of all paths from inputs to outputs in the network. Let $\mathcal{U} = \{ w_{i_1} \cdot ... \cdot w_{i_H} : 1 \leq i_1,...,i_H \leq N \} $.
-Note that the number of terms in the sum $S_H(w)$ is equal to $|\mathcal{U}| = N^H$ and the number of terms in $Y_H(w)$ is equal to $|\mathcal{P}|$.
-
-\begin{definition}
- Let $P_1(w), P_2(w)$ be random polynomials in $w$, where $w \in \mathbb{R}^N$, and let $m_1,m_2$ be the number of nonzero terms in $P_1,P_2$. Assume that all nonzero terms which appear in $P_1$ also appear in $P_2$. 
- We define a measure of similarity between the polynomials as $\Phi(P_1,P_2) = \frac{m_1}{m_2}$.
-\end{definition}
-
-\begin{lemma}
-Consider the following network $\mathcal{N}$ whose output is given by $Y(w) = \sum \sigma Wx$, where $\sigma$ is a rectified linear unit non-linearity.
-Furthermore assume that $rank(W) = k$.
-Then $\Phi(Y(w),S(w))  = \frac{1}{4k}$.
-\end{lemma}
-
-\begin{proof}
- Assume for simplicity that $W$ is $n \times n$. Since $W$ has rank $k$, it can be written as $W = UV^T$, where $U$ and $V$ have dimension $n \times k$.
- We can therefore reparameterize the system so that the free parameters consist of the entries of $U$ and $V$, which brings the number of parameters to $2kn$. 
- Assume these are reindexed of the form $\{w_1,w_2,...,w_{2kn} \}$.
- A spin glass model with this set of parameters and $H=2$ will have $(2kn)^2=4k^2n^2$ terms in its sum.
- Let us now count the number of unique terms in the polynomial $Y(w)$ which represents our network. 
- The matrix $W = UV^T$ has $n^2$ entries, each of which is of the form $u^Tv$ for some row $u$ of $U$ and $v$ of $V$. 
- Since $u,v \in \mathbb{R}^k$, each entry is the sum of $k$ terms of the form $w_i w_j$. 
- It follows that each entry in the column vector $Wx$ is the sum of $nk$ terms, and hence the output $y$ is the sum of $n^2k$ terms, all of the form $w_iw_jx_{ij}$.
- We thus have $\Phi(Y(w),S(w)) = \frac{n^2k}{4n^2k^2} = \frac{1}{4k}$.
-\end{proof}
-
-  In the above example, we can combine pairs of terms of the form $w_iw_jx_{ij} + w_jw_ix_{ji}$ into $w_iw_j(x_{ij}+x_{ji})$. 
-  The sum $(x_{ij}+x_{ji})$ has higher variance than the other input terms, but if this is a benign assumption for subsequent results then the ratio of terms becomes $\frac{1}{2k}$ rather than $\frac{1}{4k}$.
-
-\begin{lemma}
- The class of functions which can be learned by networks of the form $y = v^T \sigma Wx$ and $y = \sum \sigma Wx$ is equivalent. 
-\end{lemma}
-
-\begin{proof}
- We can show this by simple change of variables. 
- \begin{align*}
-  y &= v^T \sigma(Wx) \\
-  &= \sum_i v_i \sigma(\sum_j w_{ij} x_j) \\
-  &= \sum_i \sigma(\sum_j v_i w_{ij} x_j) \\
-  &= \sum_i \sigma(\sum_j w_{ij}' x_j) \\
-  &= \sum_i \sigma(W'x)
- \end{align*}
- 
- where $w_{ij}' = v_i w_{ij}$.
-\end{proof}
-
-\begin{theorem}
- Let $Y(w)$ be the output of a one-layer linear network, $S(w)$ be the Hamiltonian of a 2-spin spin glass model, and assume that the weights of $Y$ have rank $k$. 
- Then $\Phi(Y(w),S(w)) = \frac{1}{4k}$.
-\end{theorem}
-
-\begin{proof}
- This follows directly from the two above lemmas.
-\end{proof}
-\end{comment}
 
 \section{Asymptotics of the mean number of critical points and local minima}
 
