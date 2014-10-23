@@ -208,9 +208,7 @@ which corresponds to a network for which the lower-bound and upper-bound in Equa
 The following theorem (Theorem~\ref{thm:unif}) captures the connection between $\hat{Y}_s$ and $Y_{s}$.
 
 \begin{theorem}
-Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\hat{Y}_s$ in Equation~\ref{eq:approx} and random variable $Y_s$ in Equation~\ref{eq:befapprox} sattisy the following
-\[corr(\hat{Y}_s,Y_s) \geq \frac{1}{c^2}
-\]
+Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\hat{Y}_s$ in Equation~\ref{eq:approx} and random variable $Y_s$ in Equation~\ref{eq:befapprox} sattisfy the following: $corr(\hat{Y}_s,Y_s) \geq \frac{1}{c^2}$.
 \label{thm:unif}
 \end{theorem}
 We will refer to $\hat{Y}_s$ as an $(s,\epsilon,c)$-\textit{approximator} of $Y_N$, where the quality of this approximation is captured in Theorems~\ref{thm:redun} and~\ref{thm:unif}. Intuitively, for large networks (our analysis in Section~\ref{sec:theory} considers $\Lambda \rightarrow \infty$) one would expect $s$ to be small enough to simultaneously guarantee sufficiently small (close to $1$) $c$ and preserve good accuracy (small $\epsilon$). \textcolor{red}{That is because large networks have significantly more modelling power thus small $s$ is a natural form of controlling the overfitting. Besides then the data is mapped to a higher dimensional space.} 
@@ -233,48 +231,18 @@ Let $\mathcal{L}^a_{\Lambda,H}(w)$ and $\mathcal{L}^h_{\Lambda,H}(w)$ be the (ra
 and
 \[\mathcal{L}^h_{\Lambda,H}({\bm w}) = \max(0,1-Y_t\hat{Y}_s).
 \]
-where $Y_t$ is a random variable corresponding the true data labeling that takes values $-S$ or $S$ in case of the absolute loss and $-1$ or $1$ in case of the hinge loss, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'} = \frac{1}{\rho\sqrt{\mathcal{C}^H}}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
-\[\mathcal{L}^a_{\Lambda,H}({\bm w}) = \left \{
-  \begin{tabular}{c}
-  $\!\!\!\!\!\!S - \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
-  $\!S + \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -S$ \\
-  \end{tabular}
-\right.
+where $Y_t$ is a random variable corresponding to the true data labeling that takes values $-S$ or $S$ in case of the absolute loss and $-1$ or $1$ in case of the hinge loss, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Also note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable. It turns out that both losses can be generalized to the following expression
+\[\mathcal{L}_{\!\Lambda,H}({\bm w}) = \mathcal{C}_1 + \mathcal{C}_2q\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}X_{i_1,i_2,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k},
 \]
-and
-\begin{eqnarray*}
-\mathcal{L}^h_{\Lambda,H}({\bm w}) &=& \mathbb{E}_{M,A}[M(
-1-Y_t\hat{Y}_s)]\\&=& \left \{
-  \begin{tabular}{c}
-  $\!\!\!\!\!\!\mathbb{E}_{M}[M(1 - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = 1$ \\
-  $\!\mathbb{E}_{M}[M(1 + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -1$ \\
-  \end{tabular}
-\right.
-\end{eqnarray*}
-Note that both cases can be generalized as
-\[\mathcal{L}_{\Lambda,H}({\bm w}) = \left \{
-  \begin{tabular}{c}
-  $\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t  > 0$ \\
-  $\!\mathbb{E}_{M}[M(S + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t < 0$ \\
-  \end{tabular}
-\right.,
-\]
-where in case of the absolute loss $\rho^{'} = 1$ and in case of the hinge loss $S = 1$. Furthermore, since $X$'s are Gaussian random variables, then so are $-X$'s thus we can further generalize that
-\begin{eqnarray*}
-\mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(S + \hat{Y}_s)]\\
-&=& \!\!\!\!\!S\rho^{'} \!+\! q\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!X_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}.
-\end{eqnarray*}
-Let $\tilde{w}_i = \sqrt[H]{\rho\rho^{'}}w_i$ for all $i = \{1,2,\dots,k\}$. Note that $\tilde{w}_i = \frac{1}{\sqrt{C}}w_i$. Thus
+where
 \begin{equation}
-\mathcal{L}_{\Lambda,H}({\bm w}) = S\rho^{'} + q\sum_{i_1,\dots,i_H=1}^{\Lambda}X_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
-\label{eq:befloss}
-\end{equation}
-Note that the spherical assumption in Equation~\ref{eq:befspherical} directly implies that
-\begin{equation}
-\frac{1}{\Lambda}\sum_{i=1}^{\Lambda}\tilde{w}_i^2 = 1
+\frac{1}{\Lambda}\sum_{i=1}^{\Lambda}\tilde{w}_i^2 = 1,
 \label{eq:spherical}
 \end{equation}
-To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $S\rho^{'}$ as it does not matter when minimizing the loss function. After substituting $q = \frac{1}{\Psi^{(H-1)/2H}}$ we obtain
+and $\mathcal{C}_1$, $\mathcal{C}_2$ are some constants and weights $\tilde{w}$ are simply scaled weights $w$.
+We skip the details showing this equivalence, and defer them to the Supplementary material, as they are strictly technical. 
+
+To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We also skip constants $\mathcal{C}_1$ and $\mathcal{C}_2$ as they do not matter when minimizing the loss function. After substituting $q = \frac{1}{\Psi^{(H-1)/2H}}$ we obtain
 \begin{equation}
 \mathcal{L}_{\!\Lambda,H}({\bm w}) \!=\! \frac{1}{\Lambda^{\!(H\!-\!1)/2}}\!\!\!\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!\!\!\!\!X_{i_1,i_2,\dots,i_H}\!w_{i_1}\!w_{i_2}\!\!\dots\!w_{i_H}.
 \label{eq:spinglass}
@@ -319,7 +287,7 @@ Theorem 2.14 in~\cite{AAC2010} implies that for large-size networks all critical
 \paragraph{Layered structure of low-index critical points}
 From Theorem 2.15 in~\cite{AAC2010} it follows that for large-size networks finding a critical value with index larger or equal to $k$ (for any fixed integer $k$) below energy level $-\Lambda E_k(H)$ is improbable, where $-E_k(H) \in [-E_0(H),-E_{\infty}(H)]$. Furthermore, for any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{N}}$ is strictly decreasing and converges to $E_{\infty}$ as $k \rightarrow \infty$~\cite{AAC2010}. 
 
-These results unravel a layered structure for the lowest critical values of the loss function of a large-size network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) containing only local minima (critical points of index $0$), there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. The above-described layered structure of the lowest critical values of the Hamiltonian of the spherical spin glass model was in-detail described in~\cite{AAC2010}, however with no connection to neural networks which is what we explore. 
+These results unravel a layered structure for the lowest critical values of the loss function of a large-size network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) containing only local minima (critical points of index $0$), there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. 
 
 Another important fact is that the band $(-E_0(H),-E_{\infty})$ is very narrow, i.e. it is order of magnitudes narrower than band $(-E_{\infty},0)$. 
 
@@ -345,7 +313,7 @@ and for any integer $k \geq 0$:
 \right.
 \]
 where 
-\[I(u) = -\frac{u}{E_{\infty}^2}\sqrt{u^2 - E_{\infty}^2} - \log(-u + \sqrt{u^2 - E_{\infty}^2}) + \log E_{\infty}.
+\[I(u) = -\frac{u}{E_{\infty}^2}\sqrt{u^2 \!-\! E_{\infty}^2} - \log(-u + \sqrt{u^2 \!-\! E_{\infty}^2}) + \log E_{\infty}.
 \]
 Note that the maximal values of $\Theta_H(u)$ and $\Theta_{k,H}(u)$ are respectively $\frac{1}{2}\log(H-1)$ and $\frac{1}{2}\log(H-1) - \frac{H-2}{H}$. Figure~\ref{fig:Thetas} captures exemplary plots of the functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$. Also note that the following corollary holds.
 
@@ -466,6 +434,57 @@ Therefore
 \end{eqnarray*}
 where the last inequality is the direct consequence of the uniformity assumption of Equation~\ref{eq:uniform}.
 \end{proof}
+
+\section{Loss function as a $H$ - spin spherical spin-glass model}
+
+We consider two loss functions, (random) absolute loss $\mathcal{L}^a_{\Lambda,H}(w)$ and (random) hinge loss $\mathcal{L}^h_{\Lambda,H}(w)$ defined as
+\[\mathcal{L}^a_{\Lambda,H}({\bm w}) = |Y_t - \hat{Y}_s|
+\]
+and
+\[\mathcal{L}^h_{\Lambda,H}({\bm w}) = \max(0,1-Y_t\hat{Y}_s).
+\]
+where $Y_t$ is a random variable corresponding to the true data labeling that takes values $-S$ or $S$ in case of the absolute loss and $-1$ or $1$ in case of the hinge loss, where $S = \sup_{\bf{w}}{\hat{Y}_s}$. Note that in case of the hinge loss $\max$ operator can be modelled as Bernoulli random variable, that we will refer to as $M$, with success ($M = 1$) probability $\rho^{'} = \frac{\mathcal{C}^{'}}{\rho\sqrt{\mathcal{C}^H}}$ for some non-negative constant $\mathcal{C}^{'}$. We assume $M$ is independent of $\hat{Y}_s$. Therefore we obtain that
+\[\mathcal{L}^a_{\Lambda,H}({\bm w}) = \left \{
+  \begin{tabular}{c}
+  $\!\!\!\!\!\!S - \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = S$ \\
+  $\!S + \hat{Y}_s$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -S$ \\
+  \end{tabular}
+\right.
+\]
+and
+\begin{eqnarray*}
+\mathcal{L}^h_{\Lambda,H}({\bm w}) &=& \mathbb{E}_{M,A}[M(
+1-Y_t\hat{Y}_s)]\\&=& \left \{
+  \begin{tabular}{c}
+  $\!\!\!\!\!\!\mathbb{E}_{M}[M(1 - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = 1$ \\
+  $\!\mathbb{E}_{M}[M(1 + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t = -1$ \\
+  \end{tabular}
+\right.
+\end{eqnarray*}
+Note that both cases can be generalized as
+\[\mathcal{L}_{\Lambda,H}({\bm w}) = \left \{
+  \begin{tabular}{c}
+  $\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t  > 0$ \\
+  $\!\mathbb{E}_{M}[M(S + \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t < 0$ \\
+  \end{tabular}
+\right.,
+\]
+where in case of the absolute loss $\rho^{'} = 1$ and in case of the hinge loss $S = 1$. Furthermore, using the fact that $X$'s are Gaussian random variables one we can further generalize both cases as
+\[\mathcal{L}_{\Lambda,H}({\bm w}) = S\rho^{'} \!+\! q\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!X_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}.
+\]
+Let $\tilde{w}_i = \sqrt[H]{\frac{\rho\rho^{'}}{\mathcal{C}^{'}}}w_i$ for all $i = \{1,2,\dots,k\}$. Note that $\tilde{w}_i = \frac{1}{\sqrt{C}}w_i$. Thus
+\begin{equation}
+\mathcal{L}_{\Lambda,H}({\bm w}) = S\rho^{'} + q\mathcal{C}^{'}\sum_{i_1,\dots,i_H=1}^{\Lambda}X_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
+\label{eq:befloss}
+\end{equation}
+Note that the spherical assumption in Equation~\ref{eq:befspherical} directly implies that
+\begin{equation*}
+\frac{1}{\Lambda}\sum_{i=1}^{\Lambda}\tilde{w}_i^2 = 1
+\end{equation*}
+To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We skip constant $S\rho^{'}$ and $\mathcal{C}^{'}$ as it does not matter when minimizing the loss function. After substituting $q = \frac{1}{\Psi^{(H-1)/2H}}$ we obtain
+\begin{equation*}
+\mathcal{L}_{\!\Lambda,H}({\bm w}) \!=\! \frac{1}{\Lambda^{\!(H\!-\!1)/2}}\!\!\!\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!\!\!\!\!X_{i_1,i_2,\dots,i_H}\!w_{i_1}\!w_{i_2}\!\!\dots\!w_{i_H}.
+\end{equation*}
 
 \section{Asymptotics of the mean number of critical points and local minima}
 
