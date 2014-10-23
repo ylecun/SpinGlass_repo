@@ -78,7 +78,7 @@
 %}]
 
 \begin{abstract}
-We study the connection between the highly non-convex loss function of a simple model of the fully-connected feed-forward neural network and the Hamiltonian of the spherical spin-glass model under the assumptions of: i) variable independence, ii) redundancy in network parametrization, and iii) uniformity. These assumptions enable us to explain the complexity of the fully decoupled neural network through the prism of the results from the random matrix theory. We prove that for large-size decoupled networks the lowest critical values of the loss function are located in a well-defined narrow band lower-bounded by the global minimum and furthermore they form a layered structure. Moreover, finding them outside the band diminishes exponentially with the size of the network. We empirically demonstrate that both models exhibit strong similarities, despite the presence of high dependencies in real networks. We conjecture that both simulated annealing and SGD converges to the band of the lowest critical values, and furthermore all critical points found there are local minima and correspond to the same high learning quality measured by the test error. This emphasizes a major difference between large- and small-size networks where for the latter poor quality local minima have non-zero probability of being recovered. Simultaneously we prove that recovering the global minimum diminishes with the network size and that it is in practice irrelevant as global minimum often leads to data overfitting. 
+We study the connection between the highly non-convex loss function of a simple model of the fully-connected feed-forward neural network and the Hamiltonian of the spherical spin-glass model under the assumptions of: i) variable independence, ii) redundancy in network parametrization, and iii) uniformity. These assumptions enable us to explain the complexity of the fully decoupled neural network through the prism of the results from the random matrix theory. We prove that for large-size decoupled networks the lowest critical values of the random loss function are located in a well-defined narrow band lower-bounded by the global minimum and furthermore they form a layered structure. Moreover, finding them outside the band diminishes exponentially with the size of the network. We empirically demonstrate that both models exhibit strong similarities, despite the presence of high dependencies in real networks. We conjecture that both simulated annealing and SGD converges to the band of the lowest critical values, and furthermore all critical points found there are local minima and correspond to the same high learning quality measured by the test error. This emphasizes a major difference between large- and small-size networks where for the latter poor quality local minima have non-zero probability of being recovered. Simultaneously we prove that recovering the global minimum becomes harder as the network size increases and that it is in practice irrelevant as global minimum often leads to overfitting. 
 \end{abstract}
 
 \section{Introduction}
@@ -277,7 +277,7 @@ Theorem 2.14 in~\cite{AAC2010} implies that for large-size networks all critical
 \vspace{-0.3in}
 \caption{Distribution of the mean number of critical points, local minima and low-index saddle points (oryginal and zoomed). Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$. Figure must be read in color.}
 \label{fig:Distr_cp_lm_sp}
-\vspace{-0.1in}
+\vspace{-0.05in}
 \end{figure*}
 
 \paragraph{Layered structure of low-index critical points}
@@ -345,10 +345,13 @@ Figure~\ref{fig:Distr_cp_lm_sp} captures exemplary plots of the distributions of
 \section{Experiments}
 \label{sec:Experiments}
 
-\textcolor{red}{We need to prove that we get ot local minima not flat saddle points from Bengio paper.}
 
-\section{Conclusion and Future Work}
+\section{Conclusion}
 \label{sec:ConandFutWork}
+
+This paper establishes a connection between the neural network model and the spin-glass model. We show that under certain assumptions, the loss function of the fully decoupled large-size neural network of depth $H$ has similar landscape to the Hamiltonian of the $H$-spin spherical spin-glass model. In particular we show that the low-index critical points of the random loss function lie in the narrow band 'close' to the global minimum and form a layered structure. We empirically demonstrate that both models studied here are highly similar also in real settings, despite the presence of variable dependencies in real networks. We conjecture that common learning algorithms converge to the band of low-index critical points and recover local minima which are equivalent in terms of the test error. Moreover, the local minima recovered for large-size networks are of significantly higher quality than in case of the small-size networks, where for the latter the theoretical results of this paper do not hold. We finally demonstrate that recovering global minimum is irrelevant for large-size networks as it often leads to data overfitting. 
+
+
 
 \bibliographystyle{apalike}
 \bibliography{PAPER_AMMLY}
