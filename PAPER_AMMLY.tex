@@ -90,13 +90,9 @@ The paradigm of optimizing a highly non-convex loss function characteristic of m
 \begin{itemize}
 \item For large-size networks local minima are equivalent and correspond to the same quality solution measured by the test error.
 \vspace{-0.05in}
-\item Probability of finding a poor quality local minima is non-zero for small-size networks and it exponentially diminishes with the network size.
+\item Probability of finding a poor quality local minima is non-zero for small-size networks and it diminishes with the network size.
 \vspace{-0.05in}
 \item Finding the global minimum on the training set is not useful in practice as it often leads to overfitting.
-\vspace{-0.05in}
-\item The local minima are mostly flat and are characterised by Hessian with mostly zero eigenvalues. This is an indication that large-size networks can be simplified.
-\vspace{-0.05in}
-\item The number of positive eigenvalues of the Hessian at local minima is invariant to network size.
 \end{itemize}
 \vspace{-0.05in}
 The first three hypotheses can be directly justified by our theoretical findings and the last two are provided as corollaries without proof but with strong empirical evidence. We finally conclude the paper with brief discussion of our results and future research directions in Section~\ref{sec:ConandFutWork}. 
@@ -142,7 +138,7 @@ Let $\Psi$ be the mass of the network, $d$ be the number of network inputs and $
 \]
 \label{thm:arge}
 \end{theorem}
-In the rest of the paper we assume that the depth of the network $H$ is bounded. Therefore $N \rightarrow \infty$ iff $\Psi \rightarrow \infty$, and $N \rightarrow \infty$ iff $\Lambda \rightarrow \infty$.
+In the rest of the paper we assume that the depth of the network $H$ is bounded. Therefore $N \rightarrow \infty$ iff $\Psi \rightarrow \infty$, and $N \rightarrow \infty$ iff $\Lambda \rightarrow \infty$. Assuming boundedness of $H$ implies our results are primarily concerning wide, rather than deep, neural network learning.
 
 In the rest of this section we will be establishing a connection between the loss function of the neural network and the Hamiltonian of the spin-glass model. All proofs are deferred to the Supplementary material.
 
@@ -211,7 +207,7 @@ The following theorem (Theorem~\ref{thm:unif}) captures the connection between $
 Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\hat{Y}_s$ in Equation~\ref{eq:approx} and random variable $Y_s$ in Equation~\ref{eq:befapprox} sattisfy the following: $corr(\hat{Y}_s,Y_s) \geq \frac{1}{c^2}$.
 \label{thm:unif}
 \end{theorem}
-We will refer to $\hat{Y}_s$ as an $(s,\epsilon,c)$-\textit{approximator} of $Y_N$, where the quality of this approximation is captured in Theorems~\ref{thm:redun} and~\ref{thm:unif}. Intuitively, for large networks (our analysis in Section~\ref{sec:theory} considers $\Lambda \rightarrow \infty$) one would expect $s$ to be small enough to simultaneously guarantee sufficiently small (close to $1$) $c$ and preserve good accuracy (small $\epsilon$). \textcolor{red}{That is because large networks have significantly more modelling power thus small $s$ is a natural form of controlling the overfitting. Besides then the data is mapped to a higher dimensional space.} 
+We will refer to $\hat{Y}_s$ as an $(s,\epsilon,c)$-\textit{approximator} of $Y_N$, where the quality of this approximation is captured in Theorems~\ref{thm:redun} and~\ref{thm:unif}. Intuitively, for large networks (our analysis in Section~\ref{sec:theory} considers $\Lambda \rightarrow \infty$) one would expect $s$ to be small enough to simultaneously guarantee sufficiently small (close to $1$) $c$ and preserve good accuracy (small $\epsilon$).
 
 \paragraph{Spherical constraint}
 We finally make a benign assumption that for some positive constant $\mathcal{C}$ weights sattisfy the spherical condition 
