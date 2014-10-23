@@ -142,7 +142,7 @@ Let $\Psi$ be the mass of the network, $d$ be the number of network inputs and $
 \]
 \label{thm:arge}
 \end{theorem}
-In the rest of the paper we assume that the depth of the network $H$ is bounded. Therefore $N \rightarrow \infty$ iff $\Psi \rightarrow \infty$ and $N \rightarrow \infty$ iff $\Lambda \rightarrow \infty$.
+In the rest of the paper we assume that the depth of the network $H$ is bounded. Therefore $N \rightarrow \infty$ iff $\Psi \rightarrow \infty$, and $N \rightarrow \infty$ iff $\Lambda \rightarrow \infty$.
 
 In the rest of this section we will be establishing a connection between the loss function of the neural network and the Hamiltonian of the spin-glass model. All proofs are deferred to the Supplementary material.
 
@@ -216,12 +216,11 @@ Under the uniformity assumption of Equation~\ref{eq:uniform}, random variable $\
 We will refer to $\hat{Y}_s$ as an $(s,\epsilon,c)$-\textit{approximator} of $Y_N$, where the quality of this approximation is captured in Theorems~\ref{thm:redun} and~\ref{thm:unif}. Intuitively, for large networks (our analysis in Section~\ref{sec:theory} considers $\Lambda \rightarrow \infty$) one would expect $s$ to be small enough to simultaneously guarantee sufficiently small (close to $1$) $c$ and preserve good accuracy (small $\epsilon$). \textcolor{red}{That is because large networks have significantly more modelling power thus small $s$ is a natural form of controlling the overfitting. Besides then the data is mapped to a higher dimensional space.} 
 
 \paragraph{Spherical constraint}
-We finally make a benign assumption that the weights sattisfy the spherical condition 
+We finally make a benign assumption that for some positive constant $\mathcal{C}$ weights sattisfy the spherical condition 
 \begin{equation}
-\frac{1}{\Lambda}\sum_{i=1}^{\Lambda}w_i^2 = \mathcal{C},
+\frac{1}{\Lambda}\sum_{i=1}^{\Lambda}w_i^2 = \mathcal{C}.
 \label{eq:befspherical}
 \end{equation}
-where $\mathcal{C}$ is some positive constant. 
 
 Next we will consider two frequently used loss functions, absolute loss and hinge loss, where we approximate $Y_N$ with $\hat{Y}_s$. 
 
@@ -252,7 +251,7 @@ and
   \end{tabular}
 \right.
 \end{eqnarray*}
-Note that both cases can be generalized to the following
+Note that both cases can be generalized as
 \[\mathcal{L}_{\Lambda,H}({\bm w}) = \left \{
   \begin{tabular}{c}
   $\!\mathbb{E}_{M}[M(S - \hat{Y}_s)]$ $\:\:\:\:$if$\:\:\:\:$ $Y_t  > 0$ \\
@@ -263,10 +262,9 @@ Note that both cases can be generalized to the following
 where in case of the absolute loss $\rho^{'} = 1$ and in case of the hinge loss $S = 1$. Furthermore, since $X$'s are Gaussian random variables, then so are $-X$'s thus we can further generalize that
 \begin{eqnarray*}
 \mathcal{L}_{\Lambda,H}({\bm w}) \!\!\!\!\!&=&\!\!\!\!\! \mathbb{E}_{M}[M(S + \hat{Y}_s)]\\
-&=& \!\!\!\!\!S\rho^{'} \!+\! \rho^{'}\hat{Y}_s\\
 &=& \!\!\!\!\!S\rho^{'} \!+\! q\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!X_{i_1,i_2,\dots,i_H}\rho\rho^{'}\prod_{k = 1}^{H}w_{i_k}.
 \end{eqnarray*}
-Let $\tilde{w}_i = \sqrt[H]{\rho\rho^{'}}w_i$ for all $i = \{1,2,\dots,k\}$. Note that $\tilde{w}_i = \frac{1}{\sqrt{C}}$. Thus
+Let $\tilde{w}_i = \sqrt[H]{\rho\rho^{'}}w_i$ for all $i = \{1,2,\dots,k\}$. Note that $\tilde{w}_i = \frac{1}{\sqrt{C}}w_i$. Thus
 \begin{equation}
 \mathcal{L}_{\Lambda,H}({\bm w}) = S\rho^{'} + q\sum_{i_1,\dots,i_H=1}^{\Lambda}X_{i_1,\dots,i_H}\prod_{k = 1}^{H}\tilde{w}_{i_k}.
 \label{eq:befloss}
@@ -287,22 +285,49 @@ Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mat
 \label{sec:theory}
 The theoretical findings of this section are direct consequence of the theoretical analysis of the complexity of spherical spin-glass models of~\cite{AAC2010}. We will first introduce the notation and definitions. 
 \begin{definition}
-Let $B \subset \mathbb{R}$ be any Borel set and $k$ be an integer such that $0 \leq k < \Lambda$. A random number of critical values of $\mathcal{L}_{\Lambda,H}({\bm w})$ in the set $\Lambda B = \{\Lambda X:x\in B\}$ with index equal to $k$ is
-\[\mathcal{C}_{\Lambda,k}(B) = \!\!\!\!\!\!\!\!\!\!\!\!\!\!\sum_{{\bm w}:\nabla \mathcal{L}_{\Lambda,H}({\bm w}) = 0}\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\mathbbm{1}\{\mathcal{L}_{\Lambda\!,H}({\bm w})\!\in\! \Lambda B\}\mathbbm{1}\{i(\nabla^2\mathcal{L}_{\Lambda\!,H}({\bm w})) \!=\! k\},
-\]
-and a random total number of critical values of $\mathcal{L}_{\Lambda,H}(w)$ in the set $\Lambda B = \{\Lambda X:x\in B\}$ is
-\[\mathcal{C}_{\Lambda}(B) = \sum_{{\bm w}:\nabla \mathcal{L}_{\Lambda,H}({\bm w}) = 0}\!\!\!\!\!\!\!\!\!\!\!\!\!\mathbbm{1}\{\mathcal{L}_{\Lambda,H}({\bm w})\!\in\! \Lambda B\},
-\]
-where $\nabla$ and $\nabla^2$ denote respectively gradient and Hessian restricted to $\mathcal{S}_{\Lambda}$ and $i(\nabla^2\mathcal{L}_{\Lambda,H}(w))$ is the number of negative eigenvalues of the Hessian $\nabla^2\mathcal{L}_{\Lambda,H}$ at ${\bm w}$ also called index of $\nabla^2\mathcal{L}_{\Lambda,H}$ at ${\bm w}$.
+Let $B \subset \mathbb{R}$ be any Borel set and $k$ be an integer such that $0 \leq k < \Lambda$. We will denote as $\mathcal{C}_{\Lambda,k}(B)$ a random number of critical values of $\mathcal{L}_{\Lambda,H}({\bm w})$ in the set $\Lambda B = \{\Lambda X:x\in B\}$ with index\footnote{The number of negative eigenvalues of the Hessian $\nabla^2\mathcal{L}_{\Lambda,H}$ at ${\bm w}$ is also called index of $\nabla^2\mathcal{L}_{\Lambda,H}$ at ${\bm w}$.} equal to $k$. Similarily we will denote as $\mathcal{C}_{\Lambda}(B)$ a random total number of critical values of $\mathcal{L}_{\Lambda,H}(w)$ in the set $\Lambda B = \{\Lambda X:x\in B\}$.
 \end{definition}
 Later in the paper by critical values of the loss function that have non-divering (fixed) index we mean the ones with index non-diverging with $\Lambda$. We will also call them low-index saddle points.
 
-Let us now introduce the number that we will refer to as $E_{\infty}$ and use later on.
-\begin{equation}
-E_{\infty} = E_{\infty}(H) = 2\sqrt{\frac{H-1}{H}}.
-\label{eq:E_inf}
-\end{equation}
-We will also define two non-decreasing, continuous functions on $\mathbb{R}$, $\Theta_H$ and $\Theta_{k,H}$ as follows
+\begin{definition}
+The ground state energy is the (normalized) minimum of the loss function $\mathcal{L}_{\Psi,c,H}$
+\[G^\Psi = \frac{1}{\Lambda}\inf_{{\bm w}\in \mathcal{S}}\mathcal{L}_{\Lambda,H}({\bm w}).
+\]
+\end{definition}
+
+Below we summarize the results of the theoretical analysis in~\cite{AAC2010} in the context of neural networks.
+\paragraph{The existence of the band of low-index critical points}
+One can directly use Theorem 2.12 in~\cite{AAC2010} to show that for large-size networks (more precisely when $\Lambda \rightarrow \infty$ but recall that $\Lambda \rightarrow \infty$ iff $N \rightarrow \infty$) and when $H \geq 4$ it is improbable to find a critical value below certain level $-\Lambda E_0(H)$, where $E_0(H)$ is some real number. 
+
+Let us also  introduce the number that we will refer to as $E_{\infty}$. We will refer to this important threshold as an \textit{energy barrier} and define it as
+\[E_{\infty} = E_{\infty}(H) = 2\sqrt{\frac{H-1}{H}}.
+\]
+Theorem 2.14 in~\cite{AAC2010} implies that for large-size networks all critical values of the loss function that are of non-diverging index must lie below the threshold $-\Lambda E_{\infty}(H)$. Any critical point that lies above the energy barrier is a high-index saddle point with overwhelming probablity. Thus for large-size networks all critical values of the loss function that are of non-diverging index must lie in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$.
+
+\begin{figure*}[htp!]
+  \center
+\includegraphics[width = 1.65in]{Distr_cp.pdf}
+\includegraphics[width = 1.65in]{Distr_lm_sp_li.pdf} 
+\includegraphics[width = 1.65in]{Distr_lm_sp_li_zoomed_left.pdf} 
+\includegraphics[width = 1.65in]{Distr_lm_sp_li_zoomed_right.pdf} 
+\vspace{-0.3in}
+\caption{Distribution of the mean number of critical points, local minima and low-index saddle points (oryginal and zoomed). Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$. Figure must be read in color.}
+\label{fig:Distr_cp_lm_sp}
+\vspace{-0.1in}
+\end{figure*}
+
+\paragraph{Layered structure of low-index critical points}
+From Theorem 2.15 in~\cite{AAC2010} it follows that for large-size networks finding a critical value with index larger or equal to $k$ (for any fixed integer $k$) below energy level $-\Lambda E_k(H)$ is improbable, where $-E_k(H) \in [-E_0(H),-E_{\infty}(H)]$. Furthermore, for any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{N}}$ is strictly decreasing and converges to $E_{\infty}$ as $k \rightarrow \infty$~\cite{AAC2010}. 
+
+These results unravel a layered structure for the lowest critical values of the loss function of a large-size network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) containing only local minima (critical points of index $0$), there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. The above-described layered structure of the lowest critical values of the Hamiltonian of the spherical spin glass model was in-detail described in~\cite{AAC2010}, however with no connection to neural networks which is what we explore. 
+
+Another important fact is that the band $(-E_0(H),-E_{\infty})$ is very narrow, i.e. it is order of magnitudes narrower than band $(-E_{\infty},0)$. 
+
+\paragraph{Hardness of recovering the global minimum}
+Note that based on what was already shown recovering the global minimizer when starting from any (local) minima from one of the energy bands above, e.g. $\left(-\Lambda E_i(H),-\Lambda E_{i+1}(H)\right)$, diverges with $\Lambda$ since it is bounded below by $\Lambda (E_0(H) - E_i(H))$. \textcolor{red}{More should be written.}
+
+\paragraph{Logarithmic asymptotics of the mean number of critical points}
+We will now define two non-decreasing, continuous functions on $\mathbb{R}$, $\Theta_H$ and $\Theta_{k,H}$ as follows
 \[\Theta_H(u) = \left \{
   \begin{tabular}{c}
   $\!\!\!\!\frac{1}{2}\log(H\!-\!1) \!-\! \frac{H-2}{4(H-1)} \!-\! I(u)$ $\:\:\:$if$\:\:$$u \!\leq\! -E_{\infty}$\\
@@ -322,7 +347,7 @@ and for any integer $k \geq 0$:
 where 
 \[I(u) = -\frac{u}{E_{\infty}^2}\sqrt{u^2 - E_{\infty}^2} - \log(-u + \sqrt{u^2 - E_{\infty}^2}) + \log E_{\infty}.
 \]
-Note that the maximal values of $\Theta_H(u)$ and $\Theta_{k,H}(u)$ are respectively $\frac{1}{2}\log(H-1)$ and $\frac{1}{2}\log(H-1) - \frac{H-2}{H}$. Figure~\ref{fig:Thetas} captures exemplary plots of the functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$ for $k = 0$. Also note that the following corollary holds.
+Note that the maximal values of $\Theta_H(u)$ and $\Theta_{k,H}(u)$ are respectively $\frac{1}{2}\log(H-1)$ and $\frac{1}{2}\log(H-1) - \frac{H-2}{H}$. Figure~\ref{fig:Thetas} captures exemplary plots of the functions $\Theta_H(u)$ and $\Theta_{k,H}(u)$. Also note that the following corollary holds.
 
 \begin{figure}[h]
   \center
@@ -338,72 +363,16 @@ Note that the maximal values of $\Theta_H(u)$ and $\Theta_{k,H}(u)$ are respecti
 For all $k > 0$ and $u < -E_{\infty}$, $\Theta_{k,H}(u) < \Theta_{0,H}(u)$.
 \label{cor:Theta}
 \end{corollary}
-Finally, for any integer $k \geq 0$, let $E_k = E_k(H) > 0 $ be defined as the unique solution to 
-\[\Theta_{k,H}(-E_k) = 0.
-\]
-
-\begin{figure*}[htp!]
-  \center
-\includegraphics[width = 1.65in]{Distr_cp.pdf}
-\includegraphics[width = 1.65in]{Distr_lm_sp_li.pdf} 
-\includegraphics[width = 1.65in]{Distr_lm_sp_li_zoomed_left.pdf} 
-\includegraphics[width = 1.65in]{Distr_lm_sp_li_zoomed_right.pdf} 
-\vspace{-0.3in}
-\caption{Distribution of the mean number of critical points, local minima and low-index saddle points (oryginal and zoomed). Parameters $H$ and $\Lambda$ were set to $H = 3$ and $\Lambda = 1000$. Black line: $u = -E_0(H)$, red line: $u = -E_{\infty}(H)$. Figure must be read in color.}
-\label{fig:Distr_cp_lm_sp}
-\vspace{-0.1in}
-\end{figure*}
-
-For any fixed $H \geq 3$, the sequence $\{E_k(H)\}_{k\in\mathbb{\Lambda}}$ is strictly decreasing and converges to $E_{\infty}$ as $k \rightarrow \infty$~\cite{AAC2010}. Another important fact is that the band $(-E_0(H),-E_{\infty})$ is very narrow, i.e. it is order of magnitudes narrower than band $(-E_{\infty},0)$. We will now define the ground state energy.
-
-\begin{definition}
-The ground state energy is the (normalized) minimum of the loss function $\mathcal{L}_{\Psi,c,H}$
-\[G^\Psi = \frac{1}{\Lambda}\inf_{{\bm w}\in \mathcal{S}}\mathcal{L}_{\Lambda,H}({\bm w}).
-\]
-\end{definition}
-Next we provide theorems (resp. Theorem~\ref{thm:lb},~\ref{thm:ub},~\ref{thm:layer}, ~\ref{thm:lmsp} and~\ref{thm:cp}) which are direct consequences of the theoretical findings in~\cite{AAC2010} (resp. Theorem 2.12, 2.14, 2.15, 2.5 and 2.8).  
-
-\begin{theorem}
-For every $H \geq 3$
-\[\liminf_{\Lambda \rightarrow \infty} G^\Psi \geq -E_0(H),
-\]
-and for $H \geq 4$
-\[\liminf_{\Lambda \rightarrow \infty} G^\Psi = -E_0(H) \:\:\:\text{in probability.}
-\]
-\label{thm:lb}
-\end{theorem}
-By Theorem~\ref{thm:lb}, for large-size networks it is improbable to find a critical value below level $-\Lambda E_0(H)$.
-\begin{theorem}
-For an integer $k \geq 0$ and $\epsilon > 0$,
-\[\limsup_{\Lambda \rightarrow \infty} \frac{1}{\Lambda^2}\log(\mathbb{P}(\mathcal{C}_{\Lambda,k}(-E_{\infty}(H) + \epsilon,\infty)>0)) < 0
-\]
-\label{thm:ub}
-\end{theorem}
-Theorem~\ref{thm:ub} implies that for large-size networks all critical values of the loss function that are of non-diverging index must lie below the threshold $-\Lambda E_{\infty}(H)$. We will refer to this important threshold as an \textit{energy barrier}. Any critical point that lies above the energy barrier is a high-index saddle point with overwhelming probablity. Theorem~\ref{thm:lb} and~\ref{thm:ub} both imply that for large-size networks all critical values of the loss function that are of non-diverging index must lie in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$.
-\begin{theorem}
-For $k \geq 0$ and $\epsilon > 0$,
-\[\limsup_{\Lambda \rightarrow \infty} \frac{1}{\Lambda^2}\log(\mathbb{P}(\sum_{i=k}^{\infty}\!\mathcal{C}_{\Lambda,i}(-E_k(H) - \epsilon,\infty) \!>\! 0)) \!<\! 0
-\]
-\label{thm:layer}
-\end{theorem}
-Theorem~\ref{thm:layer} implies that for large-size networks finding a critical value with index larger or equal to $k$ (for any fixed integer $k$) below energy level $-\Lambda E_k(H)$ is improbable. 
-
-The statements of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} unravel a layered structure for the lowest critical values of the loss function of a large-size network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) containing only local minima (critical points of index $0$), there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. The above-described layered structure of the lowest critical values of the Hamiltonian of the spherical spin glass model was in-detail described in~\cite{AAC2010}, however with no connection to neural networks which is what we explore. 
-
-An interesting implication of Theorems~\ref{thm:lb},~\ref{thm:ub} and~\ref{thm:layer} is that recovering the global minimizer when starting from any (local) minima from one of the energy bands above, e.g. $\left(-\Lambda E_i(H),-\Lambda E_{i+1}(H)\right)$, diverges with $\Lambda$ since it is bounded below by $\Lambda (E_0(H) - E_i(H))$. 
 
 Next we will show the logarithmic asymptotics of the mean number of critical points (the asymptotics of the mean number of critical points can be found in the Supplementary material).
-\begin{theorem}
-For all $H \geq 2$ and $k \geq 0$ fixed
-\[\lim_{\Lambda \rightarrow \infty}\frac{1}{\Lambda}\log\mathbb{E}[\mathcal{C}_{\Lambda,k}(u)] = \Theta_{k,H}(u).
-\]
-\label{thm:lmsp}
-\end{theorem}
 \begin{theorem}
 For all $H \geq 2$
 \[\lim_{\Lambda \rightarrow \infty}\frac{1}{\Lambda}\log\mathbb{E}[\mathcal{C}_{\Lambda}(u)] = \Theta_{H}(u).
 \]
-\label{thm:cp}
+and for all $H \geq 2$ and $k \geq 0$ fixed
+\[\lim_{\Lambda \rightarrow \infty}\frac{1}{\Lambda}\log\mathbb{E}[\mathcal{C}_{\Lambda,k}(u)] = \Theta_{k,H}(u).
+\]
+\label{thm:lmsp}
 \end{theorem}
 Note that from Theorem~\ref{thm:lmsp} and Corollary~\ref{cor:Theta} it follows that the number of critical points in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$ increases exponentially as $\Lambda$ grows and that local minima dominate over saddle points and this domination also grows exponentially as $\Lambda$ grows. Thus for large-size networks (large $\Lambda$) the probability of recovering a saddle point in the band $\left(-\Lambda E_0(H),-\Lambda E_{\infty}(H)\right)$, rather than a local minima, goes to $0$.
 
