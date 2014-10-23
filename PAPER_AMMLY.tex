@@ -182,13 +182,13 @@ where $corr$ denotes the correlation defined as $corr(A,B) = \frac{\mathbb{E}[(A
 \label{thm:redun}
 \end{theorem}
 
-The assumption of the redundancy of parameters implies that one can preserve $\epsilon$ to be close to $0$ even with $s << N$.
+The redundancy assumption implies that one can preserve $\epsilon$ to be close to $0$ even with $s << N$.
 
 \paragraph{Uniformity}
 Consider network $\mathcal{M}$ to be a $(s,\epsilon)$-reduction image of $\mathcal{N}$ for some $s \leq N$ and $\epsilon \in [0,1]$. The output $Y_s$ of the image network can in general be expressed as
 \[Y_s = q\sum_{i_1,\dots,i_H=1}^{s}\sum_{j=1}^{t_{i_1,\dots,i_H}}X_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k},
 \]
-where $t_{i_1,\dots,i_H} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ repeats in Equation~\ref{eq:befapprox} and $\sum_{i_1,\dots,i_H=1}^{s}t_{i_1,\dots,i_H} = \Psi$. We assume that unique weights are close to being evenly distributed on the graph of connections of network $\mathcal{M}$. We call this assumption a \textit{uniformity assumption} (note it is analogous to the maximum entropy assumption). This assumption is in general consistent with the approach in~\cite{NIPS2013_5025}. In particular, this assumption implies that for all $(i_1,i_2,\dots,i_H):i_1,i_2,\dots,i_H \in \{1,2,\dots,s\}$ there exists a positive constant $c \geq 1$ such that the following holds
+where $t_{i_1,\dots,i_H} \in \{\mathbb{Z}^{+}\cup{0}\}$ is the number of times each configuration $(w_{i_1},w_{i_2},\dots,w_{i_H})$ repeats in Equation~\ref{eq:befapprox} and $\sum_{i_1,\dots,i_H=1}^{s}t_{i_1,\dots,i_H} = \Psi$. We assume that unique weights are close to being evenly distributed on the graph of connections of network $\mathcal{M}$. We call this assumption a \textit{uniformity assumption}. Thus this assumption implies that for all $(i_1,i_2,\dots,i_H):i_1,i_2,\dots,i_H \in \{1,2,\dots,s\}$ there exists a positive constant $c \geq 1$ such that the following holds
 \begin{equation}
 \frac{1}{c}\cdot\frac{\Psi}{s^H} \leq t_{i_1,i_2,\dots,i_H} \leq c\cdot\frac{\Psi}{s^H}.
 \label{eq:uniform}
@@ -200,7 +200,7 @@ For simplicity assume $\frac{\Psi}{s^H} \in \mathbb{Z}^{+}$ and $\sqrt[H]{\Psi} 
 \hat{Y}_s = q\sum_{i_1,\dots,i_H=1}^{s}\sum_{j=1}^{\frac{\Psi}{s^H}}X_{i_1,\dots,i_H}^{(j)}\rho\prod_{k = 1}^{H}w_{i_k},
 \label{eq:approx}
 \end{equation}
-which corresponds to a network for which the lower-bound and upper-bound in Equation~\ref{eq:uniform} match. Note that one can combine both summations in Equation~\ref{eq:approx} and re-index this equation to obtain
+which corresponds to a network for which the lower-bound and upper-bound in Equation~\ref{eq:uniform} match. Note that one can combine both summations in Equation~\ref{eq:approx} and re-index its terms to obtain
 \begin{equation}
 \hat{Y}_s = q\sum_{i_1,\dots,i_H=1}^{\Lambda}X_{i_1,\dots,i_H}\rho\prod_{k = 1}^{H}w_{i_k}.
 \label{eq:approxfinal}
@@ -242,12 +242,12 @@ where
 and $\mathcal{C}_1$, $\mathcal{C}_2$ are some constants and weights $\tilde{w}$ are simply scaled weights $w$.
 We skip the details showing this equivalence, and defer them to the Supplementary material, as they are strictly technical. 
 
-To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We also skip constants $\mathcal{C}_1$ and $\mathcal{C}_2$ as they do not matter when minimizing the loss function. After substituting $q = \frac{1}{\Psi^{(H-1)/2H}}$ we obtain
+To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents and simply denote $\hat{w}$ as $w$. We also skip constants $\mathcal{C}_1$ and $\mathcal{C}_2$ as they do not matter when minimizing the loss function. After substituting $q = \frac{1}{\Psi^{(H-1)/2H}} = \frac{1}{\Lambda^{(H-1)/2}}$ we obtain
 \begin{equation}
 \mathcal{L}_{\!\Lambda,H}({\bm w}) \!=\! \frac{1}{\Lambda^{\!(H\!-\!1)/2}}\!\!\!\!\!\!\!\sum_{i_1,i_2,\dots,i_H=1}^{\Lambda}\!\!\!\!\!\!\!\!\!\!\!X_{i_1,i_2,\dots,i_H}\!w_{i_1}\!w_{i_2}\!\!\dots\!w_{i_H}.
 \label{eq:spinglass}
 \end{equation}
-Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mathcal{S} = S^{\Lambda-1}(\sqrt{\Lambda})$ and is equivalent to the Hamiltonian of the $H$-spin spherical spin-glass model. The spherical constraint is captured in Equation~\ref{eq:spherical}. An asymptotic evaluation of the comlexity of spherical $H$-spin spherical spin-glass models via random matrix theory was studied in the literature~\cite{AAC2010} where a precise description of the energy landscape for the Hamiltonians of these models is provided. In this paper we explore a strong connection of the Hamiltonian of these models, originated from physics, and the strongly non-convex loss functions used in deep learning. We use the results of the theoretical analysis of the complexity of spin-glass models~\cite{AAC2010} to gain an understading of the optimization in deep learning. 
+Equation~\ref{eq:spinglass} is the centered Gaussian process on the sphere $\mathcal{S} = S^{\Lambda-1}(\sqrt{\Lambda})$ and is equivalent to the Hamiltonian of the $H$-spin spherical spin-glass model. The spherical constraint is captured in Equation~\ref{eq:spherical}. An asymptotic evaluation of the comlexity of spherical $H$-spin spherical spin-glass models via random matrix theory was studied in the literature~\cite{AAC2010} where a precise description of the energy landscape for the Hamiltonians of these models is provided. In this paper we use the results of the theoretical analysis of the complexity of spin-glass models~\cite{AAC2010} to gain an understading of the optimization of strongly non-convex loss functions of neural networks. 
 
 \section{Theoretical results}
 \label{sec:theory}
@@ -289,7 +289,7 @@ From Theorem 2.15 in~\cite{AAC2010} it follows that for large-size networks find
 
 These results unravel a layered structure for the lowest critical values of the loss function of a large-size network, where with overwhelming probability the critical values above the global minimizer (ground state) of the loss function are local minima exclusively. Above the band ($\left(-\Lambda E_0(H),-\Lambda E_1(H)\right)$) containing only local minima (critical points of index $0$), there is another one, ($\left(-\Lambda E_1(H),-\Lambda E_2(H)\right)$), where one can only find local minima and saddle points of index $1$, and above this band there exists another one, ($\left(-\Lambda E_2(H),-\Lambda E_3(H)\right)$), where one can only find local minima and saddle points of index $1$ and $2$, etc. 
 
-Another important fact is that the band $(-E_0(H),-E_{\infty})$ is very narrow, i.e. it is order of magnitudes narrower than band $(-E_{\infty},0)$. 
+The band $(-E_0(H),-E_{\infty})$ is in practice very narrow, i.e. it is order of magnitudes narrower than band $(-E_{\infty},0)$ (an example is shown in Figure~\ref{fig:Distr_cp_lm_sp} and~\ref{fig:Thetas}). 
 
 \paragraph{Hardness of recovering the global minimum}
 Note that based on what was already shown recovering the global minimizer when starting from any (local) minima from one of the energy bands above, e.g. $\left(-\Lambda E_i(H),-\Lambda E_{i+1}(H)\right)$, diverges with $\Lambda$ since it is bounded below by $\Lambda (E_0(H) - E_i(H))$. \textcolor{red}{More should be written.}
@@ -332,8 +332,8 @@ For all $k > 0$ and $u < -E_{\infty}$, $\Theta_{k,H}(u) < \Theta_{0,H}(u)$.
 \label{cor:Theta}
 \end{corollary}
 
-Next we will show the logarithmic asymptotics of the mean number of critical points (the asymptotics of the mean number of critical points can be found in the Supplementary material).
-\begin{theorem}
+Next we will show the logarithmic asymptotics of the mean number of critical points (the asymptotics of the mean number of critical points can be found in the Supplementary material). 
+\begin{theorem}[\cite{AAC2010}, Theorem 2.5 and 2.8]
 For all $H \geq 2$
 \[\lim_{\Lambda \rightarrow \infty}\frac{1}{\Lambda}\log\mathbb{E}[\mathcal{C}_{\Lambda}(u)] = \Theta_{H}(u).
 \]
@@ -488,7 +488,7 @@ To simplify the notation in Equation~\ref{eq:befloss} we drop the letter accents
 
 \section{Asymptotics of the mean number of critical points and local minima}
 
-Below, we provide the asymptotics of the mean number of critical points (Theorem~\ref{thm:cpprecise}) and the mean number of local minima (Theorem~\ref{thm:lmspprecise}), which extend Theorem~\ref{thm:lmsp} and Theorem~\ref{thm:cp}. Those results are the consequences of Theorem 2.17. and Corollary 2.18.~\cite{AAC2010} and the boundeness of $c$ and $H$.
+Below, we provide the asymptotics of the mean number of critical points (Theorem~\ref{thm:cpprecise}) and the mean number of local minima (Theorem~\ref{thm:lmspprecise}), which extend Theorem~\ref{thm:lmsp}. Those results are the consequences of Theorem 2.17. and Corollary 2.18.~\cite{AAC2010} and the boundeness of $c$ and $H$.
 \begin{theorem}
 For $H \geq 3$, the following holds as $\Lambda \rightarrow \infty$:
 \begin{itemize}
